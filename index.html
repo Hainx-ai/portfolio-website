@@ -1,19 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Burhan Portfolio</title>
+
+    <style>
+        body{
+            margin:0;
+            font-family:Arial, sans-serif;
+            background:#0f172a;
+            color:white;
+        }
+
+        .hero{
+            height:100vh;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            text-align:center;
+            padding:20px;
+        }
+
+        h1{
+            font-size:60px;
+            margin-bottom:10px;
+        }
+
+        p{
+            font-size:20px;
+            max-width:700px;
+            line-height:1.6;
+        }
+
+        .btn{
+            margin-top:20px;
+            padding:15px 30px;
+            border:none;
+            border-radius:12px;
+            background:cyan;
+            color:black;
+            font-size:18px;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        .btn:hover{
+            transform:scale(1.1);
+            background:white;
+        }
+
+        .skills{
+            padding:80px 20px;
+            text-align:center;
+            background:#111827;
+        }
+
+        .skill-box{
+            display:inline-block;
+            background:#1e293b;
+            margin:15px;
+            padding:20px;
+            border-radius:15px;
+            width:200px;
+        }
+    </style>
 </head>
-<body style="font-family: Arial; text-align:center; background:#111; color:white;">
 
-    <h1>Hi, I'm Burhan 👋</h1>
+<body>
 
-    <p>Welcome to my first portfolio website.</p>
+    <section class="hero">
+        <h1>Hi, I'm Burhan 👋</h1>
 
-    <p>I am interested in AI, technology and learning new things.</p>
+        <p>
+            I work in an AI company and I am passionate about technology,
+            websites and learning new things every day.
+        </p>
 
-    <button style="padding:10px 20px; border:none; background:cyan; border-radius:10px;">
-        Contact Me
-    </button>
+        <button class="btn">Contact Me</button>
+    </section>
+
+    <section class="skills">
+        <h2>My Skills</h2>
+
+        <div class="skill-box">
+            <h3>Communication</h3>
+        </div>
+
+        <div class="skill-box">
+            <h3>AI Curiosity</h3>
+        </div>
+
+        <div class="skill-box">
+            <h3>Web Learning</h3>
+        </div>
+
+    </section>
 
 </body>
 </html>
