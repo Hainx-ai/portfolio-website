@@ -5,7 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Burhan Portfolio</title>
 
-    <style>
+    <style> .typing{
+    overflow:hidden;
+    white-space:nowrap;
+    border-right:3px solid cyan;
+    width:0;
+    animation:
+        typing 4s steps(40,end) forwards,
+        blink 0.8s infinite;
+}
+
+@keyframes typing{
+    from{width:0}
+    to{width:100%}
+}
+
+@keyframes blink{
+    50%{
+        border-color:transparent;
+    }
+}
+
+.skill-box:hover{
+    transform:translateY(-10px);
+    transition:0.3s;
+    box-shadow:0 0 20px cyan;
+}
         body{
             margin:0;
             font-family:Arial, sans-serif;
@@ -115,7 +140,7 @@
 <section class="about">
     <h2>About Me</h2>
 
-    <p>
+    <p class="typing">
         I currently work in an AI company and I enjoy learning
         new technologies, websites and smart AI tools.
         I am improving my communication skills and exploring
