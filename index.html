@@ -1,166 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Burhan Portfolio</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SunoYaar</title>
 
-    <style> .typing{
-    overflow:hidden;
-    white-space:nowrap;
-    border-right:3px solid cyan;
-    width:0;
-    animation:
-        typing 4s steps(40,end) forwards,
-        blink 0.8s infinite;
-}
-
-@keyframes typing{
-    from{width:0}
-    to{width:100%}
-}
-
-@keyframes blink{
-    50%{
-        border-color:transparent;
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
     }
-}
 
-.skill-box:hover{
-    transform:translateY(-10px);
-    transition:0.3s;
-    box-shadow:0 0 20px cyan;
-}
-        body{
-            margin:0;
-            font-family:Arial, sans-serif;
-            background:#0f172a;
-            color:white;
-        }
+    body{
+      background:#0f172a;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+      text-align:center;
+      padding:20px;
+    }
 
-        .hero{
-            height:100vh;
-            display:flex;
-            flex-direction:column;
-            justify-content:center;
-            align-items:center;
-            text-align:center;
-            padding:20px;
-        }
+    .container{
+      max-width:700px;
+    }
 
-        h1{
-            font-size:60px;
-            margin-bottom:10px;
-        }
+    h1{
+      font-size:60px;
+      margin-bottom:20px;
+      color:#38bdf8;
+    }
 
-        p{
-            font-size:20px;
-            max-width:700px;
-            line-height:1.6;
-        }
+    p{
+      font-size:20px;
+      line-height:1.7;
+      color:#cbd5e1;
+      margin-bottom:30px;
+    }
 
-        .btn{
-            margin-top:20px;
-            padding:15px 30px;
-            border:none;
-            border-radius:12px;
-            background:cyan;
-            color:black;
-            font-size:18px;
-            cursor:pointer;
-            transition:0.3s;
-        }
+    .btn{
+      display:inline-block;
+      padding:15px 35px;
+      background:#38bdf8;
+      color:#0f172a;
+      text-decoration:none;
+      font-size:18px;
+      border-radius:40px;
+      transition:0.3s;
+      font-weight:bold;
+    }
 
-        .btn:hover{
-            transform:scale(1.1);
-            background:white;
-        }
+    .btn:hover{
+      background:white;
+      transform:scale(1.05);
+    }
 
-        .skills{
-            padding:80px 20px;
-            text-align:center;
-            background:#111827;
-        }
-
-        .skill-box{
-            display:inline-block;
-            background:#1e293b;
-            margin:15px;
-            padding:20px;
-            border-radius:15px;
-            width:200px;
-        }
-    </style> 
-    .about{
-    text-align:center;
-    padding:80px 20px;
-    background:#0f172a;
-}
-
-.about p{
-    max-width:700px;
-    margin:auto;
-    line-height:1.8;
-    font-size:20px;
-}
+    .footer{
+      margin-top:40px;
+      color:#94a3b8;
+      font-size:14px;
+    }
+  </style>
 </head>
-
 <body>
 
-    <section class="hero">
-        <h1>Hi, I'm Burhan 👋</h1>
+  <div class="container">
+    <h1>SunoYaar</h1>
 
-        <p>
-            I work in an AI company and I am passionate about technology,
-            websites and learning new things every day.
-        </p>
+    <p>
+      Feeling alone? <br>
+      Overthinking? <br>
+      Need someone who truly listens? <br><br>
 
-        <button class="btn">Contact Me</button>
-    </section>
-
-    <section class="skills">
-        <h2>My Skills</h2>
-
-        <div class="skill-box">
-            <h3>Communication</h3>
-        </div>
-
-        <div class="skill-box">
-            <h3>AI Curiosity</h3>
-        </div>
-
-        <div class="skill-box">
-            <h3>Web Learning</h3>
-        </div>
-
-    </section>
-
-    
-<section class="about">
-<div class="ai-box">
-    <h2>🤖 AI Assistant</h2>
-
-    <p id="message">
-        Hi Burhan 👋 Welcome to your AI portfolio.
+      Welcome to SunoYaar 💙 <br>
+      A safe space where you can share your feelings,
+      talk freely, and connect like a real friend.
     </p>
 
-    <button class="btn" onclick="changeMessage()">
-        Ask AI
-    </button>
-</div>
+    <a href="#" class="btn">Start Talking</a>
 
-    <h2>About Me</h2>
+    <div class="footer">
+      Made with care by Burhan ✨
+    </div>
+  </div>
 
-    <p class="typing">
-        I currently work in an AI company and I enjoy learning
-        new technologies, websites and smart AI tools.
-        I am improving my communication skills and exploring
-        web development with curiosity and passion.
-    </p>
-
-    <a href="#">
-        <button class="btn">Download Resume</button>
-    </a>
-</section>
 </body>
 </html>
