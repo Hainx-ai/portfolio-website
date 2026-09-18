@@ -3,239 +3,300 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>HainX ⚡</title>
 
 <style>
 *{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-    font-family:Arial,sans-serif;
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif;
 }
 
 body{
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:#050914;
-    color:white;
-    overflow:hidden;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at top,#102c52 0%,#050914 45%,#020308 100%);
+  color:white;
+  overflow-x:hidden;
 }
 
-body::before{
-    content:"";
-    position:fixed;
-    width:400px;
-    height:400px;
-    background:#168cff;
-    filter:blur(160px);
-    opacity:.18;
-    top:-150px;
-    left:-100px;
+body:before{
+  content:"";
+  position:fixed;
+  width:500px;
+  height:500px;
+  background:#008cff;
+  opacity:.07;
+  filter:blur(100px);
+  top:-200px;
+  right:-150px;
+  border-radius:50%;
 }
 
-.container{
-    width:90%;
-    max-width:480px;
-    text-align:center;
-    padding:40px 25px;
-    position:relative;
+.header{
+  padding:22px 7%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid rgba(255,255,255,.08);
 }
 
 .logo{
-    font-size:58px;
-    font-weight:bold;
-    letter-spacing:3px;
-    color:#42caff;
-    text-shadow:0 0 30px #168cff88;
+  font-size:27px;
+  font-weight:bold;
+  color:#4ddcff;
+  text-shadow:0 0 15px #00bfff;
+}
+
+.logo span{
+  color:#ff9d4d;
+}
+
+.profile{
+  border:1px solid rgba(77,220,255,.3);
+  padding:8px 14px;
+  border-radius:20px;
+  background:rgba(255,255,255,.04);
+  font-size:13px;
+}
+
+.container{
+  width:90%;
+  max-width:1000px;
+  margin:35px auto;
+}
+
+.welcome{
+  text-align:center;
+  margin-bottom:35px;
+}
+
+.welcome h1{
+  font-size:34px;
+  margin-bottom:10px;
+}
+
+.welcome p{
+  color:#91a4b9;
+}
+
+.section-title{
+  margin:25px 0 15px;
+  font-size:20px;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:15px;
+}
+
+.card{
+  padding:22px;
+  border-radius:18px;
+  background:linear-gradient(145deg,rgba(20,45,75,.7),rgba(5,10,20,.85));
+  border:1px solid rgba(77,220,255,.15);
+  transition:.25s;
+  cursor:pointer;
+}
+
+.card:hover{
+  transform:translateY(-4px);
+  border-color:#32d9ff;
+  box-shadow:0 0 25px rgba(0,190,255,.15);
+}
+
+.icon{
+  font-size:32px;
+  margin-bottom:12px;
+}
+
+.card h3{
+  margin-bottom:7px;
+}
+
+.card p{
+  color:#899caf;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.badge{
+  display:inline-block;
+  margin-top:12px;
+  padding:5px 9px;
+  border-radius:10px;
+  font-size:11px;
+  background:rgba(0,180,255,.1);
+  color:#53dcff;
+}
+
+.hunt{
+  margin-top:30px;
+  padding:30px;
+  border-radius:22px;
+  text-align:center;
+  background:
+    linear-gradient(135deg,rgba(18,28,50,.9),rgba(5,7,15,.95));
+  border:1px solid rgba(255,157,77,.3);
+  box-shadow:0 0 35px rgba(255,130,50,.05);
+}
+
+.hunt h2{
+  color:#ffb36b;
+  margin-bottom:10px;
+}
+
+.hunt p{
+  color:#9baabd;
+  margin-bottom:20px;
+}
+
+button{
+  border:0;
+  padding:13px 25px;
+  border-radius:25px;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  background:linear-gradient(90deg,#00b8ff,#6c63ff);
+  box-shadow:0 0 20px rgba(0,180,255,.2);
+}
+
+button:hover{
+  transform:scale(1.03);
+}
+
+.rules{
+  margin-top:25px;
+  padding:20px;
+  border-radius:16px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);
+  color:#8292a5;
+  font-size:12px;
+  line-height:1.7;
+  text-align:center;
+}
+
+.footer{
+  text-align:center;
+  padding:35px 10px;
+  color:#536274;
+  font-size:12px;
 }
 
 .jack{
-    margin-top:8px;
-    color:#7888a8;
-    font-size:14px;
-    letter-spacing:2px;
-}
-
-.avatar{
-    width:105px;
-    height:105px;
-    margin:35px auto 25px;
-    border:2px solid #42caff;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:50px;
-    box-shadow:0 0 35px #168cff55;
-    animation:float 3s ease-in-out infinite;
-}
-
-@keyframes float{
-    50%{
-        transform:translateY(-8px);
-        box-shadow:0 0 55px #168cff88;
-    }
-}
-
-h1{
-    font-size:28px;
-    margin-bottom:10px;
-}
-
-.subtitle{
-    color:#8c9ab5;
-    line-height:1.6;
-    font-size:15px;
-    margin-bottom:30px;
-}
-
-.input{
-    width:100%;
-    padding:16px 20px;
-    border-radius:14px;
-    border:1px solid #263753;
-    background:#0b1220;
-    color:white;
-    outline:none;
-    font-size:16px;
-    text-align:center;
-}
-
-.input:focus{
-    border-color:#42caff;
-    box-shadow:0 0 20px #168cff33;
-}
-
-.preview{
-    min-height:25px;
-    margin-top:15px;
-    color:#42caff;
-    font-size:15px;
-}
-
-.btn{
-    width:100%;
-    margin-top:20px;
-    padding:16px;
-    border:none;
-    border-radius:30px;
-    background:linear-gradient(90deg,#20bfff,#756cff);
-    color:white;
-    font-size:17px;
-    font-weight:bold;
-    cursor:pointer;
-    box-shadow:0 0 25px #267cff44;
-    transition:.3s;
-}
-
-.btn:hover{
-    transform:scale(1.03);
-}
-
-.note{
-    margin-top:25px;
-    color:#596982;
-    font-size:12px;
-}
-
-.error{
-    color:#ff7180;
-    margin-top:10px;
-    font-size:13px;
+  color:#ff9d4d;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<header class="header">
+  <div class="logo">HainX <span>⚡</span></div>
+  <div class="profile" id="profileName">Guest ⚡ HainX</div>
+</header>
 
-    <div class="logo">HainX ⚡</div>
+<main class="container">
 
-    <div class="jack">BADNAAM JACK 🃏</div>
+  <section class="welcome">
+    <h1>Welcome to the HainX World 🕵️</h1>
+    <p>Talk. Connect. Explore. And discover what is hidden.</p>
+  </section>
 
-    <div class="avatar">🤖</div>
+  <div class="section-title">🌍 Explore HainX</div>
 
-    <h1>Welcome, Mystery Hunter 🕵️</h1>
+  <div class="cards">
 
-    <p class="subtitle">
-        Enter your name and step into the world of
-        conversations, friends and mysteries.
-    </p>
-
-    <input
-        id="name"
-        class="input"
-        type="text"
-        maxlength="20"
-        placeholder="Enter your name..."
-        oninput="previewName()"
-    >
-
-    <div id="preview" class="preview"></div>
-
-    <div id="error" class="error"></div>
-
-    <button class="btn" onclick="enterHainX()">
-        🚀 ENTER HAINX
-    </button>
-
-    <div class="note">
-        🌙 Be kind • Be respectful • Have fun
+    <div class="card" onclick="openGroup('General')">
+      <div class="icon">💬</div>
+      <h3>General</h3>
+      <p>Normal conversations, introductions and random talks.</p>
+      <span class="badge">4 People Max</span>
     </div>
 
-</div>
+    <div class="card" onclick="openGroup('Late Night')">
+      <div class="icon">🌙</div>
+      <h3>Late Night</h3>
+      <p>For those conversations that happen when everyone else is sleeping.</p>
+      <span class="badge">4 People Max</span>
+    </div>
+
+    <div class="card" onclick="openGroup('Gaming')">
+      <div class="icon">🎮</div>
+      <h3>Gaming</h3>
+      <p>Games, challenges, fun and friendly competition.</p>
+      <span class="badge">4 People Max</span>
+    </div>
+
+    <div class="card" onclick="openGroup('Music')">
+      <div class="icon">🎧</div>
+      <h3>Music</h3>
+      <p>Share songs, artists and the music living inside your head.</p>
+      <span class="badge">4 People Max</span>
+    </div>
+
+    <div class="card" onclick="openGroup('Friends')">
+      <div class="icon">🤝</div>
+      <h3>Friends</h3>
+      <p>Meet people, talk freely and make new connections.</p>
+      <span class="badge">4 People Max</span>
+    </div>
+
+    <div class="card" onclick="openGroup('Moderator')">
+      <div class="icon">🛡️</div>
+      <h3>Moderator</h3>
+      <p>Community safety, reports and moderation controls.</p>
+      <span class="badge">Protected</span>
+    </div>
+
+  </div>
+
+  <section class="hunt">
+    <h2>🕵️ THE HAINX MYSTERY HUNT</h2>
+    <p>
+      Five junctions. Hidden clues. Two teams.<br>
+      Can you reach the final boss?
+    </p>
+
+    <button onclick="startHunt()">ENTER THE HUNT ⚡</button>
+  </section>
+
+  <div class="rules">
+    🛡️ Respect everyone • No harassment • No personal information sharing<br>
+    HainX is a community space for real people and real conversations.
+  </div>
+
+</main>
+
+<footer class="footer">
+  HainX ⚡ — Built with mystery by
+  <span class="jack">Badnaam Jack 🃏</span>
+</footer>
 
 <script>
 
-function previewName(){
+let name = localStorage.getItem("hainxName");
 
-    let name = document.getElementById("name").value.trim();
-
-    if(name){
-        document.getElementById("preview").innerText =
-        name + " ⚡ HainX";
-    }else{
-        document.getElementById("preview").innerText = "";
-    }
-
+if(name){
+  document.getElementById("profileName").innerText =
+    name + " ⚡ HainX";
 }
 
-function enterHainX(){
+function openGroup(group){
+  alert("🌍 " + group + " Group\n\nReal-time group chat is coming in the next stage ⚡");
+}
 
-    let name = document.getElementById("name").value.trim();
-
-    if(name === ""){
-        document.getElementById("error").innerText =
-        "Please enter your name first 😄";
-        return;
-    }
-
-    localStorage.setItem("hainxName", name);
-
-    document.querySelector(".container").innerHTML = `
-
-        <div class="logo">HainX ⚡</div>
-
-        <div class="avatar">🃏</div>
-
-        <h1>Welcome, ${name}!</h1>
-
-        <p class="subtitle">
-            Your identity is ready.
-            <br><br>
-            <strong>${name} ⚡ HainX</strong>
-        </p>
-
-        <button class="btn" onclick="alert('🏠 HainX Home coming next!')">
-            🏠 ENTER THE WORLD
-        </button>
-
-    `;
-
+function startHunt(){
+  alert(
+    "🕵️ HAINX MYSTERY HUNT\n\n" +
+    "The doors are locked...\n" +
+    "5 junctions are waiting.\n\n" +
+    "Game system is coming next. ⚡"
+  );
 }
 
 </script>
