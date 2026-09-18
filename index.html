@@ -4,305 +4,240 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>HainX | Badnaam Jack</title>
+<title>HainX ⚡</title>
 
 <style>
 *{
+    box-sizing:border-box;
     margin:0;
     padding:0;
-    box-sizing:border-box;
     font-family:Arial,sans-serif;
 }
 
 body{
-    background:#070b16;
-    color:white;
     min-height:100vh;
-    overflow-x:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#050914;
+    color:white;
+    overflow:hidden;
 }
 
 body::before{
     content:"";
     position:fixed;
-    width:450px;
-    height:450px;
-    background:#1769ff;
-    filter:blur(180px);
+    width:400px;
+    height:400px;
+    background:#168cff;
+    filter:blur(160px);
     opacity:.18;
     top:-150px;
     left:-100px;
-    z-index:-1;
 }
 
-header{
-    height:70px;
-    padding:0 25px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    border-bottom:1px solid #1d2942;
-    background:rgba(7,11,22,.85);
-    backdrop-filter:blur(12px);
-    position:sticky;
-    top:0;
-    z-index:10;
+.container{
+    width:90%;
+    max-width:480px;
+    text-align:center;
+    padding:40px 25px;
+    position:relative;
 }
 
 .logo{
-    font-size:25px;
+    font-size:58px;
     font-weight:bold;
+    letter-spacing:3px;
     color:#42caff;
+    text-shadow:0 0 30px #168cff88;
 }
 
-.logo span{
-    color:white;
-}
-
-.menu{
-    color:#8fa3c7;
+.jack{
+    margin-top:8px;
+    color:#7888a8;
     font-size:14px;
+    letter-spacing:2px;
 }
 
-.hero{
-    text-align:center;
-    padding:75px 20px 45px;
-}
-
-.robot{
-    width:85px;
-    height:85px;
-    margin:auto;
+.avatar{
+    width:105px;
+    height:105px;
+    margin:35px auto 25px;
     border:2px solid #42caff;
     border-radius:50%;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:42px;
+    font-size:50px;
     box-shadow:0 0 35px #168cff55;
     animation:float 3s ease-in-out infinite;
 }
 
 @keyframes float{
-    50%{transform:translateY(-8px);}
+    50%{
+        transform:translateY(-8px);
+        box-shadow:0 0 55px #168cff88;
+    }
 }
 
 h1{
-    font-size:52px;
-    margin-top:22px;
-    background:linear-gradient(90deg,#42caff,#8c7cff);
-    -webkit-background-clip:text;
-    color:transparent;
-}
-
-.subtitle{
-    color:#9eacc5;
-    margin:12px auto;
-    max-width:600px;
-    line-height:1.7;
-}
-
-.badge{
-    display:inline-block;
-    margin-top:15px;
-    padding:8px 15px;
-    border:1px solid #263a5d;
-    border-radius:30px;
-    color:#7ecfff;
-    background:#0d1527;
-}
-
-.groups{
-    max-width:900px;
-    margin:30px auto;
-    padding:20px;
-}
-
-.groups h2{
-    margin-bottom:18px;
-}
-
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:15px;
-}
-
-.card{
-    background:#0d1424;
-    border:1px solid #1c2b47;
-    padding:23px;
-    border-radius:18px;
-    cursor:pointer;
-    transition:.3s;
-}
-
-.card:hover{
-    transform:translateY(-5px);
-    border-color:#42caff;
-    box-shadow:0 10px 35px #0008;
-}
-
-.icon{
-    font-size:30px;
+    font-size:28px;
     margin-bottom:10px;
 }
 
-.card h3{
-    margin-bottom:6px;
+.subtitle{
+    color:#8c9ab5;
+    line-height:1.6;
+    font-size:15px;
+    margin-bottom:30px;
 }
 
-.card p{
-    color:#7586a5;
-    font-size:13px;
+.input{
+    width:100%;
+    padding:16px 20px;
+    border-radius:14px;
+    border:1px solid #263753;
+    background:#0b1220;
+    color:white;
+    outline:none;
+    font-size:16px;
+    text-align:center;
 }
 
-.join{
-    display:block;
-    width:200px;
-    margin:35px auto;
-    padding:15px;
-    border:0;
+.input:focus{
+    border-color:#42caff;
+    box-shadow:0 0 20px #168cff33;
+}
+
+.preview{
+    min-height:25px;
+    margin-top:15px;
+    color:#42caff;
+    font-size:15px;
+}
+
+.btn{
+    width:100%;
+    margin-top:20px;
+    padding:16px;
+    border:none;
     border-radius:30px;
     background:linear-gradient(90deg,#20bfff,#756cff);
     color:white;
-    font-size:16px;
+    font-size:17px;
     font-weight:bold;
     cursor:pointer;
     box-shadow:0 0 25px #267cff44;
+    transition:.3s;
 }
 
-.join:hover{
-    transform:scale(1.05);
+.btn:hover{
+    transform:scale(1.03);
 }
 
-.info{
-    text-align:center;
-    max-width:650px;
-    margin:30px auto 70px;
-    padding:25px;
-    border-radius:20px;
-    background:#0b1220;
-    border:1px solid #1c2b47;
+.note{
+    margin-top:25px;
+    color:#596982;
+    font-size:12px;
 }
 
-.info p{
-    color:#8797b3;
-    line-height:1.7;
-}
-
-footer{
-    text-align:center;
-    padding:25px;
-    color:#64748b;
-    border-top:1px solid #172238;
+.error{
+    color:#ff7180;
+    margin-top:10px;
     font-size:13px;
-}
-
-@media(max-width:600px){
-    h1{font-size:42px;}
-    .hero{padding-top:55px;}
 }
 </style>
 </head>
 
 <body>
 
-<header>
-    <div class="logo">HainX<span> ⚡</span></div>
-    <div class="menu">Badnaam Jack 🃏</div>
-</header>
+<div class="container">
 
-<section class="hero">
+    <div class="logo">HainX ⚡</div>
 
-    <div class="robot">🤖</div>
+    <div class="jack">BADNAAM JACK 🃏</div>
 
-    <h1>Welcome to HainX</h1>
+    <div class="avatar">🤖</div>
+
+    <h1>Welcome, Mystery Hunter 🕵️</h1>
 
     <p class="subtitle">
-        A place where friends meet, talk and stay connected.
-        No pressure. No judgement. Just real conversations.
+        Enter your name and step into the world of
+        conversations, friends and mysteries.
     </p>
 
-    <div class="badge">
-        🌙 Stay real • Stay kind • Stay connected
+    <input
+        id="name"
+        class="input"
+        type="text"
+        maxlength="20"
+        placeholder="Enter your name..."
+        oninput="previewName()"
+    >
+
+    <div id="preview" class="preview"></div>
+
+    <div id="error" class="error"></div>
+
+    <button class="btn" onclick="enterHainX()">
+        🚀 ENTER HAINX
+    </button>
+
+    <div class="note">
+        🌙 Be kind • Be respectful • Have fun
     </div>
 
-</section>
-
-<section class="groups">
-
-    <h2>💬 Explore Rooms</h2>
-
-    <div class="grid">
-
-        <div class="card">
-            <div class="icon">🌐</div>
-            <h3>General</h3>
-            <p>Talk about anything.</p>
-        </div>
-
-        <div class="card">
-            <div class="icon">🌙</div>
-            <h3>Late Night</h3>
-            <p>For midnight conversations.</p>
-        </div>
-
-        <div class="card">
-            <div class="icon">🎮</div>
-            <h3>Gaming</h3>
-            <p>Games, fun and friends.</p>
-        </div>
-
-        <div class="card">
-            <div class="icon">🎵</div>
-            <h3>Music</h3>
-            <p>Share songs and vibes.</p>
-        </div>
-
-        <div class="card">
-            <div class="icon">🫂</div>
-            <h3>Friends</h3>
-            <p>Meet new people.</p>
-        </div>
-
-        <div class="card">
-            <div class="icon">🛡️</div>
-            <h3>Moderator</h3>
-            <p>Community management.</p>
-        </div>
-
-    </div>
-
-</section>
-
-<button class="join" onclick="joinHainX()">
-    🚀 Enter HainX
-</button>
-
-<section class="info">
-
-    <h2>🖤 The HainX Rule</h2>
-
-    <br>
-
-    <p>
-        Respect everyone. Be yourself.
-        Keep the community friendly and safe.
-        Everyone deserves to be heard.
-    </p>
-
-</section>
-
-<footer>
-    HainX • Badnaam Jack 🃏
-    <br><br>
-    Built with ❤️ for real conversations.
-</footer>
+</div>
 
 <script>
-function joinHainX(){
-    alert("🚀 HainX is opening soon!\n\nReal-time chat is coming in the next version.");
+
+function previewName(){
+
+    let name = document.getElementById("name").value.trim();
+
+    if(name){
+        document.getElementById("preview").innerText =
+        name + " ⚡ HainX";
+    }else{
+        document.getElementById("preview").innerText = "";
+    }
+
 }
+
+function enterHainX(){
+
+    let name = document.getElementById("name").value.trim();
+
+    if(name === ""){
+        document.getElementById("error").innerText =
+        "Please enter your name first 😄";
+        return;
+    }
+
+    localStorage.setItem("hainxName", name);
+
+    document.querySelector(".container").innerHTML = `
+
+        <div class="logo">HainX ⚡</div>
+
+        <div class="avatar">🃏</div>
+
+        <h1>Welcome, ${name}!</h1>
+
+        <p class="subtitle">
+            Your identity is ready.
+            <br><br>
+            <strong>${name} ⚡ HainX</strong>
+        </p>
+
+        <button class="btn" onclick="alert('🏠 HainX Home coming next!')">
+            🏠 ENTER THE WORLD
+        </button>
+
+    `;
+
+}
+
 </script>
 
 </body>
