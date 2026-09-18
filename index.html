@@ -2,678 +2,1120 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>HainX ⚡ Mystery Hunt</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HainX ⚡ | Junction World</title>
 
 <style>
 *{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  font-family:Arial,sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+:root{
+    --bg:#02050b;
+    --panel:rgba(8,16,29,.92);
+    --line:rgba(91,215,255,.16);
+    --cyan:#51e1ff;
+    --blue:#278cff;
+    --orange:#ff9f50;
+    --muted:#8292a7;
+    --green:#45e39b;
+    --red:#ff5f6d;
 }
 
 body{
-  min-height:100vh;
-  background:
-    radial-gradient(circle at top,#102c52,#050914 45%,#020308);
-  color:white;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 50% -10%,rgba(0,130,255,.22),transparent 35%),
+        radial-gradient(circle at 10% 70%,rgba(0,210,255,.06),transparent 30%),
+        radial-gradient(circle at 90% 40%,rgba(255,130,50,.05),transparent 30%),
+        #02050b;
+    color:#fff;
+    overflow-x:hidden;
 }
 
-button{
-  border:0;
-  padding:13px 25px;
-  border-radius:25px;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-  background:linear-gradient(90deg,#00b8ff,#625cff);
-  margin:6px;
+/* ===== AMBIENT BACKGROUND ===== */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background-image:
+        radial-gradient(circle,rgba(255,255,255,.18) 1px,transparent 1px);
+    background-size:90px 90px;
+    opacity:.08;
 }
 
-button:hover{
-  transform:scale(1.04);
+/* ===== SIDE BRANDING ===== */
+
+.side-brand{
+    position:fixed;
+    top:50%;
+    transform:translateY(-50%);
+    writing-mode:vertical-rl;
+    letter-spacing:5px;
+    font-size:11px;
+    font-weight:bold;
+    color:rgba(81,225,255,.38);
+    z-index:20;
 }
 
-input{
-  width:90%;
-  max-width:400px;
-  padding:15px;
-  border-radius:12px;
-  border:1px solid #285477;
-  background:#07111f;
-  color:white;
-  outline:none;
-  text-align:center;
-  font-size:16px;
+.side-left{
+    left:12px;
 }
 
-.screen{
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:25px;
+.side-right{
+    right:12px;
+    transform:translateY(-50%) rotate(180deg);
 }
 
-.box{
-  width:100%;
-  max-width:650px;
-  padding:35px 25px;
-  border-radius:25px;
-  text-align:center;
-  background:rgba(5,12,25,.88);
-  border:1px solid rgba(0,200,255,.2);
-  box-shadow:0 0 40px rgba(0,170,255,.08);
+.side-brand span{
+    color:rgba(255,159,80,.5);
+}
+
+/* ===== HEADER ===== */
+
+header{
+    height:75px;
+    padding:0 6%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid rgba(255,255,255,.07);
+    background:rgba(2,6,13,.82);
+    backdrop-filter:blur(15px);
+    position:sticky;
+    top:0;
+    z-index:10;
 }
 
 .logo{
-  font-size:32px;
-  font-weight:bold;
-  color:#52ddff;
-  text-shadow:0 0 18px #00bfff;
-  margin-bottom:20px;
+    font-size:28px;
+    font-weight:900;
+    letter-spacing:1px;
+    color:var(--cyan);
+    text-shadow:0 0 18px rgba(0,210,255,.65);
 }
 
-.logo span{
-  color:#ff9c4d;
+.logo b{
+    color:var(--orange);
 }
 
-h1{
-  margin-bottom:12px;
+.user-pill{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding:9px 15px;
+    border:1px solid var(--line);
+    border-radius:30px;
+    background:rgba(255,255,255,.035);
+    font-size:13px;
 }
 
-p{
-  color:#9badc0;
-  line-height:1.6;
+.online-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 10px var(--green);
 }
 
-.hidden{
-  display:none;
+/* ===== MAIN ===== */
+
+main{
+    width:90%;
+    max-width:1200px;
+    margin:0 auto;
+    padding:35px 0 70px;
 }
 
-.header{
-  padding:20px 7%;
-  display:flex;
-  justify-content:space-between;
-  border-bottom:1px solid rgba(255,255,255,.08);
+.hero{
+    text-align:center;
+    margin-bottom:35px;
 }
 
-.profile{
-  color:#8ddfff;
+.hero .mini{
+    color:var(--orange);
+    font-size:11px;
+    letter-spacing:4px;
+    margin-bottom:12px;
 }
 
-.home{
-  width:90%;
-  max-width:900px;
-  margin:35px auto;
+.hero h1{
+    font-size:38px;
+    margin-bottom:10px;
 }
 
-.cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
-  gap:15px;
-  margin-top:20px;
+.hero h1 span{
+    color:var(--cyan);
 }
 
-.card{
-  padding:22px;
-  border-radius:18px;
-  background:rgba(10,25,45,.75);
-  border:1px solid rgba(0,190,255,.15);
+.hero p{
+    color:var(--muted);
+    max-width:650px;
+    margin:auto;
+    line-height:1.6;
 }
 
-.card .icon{
-  font-size:30px;
-  margin-bottom:10px;
+/* ===== STATS ===== */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:28px;
 }
 
-.huntCard{
-  margin-top:25px;
-  padding:30px;
-  border-radius:22px;
-  text-align:center;
-  border:1px solid rgba(255,150,70,.3);
-  background:linear-gradient(135deg,#111b31,#080b14);
+.stat{
+    background:rgba(255,255,255,.025);
+    border:1px solid rgba(255,255,255,.07);
+    border-radius:16px;
+    padding:16px;
+    text-align:center;
+}
+
+.stat strong{
+    display:block;
+    font-size:22px;
+    color:var(--cyan);
+}
+
+.stat small{
+    color:var(--muted);
+}
+
+/* ===== JUNCTIONS ===== */
+
+.section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:16px;
+}
+
+.section-head h2{
+    font-size:20px;
+}
+
+.section-head span{
+    font-size:12px;
+    color:var(--muted);
+}
+
+.junction-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:16px;
 }
 
 .junction{
-  color:#ffae67;
-  letter-spacing:2px;
-  font-size:13px;
-  margin-bottom:12px;
+    position:relative;
+    padding:22px;
+    min-height:210px;
+    border-radius:22px;
+    overflow:hidden;
+    cursor:pointer;
+    background:
+        linear-gradient(145deg,rgba(15,34,58,.88),rgba(3,8,16,.96));
+    border:1px solid var(--line);
+    transition:.3s;
 }
 
-.question{
-  font-size:23px;
-  line-height:1.5;
-  margin:20px 0;
+.junction:hover{
+    transform:translateY(-5px);
+    border-color:rgba(81,225,255,.55);
+    box-shadow:0 15px 40px rgba(0,160,255,.12);
 }
 
-.progress{
-  margin:20px auto;
-  height:7px;
-  max-width:500px;
-  background:#15283d;
-  border-radius:10px;
-  overflow:hidden;
+.junction::after{
+    content:"";
+    position:absolute;
+    width:130px;
+    height:130px;
+    right:-45px;
+    bottom:-50px;
+    border-radius:50%;
+    background:rgba(0,190,255,.08);
+    filter:blur(10px);
 }
 
-.progress div{
-  height:100%;
-  background:linear-gradient(90deg,#00cfff,#7167ff);
-  transition:.4s;
+.number{
+    color:var(--orange);
+    font-size:11px;
+    letter-spacing:3px;
+    margin-bottom:12px;
+}
+
+.junction-icon{
+    font-size:35px;
+    margin-bottom:10px;
+}
+
+.junction h3{
+    font-size:19px;
+    margin-bottom:8px;
+}
+
+.junction p{
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.5;
+    margin-bottom:15px;
+}
+
+.room-status{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:12px;
+}
+
+.members{
+    color:#9edff0;
+}
+
+.status{
+    color:var(--green);
+}
+
+.full{
+    color:var(--orange);
+}
+
+/* ===== MODAL ===== */
+
+.modal{
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(0,0,0,.78);
+    backdrop-filter:blur(12px);
+    z-index:50;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.room{
+    width:100%;
+    max-width:850px;
+    height:min(700px,90vh);
+    display:flex;
+    flex-direction:column;
+    background:#050b15;
+    border:1px solid rgba(81,225,255,.2);
+    border-radius:25px;
+    overflow:hidden;
+    box-shadow:0 0 80px rgba(0,140,255,.12);
+}
+
+/* ===== ROOM HEADER ===== */
+
+.room-head{
+    padding:18px 22px;
+    border-bottom:1px solid rgba(255,255,255,.07);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.room-title{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.room-title .icon{
+    font-size:27px;
+}
+
+.room-title h2{
+    font-size:18px;
+}
+
+.room-title p{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:4px;
+}
+
+.close{
+    background:rgba(255,255,255,.06);
+    padding:9px 13px;
+    border-radius:10px;
+    margin:0;
+}
+
+/* ===== ROOM BODY ===== */
+
+.room-body{
+    flex:1;
+    display:grid;
+    grid-template-columns:220px 1fr;
+    min-height:0;
+}
+
+/* ===== MEMBERS ===== */
+
+.members-panel{
+    border-right:1px solid rgba(255,255,255,.07);
+    padding:18px;
+    overflow:auto;
+}
+
+.panel-title{
+    color:var(--muted);
+    font-size:11px;
+    letter-spacing:2px;
+    margin-bottom:12px;
+}
+
+.member{
+    padding:11px;
+    border-radius:12px;
+    background:rgba(255,255,255,.035);
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.avatar{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#124b75,#071624);
+    border:1px solid rgba(81,225,255,.2);
+    font-size:12px;
+}
+
+.member-name{
+    flex:1;
+    font-size:12px;
+}
+
+.member-name small{
+    display:block;
+    color:var(--green);
+    font-size:9px;
+    margin-top:3px;
+}
+
+.mod{
+    color:var(--orange);
+    font-size:10px;
+}
+
+/* ===== CHAT ===== */
+
+.chat{
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+}
+
+.chat-messages{
+    flex:1;
+    overflow-y:auto;
+    padding:22px;
+}
+
+.system-message{
+    text-align:center;
+    color:#65778c;
+    font-size:11px;
+    margin:12px 0 20px;
 }
 
 .message{
-  min-height:25px;
-  margin:15px;
-  font-weight:bold;
+    margin-bottom:17px;
 }
 
-.success{
-  color:#63f5bd;
+.message .sender{
+    font-size:11px;
+    color:var(--cyan);
+    margin-bottom:5px;
 }
 
-.error{
-  color:#ff7272;
+.message .sender span{
+    color:var(--orange);
 }
 
-.hint{
-  color:#ffd36b;
-  margin:15px;
+.message .bubble{
+    display:inline-block;
+    max-width:80%;
+    padding:11px 14px;
+    border-radius:5px 15px 15px 15px;
+    background:#0b1728;
+    border:1px solid rgba(255,255,255,.06);
+    color:#d8e2ee;
+    font-size:13px;
+    line-height:1.5;
 }
 
-.ring{
-  font-size:100px;
-  animation:ring 1.5s infinite alternate;
-  margin:20px;
+.message.me{
+    text-align:right;
 }
 
-@keyframes ring{
-  from{
-    transform:scale(1) rotate(-5deg);
-    filter:drop-shadow(0 0 5px #00d9ff);
-  }
-  to{
-    transform:scale(1.15) rotate(5deg);
-    filter:drop-shadow(0 0 30px #00d9ff);
-  }
+.message.me .bubble{
+    border-radius:15px 5px 15px 15px;
+    background:#0b2841;
 }
 
-.final{
-  animation:appear 1s ease;
+.chat-input{
+    padding:15px;
+    border-top:1px solid rgba(255,255,255,.07);
+    display:flex;
+    gap:9px;
 }
 
-@keyframes appear{
-  from{
-    opacity:0;
-    transform:scale(.7);
-  }
-  to{
-    opacity:1;
-    transform:scale(1);
-  }
+.chat-input input{
+    flex:1;
+    min-width:0;
+    padding:13px 15px;
+    border-radius:13px;
+    border:1px solid rgba(81,225,255,.15);
+    background:#07111e;
+    color:white;
+    outline:none;
 }
 
-.small{
-  font-size:12px;
-  color:#60748a;
+.send{
+    margin:0;
+    border-radius:13px;
+    padding:0 20px;
+}
+
+/* ===== WAITING ===== */
+
+.waiting-box{
+    margin-top:30px;
+    padding:25px;
+    border-radius:20px;
+    background:linear-gradient(135deg,rgba(28,20,13,.7),rgba(10,12,18,.8));
+    border:1px solid rgba(255,159,80,.18);
+}
+
+.waiting-box h3{
+    color:var(--orange);
+    margin-bottom:7px;
+}
+
+.waiting-box p{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.waiting-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:15px;
+}
+
+.waiting-user{
+    padding:8px 12px;
+    border-radius:20px;
+    background:rgba(255,255,255,.04);
+    color:#aab7c7;
+    font-size:11px;
+}
+
+/* ===== FOOTER ===== */
+
+footer{
+    text-align:center;
+    border-top:1px solid rgba(255,255,255,.06);
+    padding:28px;
+    color:#506176;
+    font-size:11px;
+    letter-spacing:1px;
+}
+
+footer strong{
+    color:var(--orange);
+}
+
+/* ===== TOAST ===== */
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:25px;
+    transform:translateX(-50%) translateY(100px);
+    padding:13px 20px;
+    border-radius:14px;
+    background:#0b1b2d;
+    border:1px solid rgba(81,225,255,.25);
+    color:#d8f7ff;
+    font-size:12px;
+    transition:.3s;
+    z-index:100;
+}
+
+.toast.show{
+    transform:translateX(-50%) translateY(0);
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media(max-width:650px){
+
+    header{
+        padding:0 5%;
+    }
+
+    .hero h1{
+        font-size:29px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .side-brand{
+        display:none;
+    }
+
+    .room{
+        height:94vh;
+        border-radius:18px;
+    }
+
+    .room-body{
+        grid-template-columns:1fr;
+    }
+
+    .members-panel{
+        display:none;
+    }
+
+    .chat-input{
+        padding:10px;
+    }
+
+    .send{
+        padding:0 14px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<!-- NAME SCREEN -->
-<section id="nameScreen" class="screen">
-  <div class="box">
+<!-- SIDE BRANDING -->
+<div class="side-brand side-left">
+    HAINX ⚡ <span>BADNAAM JACK</span>
+</div>
 
-    <div class="logo">HainX <span>⚡</span></div>
-
-    <h1>Welcome, Mystery Hunter 🕵️</h1>
-
-    <p>Your identity begins with a name.</p>
-
-    <br>
-
-    <input id="nameInput" placeholder="Enter your name">
-
-    <br><br>
-
-    <button onclick="enterHainX()">ENTER HAINX ⚡</button>
-
-    <p class="small">Your display name will appear as Name ⚡ HainX</p>
-
-  </div>
-</section>
+<div class="side-brand side-right">
+    HAINX ⚡ <span>BADNAAM JACK</span>
+</div>
 
 
-<!-- HOME -->
-<section id="homeScreen" class="hidden">
+<!-- HEADER -->
+<header>
 
-<header class="header">
-  <div class="logo">HainX <span>⚡</span></div>
-  <div class="profile" id="profile"></div>
+    <div class="logo">
+        HainX <b>⚡</b>
+    </div>
+
+    <div class="user-pill">
+        <div class="online-dot"></div>
+        <span id="userName">Guest ⚡ HainX</span>
+    </div>
+
 </header>
 
-<div class="home">
 
-  <h1>Welcome to the HainX World 🕵️</h1>
+<main>
 
-  <p>Talk. Connect. Explore. Discover what is hidden.</p>
+    <!-- HERO -->
+    <section class="hero">
 
-  <div class="cards">
+        <div class="mini">
+            THE WORLD BEHIND THE SCREEN
+        </div>
 
-    <div class="card">
-      <div class="icon">💬</div>
-      <h3>General</h3>
-      <p>Normal conversations and random talks.</p>
+        <h1>
+            Welcome to <span>HainX</span>
+        </h1>
+
+        <p>
+            Choose a Junction, meet real people,
+            and enter a room where every conversation
+            can become a story.
+        </p>
+
+    </section>
+
+
+    <!-- STATS -->
+    <section class="stats">
+
+        <div class="stat">
+            <strong>5</strong>
+            <small>Junctions</small>
+        </div>
+
+        <div class="stat">
+            <strong>4</strong>
+            <small>People / Junction</small>
+        </div>
+
+        <div class="stat">
+            <strong id="totalWaiting">7</strong>
+            <small>Currently Waiting</small>
+        </div>
+
+    </section>
+
+
+    <!-- JUNCTIONS -->
+    <div class="section-head">
+        <h2>🌑 Enter a Junction</h2>
+        <span>Maximum 4 active members</span>
     </div>
 
-    <div class="card">
-      <div class="icon">🌙</div>
-      <h3>Late Night</h3>
-      <p>For conversations after midnight.</p>
+
+    <section class="junction-grid">
+
+        <div class="junction" onclick="joinJunction(1)">
+
+            <div class="number">JUNCTION 01</div>
+            <div class="junction-icon">🌲</div>
+
+            <h3>Shadow Forest</h3>
+
+            <p>
+                A quiet forest where conversations
+                disappear into the darkness.
+            </p>
+
+            <div class="room-status">
+                <span class="members" id="count1">
+                    👥 2 / 4
+                </span>
+
+                <span class="status">
+                    ● OPEN
+                </span>
+            </div>
+
+        </div>
+
+
+        <div class="junction" onclick="joinJunction(2)">
+
+            <div class="number">JUNCTION 02</div>
+            <div class="junction-icon">🌊</div>
+
+            <h3>Midnight Lake</h3>
+
+            <p>
+                Water, moonlight and conversations
+                that only happen after midnight.
+            </p>
+
+            <div class="room-status">
+                <span class="members" id="count2">
+                    👥 4 / 4
+                </span>
+
+                <span class="full">
+                    ● FULL
+                </span>
+            </div>
+
+        </div>
+
+
+        <div class="junction" onclick="joinJunction(3)">
+
+            <div class="number">JUNCTION 03</div>
+            <div class="junction-icon">🏚️</div>
+
+            <h3>Forgotten House</h3>
+
+            <p>
+                Nobody knows who built it.
+                Somebody is always waiting inside.
+            </p>
+
+            <div class="room-status">
+                <span class="members" id="count3">
+                    👥 1 / 4
+                </span>
+
+                <span class="status">
+                    ● OPEN
+                </span>
+            </div>
+
+        </div>
+
+
+        <div class="junction" onclick="joinJunction(4)">
+
+            <div class="number">JUNCTION 04</div>
+            <div class="junction-icon">🪨</div>
+
+            <h3>Silent Valley</h3>
+
+            <p>
+                No noise. No rush.
+                Just four people and a strange silence.
+            </p>
+
+            <div class="room-status">
+                <span class="members" id="count4">
+                    👥 3 / 4
+                </span>
+
+                <span class="status">
+                    ● OPEN
+                </span>
+            </div>
+
+        </div>
+
+
+        <div class="junction" onclick="joinJunction(5)">
+
+            <div class="number">JUNCTION 05</div>
+            <div class="junction-icon">🌙</div>
+
+            <h3>Moon Chamber</h3>
+
+            <p>
+                The deepest Junction.
+                Only four seats exist here.
+            </p>
+
+            <div class="room-status">
+                <span class="members" id="count5">
+                    👥 4 / 4
+                </span>
+
+                <span class="full">
+                    ● FULL
+                </span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- WAITING -->
+    <section class="waiting-box">
+
+        <h3>⏳ Waiting Room</h3>
+
+        <p>
+            Junction full hone par new users yahan wait karenge.
+            Jaise hi koi seat free hogi, next person ko entry milegi.
+        </p>
+
+        <div class="waiting-list">
+
+            <div class="waiting-user">Alex ⚡ HainX</div>
+            <div class="waiting-user">Maya ⚡ HainX</div>
+            <div class="waiting-user">Shadow ⚡ HainX</div>
+            <div class="waiting-user">Riya ⚡ HainX</div>
+            <div class="waiting-user">NightOwl ⚡ HainX</div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    HainX ⚡ &nbsp;|&nbsp;
+    <strong>BADNAAM JACK 🃏</strong>
+    &nbsp;|&nbsp; REAL PEOPLE • REAL CONVERSATIONS
+
+</footer>
+
+
+<!-- ROOM MODAL -->
+
+<div class="modal" id="roomModal">
+
+    <div class="room">
+
+        <div class="room-head">
+
+            <div class="room-title">
+
+                <div class="icon" id="roomIcon">🌲</div>
+
+                <div>
+                    <h2 id="roomName">Shadow Forest</h2>
+                    <p id="roomSub">Junction 01 • 2 / 4 Members</p>
+                </div>
+
+            </div>
+
+            <button class="close" onclick="leaveRoom()">✕</button>
+
+        </div>
+
+
+        <div class="room-body">
+
+            <!-- MEMBERS -->
+
+            <aside class="members-panel">
+
+                <div class="panel-title">
+                    ACTIVE MEMBERS
+                </div>
+
+                <div id="membersList"></div>
+
+                <br>
+
+                <div class="panel-title">
+                    MODERATOR
+                </div>
+
+                <div class="member">
+
+                    <div class="avatar">🛡️</div>
+
+                    <div class="member-name">
+                        Jack ⚡ HainX
+                        <small class="mod">MODERATOR</small>
+                    </div>
+
+                </div>
+
+            </aside>
+
+
+            <!-- CHAT -->
+
+            <section class="chat">
+
+                <div class="chat-messages" id="chatMessages">
+
+                    <div class="system-message">
+                        🔒 You entered the Junction.
+                    </div>
+
+                    <div class="system-message">
+                        Respect everyone. Enjoy the conversation.
+                    </div>
+
+                    <div class="message">
+
+                        <div class="sender">
+                            Maya <span>⚡ HainX</span>
+                        </div>
+
+                        <div class="bubble">
+                            Hey 👋 anyone here?
+                        </div>
+
+                    </div>
+
+                    <div class="message">
+
+                        <div class="sender">
+                            Alex <span>⚡ HainX</span>
+                        </div>
+
+                        <div class="bubble">
+                            Yeah 😄 just joined.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="chat-input">
+
+                    <input
+                        id="messageInput"
+                        placeholder="Write something..."
+                        onkeydown="if(event.key==='Enter') sendMessage()"
+                    >
+
+                    <button class="send" onclick="sendMessage()">
+                        SEND
+                    </button>
+
+                </div>
+
+            </section>
+
+        </div>
+
     </div>
-
-    <div class="card">
-      <div class="icon">🎮</div>
-      <h3>Gaming</h3>
-      <p>Games, challenges and fun.</p>
-    </div>
-
-    <div class="card">
-      <div class="icon">🎧</div>
-      <h3>Music</h3>
-      <p>Share songs and discover music.</p>
-    </div>
-
-  </div>
-
-  <div class="huntCard">
-
-    <h2>🕵️ HAINX MYSTERY HUNT</h2>
-
-    <p>
-      5 Junctions.<br>
-      Hidden clues.<br>
-      Two teams.<br>
-      One HainX Ring.
-    </p>
-
-    <br>
-
-    <button onclick="openTeams()">ENTER THE HUNT ⚡</button>
-
-  </div>
 
 </div>
 
-</section>
 
+<!-- TOAST -->
 
-<!-- TEAM SCREEN -->
-<section id="teamScreen" class="screen hidden">
-
-<div class="box">
-
-  <div class="logo">HainX <span>⚡</span></div>
-
-  <h1>Choose Your Team</h1>
-
-  <p>Two teams. Two hunters each.</p>
-
-  <br>
-
-  <button onclick="startGame('RED')">
-    🔴 TEAM RED
-  </button>
-
-  <button onclick="startGame('BLUE')">
-    🔵 TEAM BLUE
-  </button>
-
-  <br><br>
-
-  <button onclick="goHome()">← BACK</button>
-
-</div>
-
-</section>
-
-
-<!-- GAME -->
-<section id="gameScreen" class="screen hidden">
-
-<div class="box">
-
-  <div class="logo">HainX <span>⚡</span></div>
-
-  <div class="junction" id="junction"></div>
-
-  <h1 id="teamTitle"></h1>
-
-  <div class="progress">
-    <div id="progressBar"></div>
-  </div>
-
-  <div class="question" id="question"></div>
-
-  <input id="answerInput" placeholder="Enter your answer">
-
-  <br><br>
-
-  <button onclick="checkAnswer()">UNLOCK 🔓</button>
-
-  <button onclick="showHint()">💡 HINT</button>
-
-  <button onclick="giveUp()">🏳️ TYAG</button>
-
-  <div id="hint" class="hint"></div>
-
-  <div id="message" class="message"></div>
-
-</div>
-
-</section>
-
-
-<!-- FINAL -->
-<section id="finalScreen" class="screen hidden">
-
-<div class="box final">
-
-  <div class="logo">HainX <span>⚡</span></div>
-
-  <div class="ring">💍</div>
-
-  <h1>THE HAINX RING</h1>
-
-  <br>
-
-  <h2 id="winner"></h2>
-
-  <br>
-
-  <p>
-    You crossed every junction.<br>
-    You solved the mystery.<br>
-    The Ring belongs to the hunter.
-  </p>
-
-  <br>
-
-  <p>🏆 MYSTERY COMPLETED 🏆</p>
-
-  <br>
-
-  <button onclick="goHome()">RETURN TO HAINX</button>
-
-</div>
-
-</section>
+<div class="toast" id="toast"></div>
 
 
 <script>
 
-const questions = [
-
-  {
-    junction:"JUNCTION 01 — THE SHADOW GATE",
-    question:"I follow you in the light, but disappear in darkness. What am I?",
-    answer:"shadow",
-    hint:"You can see it behind you when there is light."
-  },
-
-  {
-    junction:"JUNCTION 02 — THE SILENT ROAD",
-    question:"The more you take from me, the more you leave behind. What am I?",
-    answer:"footsteps",
-    hint:"Think about walking."
-  },
-
-  {
-    junction:"JUNCTION 03 — THE EMPTY VOICE",
-    question:"I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?",
-    answer:"echo",
-    hint:"Your voice can come back to you."
-  },
-
-  {
-    junction:"JUNCTION 04 — THE STRANGE KEYS",
-    question:"I have many keys but cannot open a single door. What am I?",
-    answer:"piano",
-    hint:"You can play music with me."
-  },
-
-  {
-    junction:"FINAL BOSS — THE LAST CLOCK",
-    question:"I am always coming, but I never arrive. What am I?",
-    answer:"tomorrow",
-    hint:"It becomes today when it finally arrives."
-  }
-
-];
-
-let playerName = "";
-let team = "";
-let current = 0;
-let hintsUsed = 0;
-
-function hideAll(){
-
-  document.getElementById("nameScreen").classList.add("hidden");
-  document.getElementById("homeScreen").classList.add("hidden");
-  document.getElementById("teamScreen").classList.add("hidden");
-  document.getElementById("gameScreen").classList.add("hidden");
-  document.getElementById("finalScreen").classList.add("hidden");
-
-}
-
-function enterHainX(){
-
-  const input =
-    document.getElementById("nameInput").value.trim();
-
-  if(!input){
-    alert("Pehle apna naam enter karo 😄");
-    return;
-  }
-
-  playerName = input;
-
-  localStorage.setItem("hainxName",playerName);
-
-  showHome();
-}
-
-function showHome(){
-
-  hideAll();
-
-  document
-    .getElementById("homeScreen")
-    .classList.remove("hidden");
-
-  document.getElementById("profile").innerText =
-    playerName + " ⚡ HainX";
-}
-
-function goHome(){
-  showHome();
-}
-
-function openTeams(){
-
-  hideAll();
-
-  document
-    .getElementById("teamScreen")
-    .classList.remove("hidden");
-}
-
-function startGame(selectedTeam){
-
-  team = selectedTeam;
-  current = 0;
-  hintsUsed = 0;
-
-  hideAll();
-
-  document
-    .getElementById("gameScreen")
-    .classList.remove("hidden");
-
-  loadQuestion();
-}
-
-function loadQuestion(){
-
-  const q = questions[current];
-
-  document.getElementById("junction").innerText =
-    q.junction;
-
-  document.getElementById("teamTitle").innerText =
-    team === "RED"
-      ? "🔴 TEAM RED"
-      : "🔵 TEAM BLUE";
-
-  document.getElementById("question").innerText =
-    q.question;
-
-  document.getElementById("answerInput").value = "";
-
-  document.getElementById("hint").innerText = "";
-
-  document.getElementById("message").innerText = "";
-
-  document.getElementById("progressBar").style.width =
-    ((current + 1) / questions.length * 100) + "%";
-}
-
-function checkAnswer(){
-
-  const answer =
-    document
-      .getElementById("answerInput")
-      .value
-      .trim()
-      .toLowerCase();
-
-  const correct =
-    questions[current].answer.toLowerCase();
-
-  const message =
-    document.getElementById("message");
-
-  if(answer === correct){
-
-    message.className = "message success";
-
-    message.innerText =
-      "🔓 CORRECT! Junction unlocked!";
-
-    setTimeout(()=>{
-
-      current++;
-
-      if(current >= questions.length){
-
-        showFinal();
-
-      }else{
-
-        loadQuestion();
-
-      }
-
-    },1000);
-
-  }else{
-
-    message.className = "message error";
-
-    message.innerText =
-      "❌ Wrong answer... Mystery remains locked.";
-
-  }
-}
-
-function showHint(){
-
-  if(hintsUsed >= 2){
-
-    document.getElementById("hint").innerText =
-      "⚠️ No hints remaining.";
-
-    return;
-  }
-
-  hintsUsed++;
-
-  document.getElementById("hint").innerText =
-    "💡 " + questions[current].hint +
-    "  (" + (2-hintsUsed) + " hints left)";
-
-}
-
-function giveUp(){
-
-  const confirmGiveUp =
-    confirm(
-      "🏳️ TYAG?\n\n" +
-      "If you give up, the mystery will restart from Junction 1."
-    );
-
-  if(confirmGiveUp){
-
-    alert(
-      "The mystery wins this time... 😈\n\n" +
-      "The answer was: " +
-      questions[current].answer.toUpperCase()
-    );
-
-    current = 0;
-    hintsUsed = 0;
-
-    loadQuestion();
-  }
-
-}
-
-function showFinal(){
-
-  hideAll();
-
-  document
-    .getElementById("finalScreen")
-    .classList.remove("hidden");
-
-  document.getElementById("winner").innerText =
-    "🏆 " + team + " TEAM — MYSTERY CHAMPION 🏆";
-
-}
-
-window.onload = function(){
-
-  const saved =
-    localStorage.getItem("hainxName");
-
-  if(saved){
-
-    playerName = saved;
-
-    document
-      .getElementById("nameInput")
-      .value = saved;
-
-  }
+/* =========================
+   USER
+========================= */
+
+let userName =
+    localStorage.getItem("hainxName") || "Guest";
+
+document.getElementById("userName").innerText =
+    userName + " ⚡ HainX";
+
+
+/* =========================
+   JUNCTION DATA
+========================= */
+
+const junctions = {
+
+    1:{
+        name:"Shadow Forest",
+        icon:"🌲",
+        number:"01",
+        members:[
+            "Maya ⚡ HainX",
+            "Alex ⚡ HainX"
+        ]
+    },
+
+    2:{
+        name:"Midnight Lake",
+        icon:"🌊",
+        number:"02",
+        members:[
+            "Raven ⚡ HainX",
+            "Leo ⚡ HainX",
+            "Nora ⚡ HainX",
+            "Ghost ⚡ HainX"
+        ]
+    },
+
+    3:{
+        name:"Forgotten House",
+        icon:"🏚️",
+        number:"03",
+        members:[
+            "Sam ⚡ HainX"
+        ]
+    },
+
+    4:{
+        name:"Silent Valley",
+        icon:"🪨",
+        number:"04",
+        members:[
+            "Ayaan ⚡ HainX",
+            "Luna ⚡ HainX",
+            "DarkFox ⚡ HainX"
+        ]
+    },
+
+    5:{
+        name:"Moon Chamber",
+        icon:"🌙",
+        number:"05",
+        members:[
+            "Nova ⚡ HainX",
+            "Shadow ⚡ HainX",
+            "Kai ⚡ HainX",
+            "Mystic ⚡ HainX"
+        ]
+    }
 
 };
 
-</script>
 
-</body>
-</html>
+let currentJunction = null;
+
+
+/* =========================
+   JOIN JUNCTION
+========================= */
+
+function joinJunction(id){
+
+    const room = junctions[id];
+
+    currentJunction = id;
+
+    /*
+       Maximum 4 active members
+    */
+
+    if(room.members.length >= 4){
+
+        showToast(
+            "⏳ Junction full! You have been placed in the Waiting Room."
+        );
+
+        return;
+
+    }
+
+
+    if(room.members.includes(userName + " ⚡ HainX")){
+
+        openRoom(id);
+
+        return;
+
+    }
+
+
+    room.members.push(
+        userName + " ⚡ HainX"
+    );
+
+    updateCounts();
+
+    openRoom(id);
+
+    showToast(
+        "⚡ Welcome to " + room.name
+    );
+
+}
+
+
+/* =========================
+   OPEN ROOM
+========================= */
+
+function openRoom(id){
+
+    const room = junctions[id];
+
+    document.getElementById("roomIcon").innerText =
+        room.icon;
+
+    document.getElementById("roomName").innerText =
+        room.name;
+
+    doc
