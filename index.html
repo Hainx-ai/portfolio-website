@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HainX ⚡</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>HainX ⚡ Mystery Hunt</title>
 
 <style>
 *{
@@ -16,141 +16,8 @@
 body{
   min-height:100vh;
   background:
-    radial-gradient(circle at top,#102c52 0%,#050914 45%,#020308 100%);
+    radial-gradient(circle at top,#102c52,#050914 45%,#020308);
   color:white;
-  overflow-x:hidden;
-}
-
-body:before{
-  content:"";
-  position:fixed;
-  width:500px;
-  height:500px;
-  background:#008cff;
-  opacity:.07;
-  filter:blur(100px);
-  top:-200px;
-  right:-150px;
-  border-radius:50%;
-}
-
-.header{
-  padding:22px 7%;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-
-.logo{
-  font-size:27px;
-  font-weight:bold;
-  color:#4ddcff;
-  text-shadow:0 0 15px #00bfff;
-}
-
-.logo span{
-  color:#ff9d4d;
-}
-
-.profile{
-  border:1px solid rgba(77,220,255,.3);
-  padding:8px 14px;
-  border-radius:20px;
-  background:rgba(255,255,255,.04);
-  font-size:13px;
-}
-
-.container{
-  width:90%;
-  max-width:1000px;
-  margin:35px auto;
-}
-
-.welcome{
-  text-align:center;
-  margin-bottom:35px;
-}
-
-.welcome h1{
-  font-size:34px;
-  margin-bottom:10px;
-}
-
-.welcome p{
-  color:#91a4b9;
-}
-
-.section-title{
-  margin:25px 0 15px;
-  font-size:20px;
-}
-
-.cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:15px;
-}
-
-.card{
-  padding:22px;
-  border-radius:18px;
-  background:linear-gradient(145deg,rgba(20,45,75,.7),rgba(5,10,20,.85));
-  border:1px solid rgba(77,220,255,.15);
-  transition:.25s;
-  cursor:pointer;
-}
-
-.card:hover{
-  transform:translateY(-4px);
-  border-color:#32d9ff;
-  box-shadow:0 0 25px rgba(0,190,255,.15);
-}
-
-.icon{
-  font-size:32px;
-  margin-bottom:12px;
-}
-
-.card h3{
-  margin-bottom:7px;
-}
-
-.card p{
-  color:#899caf;
-  font-size:13px;
-  line-height:1.5;
-}
-
-.badge{
-  display:inline-block;
-  margin-top:12px;
-  padding:5px 9px;
-  border-radius:10px;
-  font-size:11px;
-  background:rgba(0,180,255,.1);
-  color:#53dcff;
-}
-
-.hunt{
-  margin-top:30px;
-  padding:30px;
-  border-radius:22px;
-  text-align:center;
-  background:
-    linear-gradient(135deg,rgba(18,28,50,.9),rgba(5,7,15,.95));
-  border:1px solid rgba(255,157,77,.3);
-  box-shadow:0 0 35px rgba(255,130,50,.05);
-}
-
-.hunt h2{
-  color:#ffb36b;
-  margin-bottom:10px;
-}
-
-.hunt p{
-  color:#9baabd;
-  margin-bottom:20px;
 }
 
 button{
@@ -160,144 +27,651 @@ button{
   color:white;
   font-weight:bold;
   cursor:pointer;
-  background:linear-gradient(90deg,#00b8ff,#6c63ff);
-  box-shadow:0 0 20px rgba(0,180,255,.2);
+  background:linear-gradient(90deg,#00b8ff,#625cff);
+  margin:6px;
 }
 
 button:hover{
-  transform:scale(1.03);
+  transform:scale(1.04);
 }
 
-.rules{
+input{
+  width:90%;
+  max-width:400px;
+  padding:15px;
+  border-radius:12px;
+  border:1px solid #285477;
+  background:#07111f;
+  color:white;
+  outline:none;
+  text-align:center;
+  font-size:16px;
+}
+
+.screen{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:25px;
+}
+
+.box{
+  width:100%;
+  max-width:650px;
+  padding:35px 25px;
+  border-radius:25px;
+  text-align:center;
+  background:rgba(5,12,25,.88);
+  border:1px solid rgba(0,200,255,.2);
+  box-shadow:0 0 40px rgba(0,170,255,.08);
+}
+
+.logo{
+  font-size:32px;
+  font-weight:bold;
+  color:#52ddff;
+  text-shadow:0 0 18px #00bfff;
+  margin-bottom:20px;
+}
+
+.logo span{
+  color:#ff9c4d;
+}
+
+h1{
+  margin-bottom:12px;
+}
+
+p{
+  color:#9badc0;
+  line-height:1.6;
+}
+
+.hidden{
+  display:none;
+}
+
+.header{
+  padding:20px 7%;
+  display:flex;
+  justify-content:space-between;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.profile{
+  color:#8ddfff;
+}
+
+.home{
+  width:90%;
+  max-width:900px;
+  margin:35px auto;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:15px;
+  margin-top:20px;
+}
+
+.card{
+  padding:22px;
+  border-radius:18px;
+  background:rgba(10,25,45,.75);
+  border:1px solid rgba(0,190,255,.15);
+}
+
+.card .icon{
+  font-size:30px;
+  margin-bottom:10px;
+}
+
+.huntCard{
   margin-top:25px;
-  padding:20px;
-  border-radius:16px;
-  background:rgba(255,255,255,.03);
-  border:1px solid rgba(255,255,255,.06);
-  color:#8292a5;
-  font-size:12px;
-  line-height:1.7;
+  padding:30px;
+  border-radius:22px;
   text-align:center;
+  border:1px solid rgba(255,150,70,.3);
+  background:linear-gradient(135deg,#111b31,#080b14);
 }
 
-.footer{
-  text-align:center;
-  padding:35px 10px;
-  color:#536274;
-  font-size:12px;
+.junction{
+  color:#ffae67;
+  letter-spacing:2px;
+  font-size:13px;
+  margin-bottom:12px;
 }
 
-.jack{
-  color:#ff9d4d;
+.question{
+  font-size:23px;
+  line-height:1.5;
+  margin:20px 0;
+}
+
+.progress{
+  margin:20px auto;
+  height:7px;
+  max-width:500px;
+  background:#15283d;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.progress div{
+  height:100%;
+  background:linear-gradient(90deg,#00cfff,#7167ff);
+  transition:.4s;
+}
+
+.message{
+  min-height:25px;
+  margin:15px;
+  font-weight:bold;
+}
+
+.success{
+  color:#63f5bd;
+}
+
+.error{
+  color:#ff7272;
+}
+
+.hint{
+  color:#ffd36b;
+  margin:15px;
+}
+
+.ring{
+  font-size:100px;
+  animation:ring 1.5s infinite alternate;
+  margin:20px;
+}
+
+@keyframes ring{
+  from{
+    transform:scale(1) rotate(-5deg);
+    filter:drop-shadow(0 0 5px #00d9ff);
+  }
+  to{
+    transform:scale(1.15) rotate(5deg);
+    filter:drop-shadow(0 0 30px #00d9ff);
+  }
+}
+
+.final{
+  animation:appear 1s ease;
+}
+
+@keyframes appear{
+  from{
+    opacity:0;
+    transform:scale(.7);
+  }
+  to{
+    opacity:1;
+    transform:scale(1);
+  }
+}
+
+.small{
+  font-size:12px;
+  color:#60748a;
 }
 </style>
 </head>
 
 <body>
 
+<!-- NAME SCREEN -->
+<section id="nameScreen" class="screen">
+  <div class="box">
+
+    <div class="logo">HainX <span>⚡</span></div>
+
+    <h1>Welcome, Mystery Hunter 🕵️</h1>
+
+    <p>Your identity begins with a name.</p>
+
+    <br>
+
+    <input id="nameInput" placeholder="Enter your name">
+
+    <br><br>
+
+    <button onclick="enterHainX()">ENTER HAINX ⚡</button>
+
+    <p class="small">Your display name will appear as Name ⚡ HainX</p>
+
+  </div>
+</section>
+
+
+<!-- HOME -->
+<section id="homeScreen" class="hidden">
+
 <header class="header">
   <div class="logo">HainX <span>⚡</span></div>
-  <div class="profile" id="profileName">Guest ⚡ HainX</div>
+  <div class="profile" id="profile"></div>
 </header>
 
-<main class="container">
+<div class="home">
 
-  <section class="welcome">
-    <h1>Welcome to the HainX World 🕵️</h1>
-    <p>Talk. Connect. Explore. And discover what is hidden.</p>
-  </section>
+  <h1>Welcome to the HainX World 🕵️</h1>
 
-  <div class="section-title">🌍 Explore HainX</div>
+  <p>Talk. Connect. Explore. Discover what is hidden.</p>
 
   <div class="cards">
 
-    <div class="card" onclick="openGroup('General')">
+    <div class="card">
       <div class="icon">💬</div>
       <h3>General</h3>
-      <p>Normal conversations, introductions and random talks.</p>
-      <span class="badge">4 People Max</span>
+      <p>Normal conversations and random talks.</p>
     </div>
 
-    <div class="card" onclick="openGroup('Late Night')">
+    <div class="card">
       <div class="icon">🌙</div>
       <h3>Late Night</h3>
-      <p>For those conversations that happen when everyone else is sleeping.</p>
-      <span class="badge">4 People Max</span>
+      <p>For conversations after midnight.</p>
     </div>
 
-    <div class="card" onclick="openGroup('Gaming')">
+    <div class="card">
       <div class="icon">🎮</div>
       <h3>Gaming</h3>
-      <p>Games, challenges, fun and friendly competition.</p>
-      <span class="badge">4 People Max</span>
+      <p>Games, challenges and fun.</p>
     </div>
 
-    <div class="card" onclick="openGroup('Music')">
+    <div class="card">
       <div class="icon">🎧</div>
       <h3>Music</h3>
-      <p>Share songs, artists and the music living inside your head.</p>
-      <span class="badge">4 People Max</span>
-    </div>
-
-    <div class="card" onclick="openGroup('Friends')">
-      <div class="icon">🤝</div>
-      <h3>Friends</h3>
-      <p>Meet people, talk freely and make new connections.</p>
-      <span class="badge">4 People Max</span>
-    </div>
-
-    <div class="card" onclick="openGroup('Moderator')">
-      <div class="icon">🛡️</div>
-      <h3>Moderator</h3>
-      <p>Community safety, reports and moderation controls.</p>
-      <span class="badge">Protected</span>
+      <p>Share songs and discover music.</p>
     </div>
 
   </div>
 
-  <section class="hunt">
-    <h2>🕵️ THE HAINX MYSTERY HUNT</h2>
+  <div class="huntCard">
+
+    <h2>🕵️ HAINX MYSTERY HUNT</h2>
+
     <p>
-      Five junctions. Hidden clues. Two teams.<br>
-      Can you reach the final boss?
+      5 Junctions.<br>
+      Hidden clues.<br>
+      Two teams.<br>
+      One HainX Ring.
     </p>
 
-    <button onclick="startHunt()">ENTER THE HUNT ⚡</button>
-  </section>
+    <br>
 
-  <div class="rules">
-    🛡️ Respect everyone • No harassment • No personal information sharing<br>
-    HainX is a community space for real people and real conversations.
+    <button onclick="openTeams()">ENTER THE HUNT ⚡</button>
+
   </div>
 
-</main>
+</div>
 
-<footer class="footer">
-  HainX ⚡ — Built with mystery by
-  <span class="jack">Badnaam Jack 🃏</span>
-</footer>
+</section>
+
+
+<!-- TEAM SCREEN -->
+<section id="teamScreen" class="screen hidden">
+
+<div class="box">
+
+  <div class="logo">HainX <span>⚡</span></div>
+
+  <h1>Choose Your Team</h1>
+
+  <p>Two teams. Two hunters each.</p>
+
+  <br>
+
+  <button onclick="startGame('RED')">
+    🔴 TEAM RED
+  </button>
+
+  <button onclick="startGame('BLUE')">
+    🔵 TEAM BLUE
+  </button>
+
+  <br><br>
+
+  <button onclick="goHome()">← BACK</button>
+
+</div>
+
+</section>
+
+
+<!-- GAME -->
+<section id="gameScreen" class="screen hidden">
+
+<div class="box">
+
+  <div class="logo">HainX <span>⚡</span></div>
+
+  <div class="junction" id="junction"></div>
+
+  <h1 id="teamTitle"></h1>
+
+  <div class="progress">
+    <div id="progressBar"></div>
+  </div>
+
+  <div class="question" id="question"></div>
+
+  <input id="answerInput" placeholder="Enter your answer">
+
+  <br><br>
+
+  <button onclick="checkAnswer()">UNLOCK 🔓</button>
+
+  <button onclick="showHint()">💡 HINT</button>
+
+  <button onclick="giveUp()">🏳️ TYAG</button>
+
+  <div id="hint" class="hint"></div>
+
+  <div id="message" class="message"></div>
+
+</div>
+
+</section>
+
+
+<!-- FINAL -->
+<section id="finalScreen" class="screen hidden">
+
+<div class="box final">
+
+  <div class="logo">HainX <span>⚡</span></div>
+
+  <div class="ring">💍</div>
+
+  <h1>THE HAINX RING</h1>
+
+  <br>
+
+  <h2 id="winner"></h2>
+
+  <br>
+
+  <p>
+    You crossed every junction.<br>
+    You solved the mystery.<br>
+    The Ring belongs to the hunter.
+  </p>
+
+  <br>
+
+  <p>🏆 MYSTERY COMPLETED 🏆</p>
+
+  <br>
+
+  <button onclick="goHome()">RETURN TO HAINX</button>
+
+</div>
+
+</section>
+
 
 <script>
 
-let name = localStorage.getItem("hainxName");
+const questions = [
 
-if(name){
-  document.getElementById("profileName").innerText =
-    name + " ⚡ HainX";
+  {
+    junction:"JUNCTION 01 — THE SHADOW GATE",
+    question:"I follow you in the light, but disappear in darkness. What am I?",
+    answer:"shadow",
+    hint:"You can see it behind you when there is light."
+  },
+
+  {
+    junction:"JUNCTION 02 — THE SILENT ROAD",
+    question:"The more you take from me, the more you leave behind. What am I?",
+    answer:"footsteps",
+    hint:"Think about walking."
+  },
+
+  {
+    junction:"JUNCTION 03 — THE EMPTY VOICE",
+    question:"I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?",
+    answer:"echo",
+    hint:"Your voice can come back to you."
+  },
+
+  {
+    junction:"JUNCTION 04 — THE STRANGE KEYS",
+    question:"I have many keys but cannot open a single door. What am I?",
+    answer:"piano",
+    hint:"You can play music with me."
+  },
+
+  {
+    junction:"FINAL BOSS — THE LAST CLOCK",
+    question:"I am always coming, but I never arrive. What am I?",
+    answer:"tomorrow",
+    hint:"It becomes today when it finally arrives."
+  }
+
+];
+
+let playerName = "";
+let team = "";
+let current = 0;
+let hintsUsed = 0;
+
+function hideAll(){
+
+  document.getElementById("nameScreen").classList.add("hidden");
+  document.getElementById("homeScreen").classList.add("hidden");
+  document.getElementById("teamScreen").classList.add("hidden");
+  document.getElementById("gameScreen").classList.add("hidden");
+  document.getElementById("finalScreen").classList.add("hidden");
+
 }
 
-function openGroup(group){
-  alert("🌍 " + group + " Group\n\nReal-time group chat is coming in the next stage ⚡");
+function enterHainX(){
+
+  const input =
+    document.getElementById("nameInput").value.trim();
+
+  if(!input){
+    alert("Pehle apna naam enter karo 😄");
+    return;
+  }
+
+  playerName = input;
+
+  localStorage.setItem("hainxName",playerName);
+
+  showHome();
 }
 
-function startHunt(){
-  alert(
-    "🕵️ HAINX MYSTERY HUNT\n\n" +
-    "The doors are locked...\n" +
-    "5 junctions are waiting.\n\n" +
-    "Game system is coming next. ⚡"
-  );
+function showHome(){
+
+  hideAll();
+
+  document
+    .getElementById("homeScreen")
+    .classList.remove("hidden");
+
+  document.getElementById("profile").innerText =
+    playerName + " ⚡ HainX";
 }
+
+function goHome(){
+  showHome();
+}
+
+function openTeams(){
+
+  hideAll();
+
+  document
+    .getElementById("teamScreen")
+    .classList.remove("hidden");
+}
+
+function startGame(selectedTeam){
+
+  team = selectedTeam;
+  current = 0;
+  hintsUsed = 0;
+
+  hideAll();
+
+  document
+    .getElementById("gameScreen")
+    .classList.remove("hidden");
+
+  loadQuestion();
+}
+
+function loadQuestion(){
+
+  const q = questions[current];
+
+  document.getElementById("junction").innerText =
+    q.junction;
+
+  document.getElementById("teamTitle").innerText =
+    team === "RED"
+      ? "🔴 TEAM RED"
+      : "🔵 TEAM BLUE";
+
+  document.getElementById("question").innerText =
+    q.question;
+
+  document.getElementById("answerInput").value = "";
+
+  document.getElementById("hint").innerText = "";
+
+  document.getElementById("message").innerText = "";
+
+  document.getElementById("progressBar").style.width =
+    ((current + 1) / questions.length * 100) + "%";
+}
+
+function checkAnswer(){
+
+  const answer =
+    document
+      .getElementById("answerInput")
+      .value
+      .trim()
+      .toLowerCase();
+
+  const correct =
+    questions[current].answer.toLowerCase();
+
+  const message =
+    document.getElementById("message");
+
+  if(answer === correct){
+
+    message.className = "message success";
+
+    message.innerText =
+      "🔓 CORRECT! Junction unlocked!";
+
+    setTimeout(()=>{
+
+      current++;
+
+      if(current >= questions.length){
+
+        showFinal();
+
+      }else{
+
+        loadQuestion();
+
+      }
+
+    },1000);
+
+  }else{
+
+    message.className = "message error";
+
+    message.innerText =
+      "❌ Wrong answer... Mystery remains locked.";
+
+  }
+}
+
+function showHint(){
+
+  if(hintsUsed >= 2){
+
+    document.getElementById("hint").innerText =
+      "⚠️ No hints remaining.";
+
+    return;
+  }
+
+  hintsUsed++;
+
+  document.getElementById("hint").innerText =
+    "💡 " + questions[current].hint +
+    "  (" + (2-hintsUsed) + " hints left)";
+
+}
+
+function giveUp(){
+
+  const confirmGiveUp =
+    confirm(
+      "🏳️ TYAG?\n\n" +
+      "If you give up, the mystery will restart from Junction 1."
+    );
+
+  if(confirmGiveUp){
+
+    alert(
+      "The mystery wins this time... 😈\n\n" +
+      "The answer was: " +
+      questions[current].answer.toUpperCase()
+    );
+
+    current = 0;
+    hintsUsed = 0;
+
+    loadQuestion();
+  }
+
+}
+
+function showFinal(){
+
+  hideAll();
+
+  document
+    .getElementById("finalScreen")
+    .classList.remove("hidden");
+
+  document.getElementById("winner").innerText =
+    "🏆 " + team + " TEAM — MYSTERY CHAMPION 🏆";
+
+}
+
+window.onload = function(){
+
+  const saved =
+    localStorage.getItem("hainxName");
+
+  if(saved){
+
+    playerName = saved;
+
+    document
+      .getElementById("nameInput")
+      .value = saved;
+
+  }
+
+};
 
 </script>
 
