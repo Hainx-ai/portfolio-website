@@ -3,133 +3,106 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HainX ⚡ | Junction World</title>
+
+<title>HainX ⚡ Junction World</title>
 
 <style>
 *{
+    box-sizing:border-box;
     margin:0;
     padding:0;
-    box-sizing:border-box;
     font-family:Arial,Helvetica,sans-serif;
-}
-
-:root{
-    --bg:#02050b;
-    --panel:rgba(8,16,29,.92);
-    --line:rgba(91,215,255,.16);
-    --cyan:#51e1ff;
-    --blue:#278cff;
-    --orange:#ff9f50;
-    --muted:#8292a7;
-    --green:#45e39b;
-    --red:#ff5f6d;
 }
 
 body{
     min-height:100vh;
-    background:
-        radial-gradient(circle at 50% -10%,rgba(0,130,255,.22),transparent 35%),
-        radial-gradient(circle at 10% 70%,rgba(0,210,255,.06),transparent 30%),
-        radial-gradient(circle at 90% 40%,rgba(255,130,50,.05),transparent 30%),
-        #02050b;
     color:#fff;
+    background:
+      radial-gradient(circle at 50% 0%,#12345a 0%,#06101d 35%,#010307 80%);
     overflow-x:hidden;
 }
 
-/* ===== AMBIENT BACKGROUND ===== */
+/* BACKGROUND */
 
-body::before{
+body:before{
     content:"";
     position:fixed;
     inset:0;
     pointer-events:none;
+    opacity:.15;
     background-image:
-        radial-gradient(circle,rgba(255,255,255,.18) 1px,transparent 1px);
-    background-size:90px 90px;
-    opacity:.08;
+      radial-gradient(circle,#ffffff 1px,transparent 1px);
+    background-size:100px 100px;
 }
 
-/* ===== SIDE BRANDING ===== */
+/* SIDE BRAND */
 
-.side-brand{
+.side{
     position:fixed;
     top:50%;
-    transform:translateY(-50%);
+    z-index:5;
     writing-mode:vertical-rl;
-    letter-spacing:5px;
+    transform:translateY(-50%);
     font-size:11px;
+    letter-spacing:4px;
     font-weight:bold;
-    color:rgba(81,225,255,.38);
-    z-index:20;
+    color:#42dfff;
+    opacity:.55;
 }
 
-.side-left{
-    left:12px;
-}
+.side.left{left:12px;}
 
-.side-right{
+.side.right{
     right:12px;
     transform:translateY(-50%) rotate(180deg);
 }
 
-.side-brand span{
-    color:rgba(255,159,80,.5);
+.side span{
+    color:#ff9d50;
 }
 
-/* ===== HEADER ===== */
+/* HEADER */
 
 header{
-    height:75px;
-    padding:0 6%;
+    height:72px;
+    padding:0 7%;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    border-bottom:1px solid rgba(255,255,255,.07);
-    background:rgba(2,6,13,.82);
-    backdrop-filter:blur(15px);
     position:sticky;
     top:0;
-    z-index:10;
+    z-index:20;
+    background:rgba(2,7,14,.9);
+    border-bottom:1px solid rgba(100,220,255,.12);
+    backdrop-filter:blur(15px);
 }
 
 .logo{
-    font-size:28px;
+    font-size:27px;
     font-weight:900;
-    letter-spacing:1px;
-    color:var(--cyan);
-    text-shadow:0 0 18px rgba(0,210,255,.65);
+    color:#55e2ff;
+    text-shadow:0 0 18px #009dff;
 }
 
-.logo b{
-    color:var(--orange);
+.logo span{
+    color:#ff9d50;
 }
 
-.user-pill{
-    display:flex;
-    align-items:center;
-    gap:9px;
+.user{
     padding:9px 15px;
-    border:1px solid var(--line);
     border-radius:30px;
-    background:rgba(255,255,255,.035);
-    font-size:13px;
+    border:1px solid rgba(80,220,255,.2);
+    background:rgba(255,255,255,.04);
+    font-size:12px;
 }
 
-.online-dot{
-    width:8px;
-    height:8px;
-    border-radius:50%;
-    background:var(--green);
-    box-shadow:0 0 10px var(--green);
-}
-
-/* ===== MAIN ===== */
+/* MAIN */
 
 main{
     width:90%;
-    max-width:1200px;
-    margin:0 auto;
-    padding:35px 0 70px;
+    max-width:1150px;
+    margin:auto;
+    padding:45px 0 70px;
 }
 
 .hero{
@@ -137,121 +110,116 @@ main{
     margin-bottom:35px;
 }
 
-.hero .mini{
-    color:var(--orange);
-    font-size:11px;
+.hero small{
+    color:#ff9d50;
     letter-spacing:4px;
-    margin-bottom:12px;
+    font-size:10px;
 }
 
 .hero h1{
-    font-size:38px;
-    margin-bottom:10px;
+    font-size:42px;
+    margin:12px 0;
 }
 
 .hero h1 span{
-    color:var(--cyan);
+    color:#55e2ff;
 }
 
 .hero p{
-    color:var(--muted);
-    max-width:650px;
-    margin:auto;
+    color:#8799ae;
     line-height:1.6;
 }
 
-/* ===== STATS ===== */
+/* STATS */
 
 .stats{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:12px;
-    margin-bottom:28px;
+    gap:14px;
+    margin-bottom:35px;
 }
 
 .stat{
-    background:rgba(255,255,255,.025);
-    border:1px solid rgba(255,255,255,.07);
-    border-radius:16px;
-    padding:16px;
+    padding:18px;
     text-align:center;
+    border-radius:17px;
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.07);
 }
 
-.stat strong{
+.stat b{
     display:block;
-    font-size:22px;
-    color:var(--cyan);
+    color:#55e2ff;
+    font-size:23px;
+    margin-bottom:5px;
 }
 
 .stat small{
-    color:var(--muted);
+    color:#718197;
 }
 
-/* ===== JUNCTIONS ===== */
+/* TITLE */
 
-.section-head{
+.title{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:16px;
+    margin-bottom:17px;
 }
 
-.section-head h2{
+.title h2{
     font-size:20px;
 }
 
-.section-head span{
-    font-size:12px;
-    color:var(--muted);
+.title span{
+    color:#718197;
+    font-size:11px;
 }
 
-.junction-grid{
+/* JUNCTION GRID */
+
+.grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-    gap:16px;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:17px;
 }
 
 .junction{
     position:relative;
-    padding:22px;
-    min-height:210px;
+    min-height:215px;
+    padding:23px;
     border-radius:22px;
-    overflow:hidden;
     cursor:pointer;
+
     background:
-        linear-gradient(145deg,rgba(15,34,58,.88),rgba(3,8,16,.96));
-    border:1px solid var(--line);
-    transition:.3s;
+      linear-gradient(145deg,
+      rgba(16,40,67,.9),
+      rgba(3,9,17,.97));
+
+    border:1px solid rgba(80,220,255,.16);
+
+    transition:.25s;
 }
 
 .junction:hover{
-    transform:translateY(-5px);
-    border-color:rgba(81,225,255,.55);
-    box-shadow:0 15px 40px rgba(0,160,255,.12);
+    transform:translateY(-6px);
+    border-color:#42dfff;
+    box-shadow:0 15px 40px rgba(0,180,255,.15);
 }
 
-.junction::after{
-    content:"";
-    position:absolute;
-    width:130px;
-    height:130px;
-    right:-45px;
-    bottom:-50px;
-    border-radius:50%;
-    background:rgba(0,190,255,.08);
-    filter:blur(10px);
+.junction.full:hover{
+    border-color:#ff9d50;
 }
 
-.number{
-    color:var(--orange);
-    font-size:11px;
+.num{
+    color:#ff9d50;
+    font-size:10px;
     letter-spacing:3px;
-    margin-bottom:12px;
 }
 
-.junction-icon{
-    font-size:35px;
-    margin-bottom:10px;
+.icon{
+    font-size:38px;
+    margin:12px 0;
 }
 
 .junction h3{
@@ -260,267 +228,56 @@ main{
 }
 
 .junction p{
-    color:var(--muted);
-    font-size:13px;
+    color:#8292a7;
+    font-size:12px;
     line-height:1.5;
-    margin-bottom:15px;
+    min-height:38px;
 }
 
-.room-status{
+.bottom{
+    position:absolute;
+    left:23px;
+    right:23px;
+    bottom:18px;
     display:flex;
     justify-content:space-between;
-    align-items:center;
-    font-size:12px;
+    font-size:11px;
 }
 
-.members{
-    color:#9edff0;
-}
-
-.status{
-    color:var(--green);
+.open{
+    color:#45e39b;
 }
 
 .full{
-    color:var(--orange);
+    color:#ff9d50;
 }
 
-/* ===== MODAL ===== */
+/* WAITING */
 
-.modal{
-    position:fixed;
-    inset:0;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    background:rgba(0,0,0,.78);
-    backdrop-filter:blur(12px);
-    z-index:50;
-}
-
-.modal.show{
-    display:flex;
-}
-
-.room{
-    width:100%;
-    max-width:850px;
-    height:min(700px,90vh);
-    display:flex;
-    flex-direction:column;
-    background:#050b15;
-    border:1px solid rgba(81,225,255,.2);
-    border-radius:25px;
-    overflow:hidden;
-    box-shadow:0 0 80px rgba(0,140,255,.12);
-}
-
-/* ===== ROOM HEADER ===== */
-
-.room-head{
-    padding:18px 22px;
-    border-bottom:1px solid rgba(255,255,255,.07);
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.room-title{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.room-title .icon{
-    font-size:27px;
-}
-
-.room-title h2{
-    font-size:18px;
-}
-
-.room-title p{
-    color:var(--muted);
-    font-size:11px;
-    margin-top:4px;
-}
-
-.close{
-    background:rgba(255,255,255,.06);
-    padding:9px 13px;
-    border-radius:10px;
-    margin:0;
-}
-
-/* ===== ROOM BODY ===== */
-
-.room-body{
-    flex:1;
-    display:grid;
-    grid-template-columns:220px 1fr;
-    min-height:0;
-}
-
-/* ===== MEMBERS ===== */
-
-.members-panel{
-    border-right:1px solid rgba(255,255,255,.07);
-    padding:18px;
-    overflow:auto;
-}
-
-.panel-title{
-    color:var(--muted);
-    font-size:11px;
-    letter-spacing:2px;
-    margin-bottom:12px;
-}
-
-.member{
-    padding:11px;
-    border-radius:12px;
-    background:rgba(255,255,255,.035);
-    margin-bottom:8px;
-    display:flex;
-    align-items:center;
-    gap:9px;
-}
-
-.avatar{
-    width:30px;
-    height:30px;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:linear-gradient(135deg,#124b75,#071624);
-    border:1px solid rgba(81,225,255,.2);
-    font-size:12px;
-}
-
-.member-name{
-    flex:1;
-    font-size:12px;
-}
-
-.member-name small{
-    display:block;
-    color:var(--green);
-    font-size:9px;
-    margin-top:3px;
-}
-
-.mod{
-    color:var(--orange);
-    font-size:10px;
-}
-
-/* ===== CHAT ===== */
-
-.chat{
-    display:flex;
-    flex-direction:column;
-    min-width:0;
-}
-
-.chat-messages{
-    flex:1;
-    overflow-y:auto;
-    padding:22px;
-}
-
-.system-message{
-    text-align:center;
-    color:#65778c;
-    font-size:11px;
-    margin:12px 0 20px;
-}
-
-.message{
-    margin-bottom:17px;
-}
-
-.message .sender{
-    font-size:11px;
-    color:var(--cyan);
-    margin-bottom:5px;
-}
-
-.message .sender span{
-    color:var(--orange);
-}
-
-.message .bubble{
-    display:inline-block;
-    max-width:80%;
-    padding:11px 14px;
-    border-radius:5px 15px 15px 15px;
-    background:#0b1728;
-    border:1px solid rgba(255,255,255,.06);
-    color:#d8e2ee;
-    font-size:13px;
-    line-height:1.5;
-}
-
-.message.me{
-    text-align:right;
-}
-
-.message.me .bubble{
-    border-radius:15px 5px 15px 15px;
-    background:#0b2841;
-}
-
-.chat-input{
-    padding:15px;
-    border-top:1px solid rgba(255,255,255,.07);
-    display:flex;
-    gap:9px;
-}
-
-.chat-input input{
-    flex:1;
-    min-width:0;
-    padding:13px 15px;
-    border-radius:13px;
-    border:1px solid rgba(81,225,255,.15);
-    background:#07111e;
-    color:white;
-    outline:none;
-}
-
-.send{
-    margin:0;
-    border-radius:13px;
-    padding:0 20px;
-}
-
-/* ===== WAITING ===== */
-
-.waiting-box{
-    margin-top:30px;
+.waiting{
+    margin-top:35px;
     padding:25px;
     border-radius:20px;
-    background:linear-gradient(135deg,rgba(28,20,13,.7),rgba(10,12,18,.8));
-    border:1px solid rgba(255,159,80,.18);
+    background:rgba(255,150,70,.035);
+    border:1px solid rgba(255,150,70,.15);
 }
 
-.waiting-box h3{
-    color:var(--orange);
+.waiting h2{
+    color:#ffb06c;
+    font-size:18px;
     margin-bottom:7px;
 }
 
-.waiting-box p{
-    color:var(--muted);
-    font-size:13px;
+.waiting p{
+    color:#7e8ea2;
+    font-size:12px;
 }
 
-.waiting-list{
+.waiting-users{
     display:flex;
     flex-wrap:wrap;
     gap:8px;
-    margin-top:15px;
+    margin-top:16px;
 }
 
 .waiting-user{
@@ -531,59 +288,272 @@ main{
     font-size:11px;
 }
 
-/* ===== FOOTER ===== */
+/* FOOTER */
 
 footer{
     text-align:center;
+    padding:30px;
     border-top:1px solid rgba(255,255,255,.06);
-    padding:28px;
-    color:#506176;
+    color:#506074;
     font-size:11px;
     letter-spacing:1px;
 }
 
 footer strong{
-    color:var(--orange);
+    color:#ff9d50;
 }
 
-/* ===== TOAST ===== */
+/* MODAL */
+
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(0,0,0,.8);
+    backdrop-filter:blur(12px);
+}
+
+.modal.active{
+    display:flex;
+}
+
+.room{
+    width:100%;
+    max-width:850px;
+    height:min(680px,90vh);
+    display:flex;
+    flex-direction:column;
+    background:#050b14;
+    border:1px solid rgba(80,220,255,.2);
+    border-radius:25px;
+    overflow:hidden;
+    box-shadow:0 0 80px rgba(0,150,255,.18);
+}
+
+/* ROOM HEADER */
+
+.room-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 22px;
+    border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.room-name{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.room-icon{
+    font-size:30px;
+}
+
+.room-name h2{
+    font-size:18px;
+}
+
+.room-name p{
+    color:#718197;
+    font-size:11px;
+    margin-top:4px;
+}
+
+.close{
+    border:0;
+    background:rgba(255,255,255,.06);
+    color:white;
+    border-radius:10px;
+    padding:9px 13px;
+    cursor:pointer;
+}
+
+/* ROOM CONTENT */
+
+.room-content{
+    flex:1;
+    display:grid;
+    grid-template-columns:220px 1fr;
+    min-height:0;
+}
+
+/* MEMBERS */
+
+.members{
+    padding:18px;
+    border-right:1px solid rgba(255,255,255,.07);
+    overflow-y:auto;
+}
+
+.member-title{
+    color:#718197;
+    font-size:10px;
+    letter-spacing:2px;
+    margin-bottom:12px;
+}
+
+.member{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding:10px;
+    margin-bottom:8px;
+    border-radius:12px;
+    background:rgba(255,255,255,.035);
+}
+
+.avatar{
+    width:30px;
+    height:30px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:50%;
+    background:#0b2c45;
+    color:#55e2ff;
+    font-size:12px;
+}
+
+.member-name{
+    font-size:11px;
+}
+
+.online{
+    display:block;
+    color:#45e39b;
+    font-size:8px;
+    margin-top:3px;
+}
+
+/* CHAT */
+
+.chat{
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+}
+
+.messages{
+    flex:1;
+    overflow-y:auto;
+    padding:22px;
+}
+
+.system{
+    text-align:center;
+    color:#596b80;
+    font-size:10px;
+    margin:12px 0;
+}
+
+.msg{
+    margin-bottom:15px;
+}
+
+.sender{
+    color:#55e2ff;
+    font-size:10px;
+    margin-bottom:5px;
+}
+
+.bubble{
+    display:inline-block;
+    padding:10px 13px;
+    max-width:80%;
+    border-radius:5px 15px 15px 15px;
+    background:#0b1828;
+    border:1px solid rgba(255,255,255,.05);
+    color:#d7e2ee;
+    font-size:12px;
+}
+
+.mine{
+    text-align:right;
+}
+
+.mine .bubble{
+    border-radius:15px 5px 15px 15px;
+    background:#0b2942;
+}
+
+.chat-input{
+    display:flex;
+    gap:8px;
+    padding:13px;
+    border-top:1px solid rgba(255,255,255,.07);
+}
+
+.chat-input input{
+    flex:1;
+    min-width:0;
+    border:1px solid rgba(80,220,255,.14);
+    border-radius:12px;
+    padding:12px;
+    outline:none;
+    background:#07111e;
+    color:white;
+}
+
+.send{
+    border:0;
+    border-radius:12px;
+    padding:0 18px;
+    color:white;
+    background:linear-gradient(90deg,#00bfff,#625cff);
+    cursor:pointer;
+}
+
+/* TOAST */
 
 .toast{
     position:fixed;
-    left:50%;
     bottom:25px;
-    transform:translateX(-50%) translateY(100px);
+    left:50%;
+    z-index:200;
+    transform:translate(-50%,100px);
     padding:13px 20px;
-    border-radius:14px;
-    background:#0b1b2d;
-    border:1px solid rgba(81,225,255,.25);
+    border-radius:13px;
+    background:#0a1929;
+    border:1px solid rgba(80,220,255,.25);
     color:#d8f7ff;
     font-size:12px;
     transition:.3s;
-    z-index:100;
 }
 
 .toast.show{
-    transform:translateX(-50%) translateY(0);
+    transform:translate(-50%,0);
 }
 
-/* ===== RESPONSIVE ===== */
+/* MOBILE */
 
 @media(max-width:650px){
+
+    .side{
+        display:none;
+    }
 
     header{
         padding:0 5%;
     }
 
     .hero h1{
-        font-size:29px;
+        font-size:30px;
     }
 
     .stats{
         grid-template-columns:1fr;
     }
 
-    .side-brand{
+    .room-content{
+        grid-template-columns:1fr;
+    }
+
+    .members{
         display:none;
     }
 
@@ -592,47 +562,30 @@ footer strong{
         border-radius:18px;
     }
 
-    .room-body{
-        grid-template-columns:1fr;
-    }
-
-    .members-panel{
-        display:none;
-    }
-
-    .chat-input{
-        padding:10px;
-    }
-
-    .send{
-        padding:0 14px;
-    }
 }
 </style>
 </head>
 
+
 <body>
 
-<!-- SIDE BRANDING -->
-<div class="side-brand side-left">
+<div class="side left">
     HAINX ⚡ <span>BADNAAM JACK</span>
 </div>
 
-<div class="side-brand side-right">
+<div class="side right">
     HAINX ⚡ <span>BADNAAM JACK</span>
 </div>
 
 
-<!-- HEADER -->
 <header>
 
     <div class="logo">
-        HainX <b>⚡</b>
+        HainX <span>⚡</span>
     </div>
 
-    <div class="user-pill">
-        <div class="online-dot"></div>
-        <span id="userName">Guest ⚡ HainX</span>
+    <div class="user" id="userDisplay">
+        Guest ⚡ HainX
     </div>
 
 </header>
@@ -640,218 +593,193 @@ footer strong{
 
 <main>
 
-    <!-- HERO -->
-    <section class="hero">
+<section class="hero">
 
-        <div class="mini">
-            THE WORLD BEHIND THE SCREEN
-        </div>
+    <small>THE WORLD BEHIND THE SCREEN</small>
 
-        <h1>
-            Welcome to <span>HainX</span>
-        </h1>
+    <h1>
+        Welcome to <span>HainX</span>
+    </h1>
+
+    <p>
+        Enter a Junction. Meet people. Talk freely.
+        Every Junction has only four seats.
+    </p>
+
+</section>
+
+
+<section class="stats">
+
+    <div class="stat">
+        <b>5</b>
+        <small>Junctions</small>
+    </div>
+
+    <div class="stat">
+        <b>4</b>
+        <small>People / Junction</small>
+    </div>
+
+    <div class="stat">
+        <b id="waitingCount">5</b>
+        <small>Waiting Users</small>
+    </div>
+
+</section>
+
+
+<div class="title">
+
+    <h2>🌑 Enter a Junction</h2>
+
+    <span>Maximum 4 active members</span>
+
+</div>
+
+
+<section class="grid" id="junctionGrid">
+
+    <div class="junction" data-id="1">
+
+        <div class="num">JUNCTION 01</div>
+
+        <div class="icon">🌲</div>
+
+        <h3>Shadow Forest</h3>
 
         <p>
-            Choose a Junction, meet real people,
-            and enter a room where every conversation
-            can become a story.
+            A mysterious forest where conversations
+            disappear into the darkness.
         </p>
 
-    </section>
-
-
-    <!-- STATS -->
-    <section class="stats">
-
-        <div class="stat">
-            <strong>5</strong>
-            <small>Junctions</small>
+        <div class="bottom">
+            <span class="count">👥 2 / 4</span>
+            <span class="open">● OPEN</span>
         </div>
 
-        <div class="stat">
-            <strong>4</strong>
-            <small>People / Junction</small>
-        </div>
-
-        <div class="stat">
-            <strong id="totalWaiting">7</strong>
-            <small>Currently Waiting</small>
-        </div>
-
-    </section>
-
-
-    <!-- JUNCTIONS -->
-    <div class="section-head">
-        <h2>🌑 Enter a Junction</h2>
-        <span>Maximum 4 active members</span>
     </div>
 
 
-    <section class="junction-grid">
+    <div class="junction" data-id="2">
 
-        <div class="junction" onclick="joinJunction(1)">
+        <div class="num">JUNCTION 02</div>
 
-            <div class="number">JUNCTION 01</div>
-            <div class="junction-icon">🌲</div>
+        <div class="icon">🌊</div>
 
-            <h3>Shadow Forest</h3>
-
-            <p>
-                A quiet forest where conversations
-                disappear into the darkness.
-            </p>
-
-            <div class="room-status">
-                <span class="members" id="count1">
-                    👥 2 / 4
-                </span>
-
-                <span class="status">
-                    ● OPEN
-                </span>
-            </div>
-
-        </div>
-
-
-        <div class="junction" onclick="joinJunction(2)">
-
-            <div class="number">JUNCTION 02</div>
-            <div class="junction-icon">🌊</div>
-
-            <h3>Midnight Lake</h3>
-
-            <p>
-                Water, moonlight and conversations
-                that only happen after midnight.
-            </p>
-
-            <div class="room-status">
-                <span class="members" id="count2">
-                    👥 4 / 4
-                </span>
-
-                <span class="full">
-                    ● FULL
-                </span>
-            </div>
-
-        </div>
-
-
-        <div class="junction" onclick="joinJunction(3)">
-
-            <div class="number">JUNCTION 03</div>
-            <div class="junction-icon">🏚️</div>
-
-            <h3>Forgotten House</h3>
-
-            <p>
-                Nobody knows who built it.
-                Somebody is always waiting inside.
-            </p>
-
-            <div class="room-status">
-                <span class="members" id="count3">
-                    👥 1 / 4
-                </span>
-
-                <span class="status">
-                    ● OPEN
-                </span>
-            </div>
-
-        </div>
-
-
-        <div class="junction" onclick="joinJunction(4)">
-
-            <div class="number">JUNCTION 04</div>
-            <div class="junction-icon">🪨</div>
-
-            <h3>Silent Valley</h3>
-
-            <p>
-                No noise. No rush.
-                Just four people and a strange silence.
-            </p>
-
-            <div class="room-status">
-                <span class="members" id="count4">
-                    👥 3 / 4
-                </span>
-
-                <span class="status">
-                    ● OPEN
-                </span>
-            </div>
-
-        </div>
-
-
-        <div class="junction" onclick="joinJunction(5)">
-
-            <div class="number">JUNCTION 05</div>
-            <div class="junction-icon">🌙</div>
-
-            <h3>Moon Chamber</h3>
-
-            <p>
-                The deepest Junction.
-                Only four seats exist here.
-            </p>
-
-            <div class="room-status">
-                <span class="members" id="count5">
-                    👥 4 / 4
-                </span>
-
-                <span class="full">
-                    ● FULL
-                </span>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- WAITING -->
-    <section class="waiting-box">
-
-        <h3>⏳ Waiting Room</h3>
+        <h3>Midnight Lake</h3>
 
         <p>
-            Junction full hone par new users yahan wait karenge.
-            Jaise hi koi seat free hogi, next person ko entry milegi.
+            Moonlight, water and conversations
+            after midnight.
         </p>
 
-        <div class="waiting-list">
-
-            <div class="waiting-user">Alex ⚡ HainX</div>
-            <div class="waiting-user">Maya ⚡ HainX</div>
-            <div class="waiting-user">Shadow ⚡ HainX</div>
-            <div class="waiting-user">Riya ⚡ HainX</div>
-            <div class="waiting-user">NightOwl ⚡ HainX</div>
-
+        <div class="bottom">
+            <span class="count">👥 4 / 4</span>
+            <span class="full">● FULL</span>
         </div>
 
-    </section>
+    </div>
+
+
+    <div class="junction" data-id="3">
+
+        <div class="num">JUNCTION 03</div>
+
+        <div class="icon">🏚️</div>
+
+        <h3>Forgotten House</h3>
+
+        <p>
+            Nobody knows who built it.
+            Somebody is always inside.
+        </p>
+
+        <div class="bottom">
+            <span class="count">👥 1 / 4</span>
+            <span class="open">● OPEN</span>
+        </div>
+
+    </div>
+
+
+    <div class="junction" data-id="4">
+
+        <div class="num">JUNCTION 04</div>
+
+        <div class="icon">🪨</div>
+
+        <h3>Silent Valley</h3>
+
+        <p>
+            A quiet place for four strangers
+            to meet and talk.
+        </p>
+
+        <div class="bottom">
+            <span class="count">👥 3 / 4</span>
+            <span class="open">● OPEN</span>
+        </div>
+
+    </div>
+
+
+    <div class="junction" data-id="5">
+
+        <div class="num">JUNCTION 05</div>
+
+        <div class="icon">🌙</div>
+
+        <h3>Moon Chamber</h3>
+
+        <p>
+            The deepest Junction.
+            Only four seats exist.
+        </p>
+
+        <div class="bottom">
+            <span class="count">👥 4 / 4</span>
+            <span class="full">● FULL</span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="waiting">
+
+    <h2>⏳ Waiting Room</h2>
+
+    <p>
+        Agar kisi Junction mein 4 log hain,
+        naye users yahan waiting mein rahenge.
+        Seat free hote hi queue se next user aa sakta hai.
+    </p>
+
+    <div class="waiting-users" id="waitingUsers">
+
+        <div class="waiting-user">Alex ⚡ HainX</div>
+        <div class="waiting-user">Maya ⚡ HainX</div>
+        <div class="waiting-user">Shadow ⚡ HainX</div>
+        <div class="waiting-user">Riya ⚡ HainX</div>
+        <div class="waiting-user">NightOwl ⚡ HainX</div>
+
+    </div>
+
+</section>
 
 </main>
 
 
 <footer>
-
-    HainX ⚡ &nbsp;|&nbsp;
+    HainX ⚡ &nbsp; | &nbsp;
     <strong>BADNAAM JACK 🃏</strong>
-    &nbsp;|&nbsp; REAL PEOPLE • REAL CONVERSATIONS
-
+    &nbsp; | &nbsp; REAL PEOPLE • REAL CONVERSATIONS
 </footer>
 
 
-<!-- ROOM MODAL -->
+<!-- ROOM -->
 
 <div class="modal" id="roomModal">
 
@@ -859,47 +787,56 @@ footer strong{
 
         <div class="room-head">
 
-            <div class="room-title">
+            <div class="room-name">
 
-                <div class="icon" id="roomIcon">🌲</div>
+                <div class="room-icon" id="roomIcon">
+                    🌲
+                </div>
 
                 <div>
-                    <h2 id="roomName">Shadow Forest</h2>
-                    <p id="roomSub">Junction 01 • 2 / 4 Members</p>
+                    <h2 id="roomTitle">
+                        Shadow Forest
+                    </h2>
+
+                    <p id="roomInfo">
+                        Junction 01 • 2 / 4 Members
+                    </p>
                 </div>
 
             </div>
 
-            <button class="close" onclick="leaveRoom()">✕</button>
+            <button class="close" id="closeRoom">
+                ✕
+            </button>
 
         </div>
 
 
-        <div class="room-body">
+        <div class="room-content">
 
-            <!-- MEMBERS -->
+            <aside class="members">
 
-            <aside class="members-panel">
-
-                <div class="panel-title">
+                <div class="member-title">
                     ACTIVE MEMBERS
                 </div>
 
-                <div id="membersList"></div>
+                <div id="memberList"></div>
 
                 <br>
 
-                <div class="panel-title">
-                    MODERATOR
+                <div class="member-title">
+                    COMMUNITY MODERATOR
                 </div>
 
                 <div class="member">
 
-                    <div class="avatar">🛡️</div>
+                    <div class="avatar">🃏</div>
 
                     <div class="member-name">
-                        Jack ⚡ HainX
-                        <small class="mod">MODERATOR</small>
+                        Badnaam Jack ⚡
+                        <span class="online">
+                            ● MODERATOR
+                        </span>
                     </div>
 
                 </div>
@@ -907,24 +844,22 @@ footer strong{
             </aside>
 
 
-            <!-- CHAT -->
-
             <section class="chat">
 
-                <div class="chat-messages" id="chatMessages">
+                <div class="messages" id="messages">
 
-                    <div class="system-message">
+                    <div class="system">
                         🔒 You entered the Junction.
                     </div>
 
-                    <div class="system-message">
-                        Respect everyone. Enjoy the conversation.
+                    <div class="system">
+                        🛡️ Respect everyone.
                     </div>
 
-                    <div class="message">
+                    <div class="msg">
 
                         <div class="sender">
-                            Maya <span>⚡ HainX</span>
+                            Maya ⚡ HainX
                         </div>
 
                         <div class="bubble">
@@ -933,10 +868,10 @@ footer strong{
 
                     </div>
 
-                    <div class="message">
+                    <div class="msg">
 
                         <div class="sender">
-                            Alex <span>⚡ HainX</span>
+                            Alex ⚡ HainX
                         </div>
 
                         <div class="bubble">
@@ -953,10 +888,9 @@ footer strong{
                     <input
                         id="messageInput"
                         placeholder="Write something..."
-                        onkeydown="if(event.key==='Enter') sendMessage()"
                     >
 
-                    <button class="send" onclick="sendMessage()">
+                    <button class="send" id="sendButton">
                         SEND
                     </button>
 
@@ -971,29 +905,33 @@ footer strong{
 </div>
 
 
-<!-- TOAST -->
-
 <div class="toast" id="toast"></div>
 
 
 <script>
 
-/* =========================
+/* ==============================
    USER
-========================= */
+============================== */
 
-let userName =
-    localStorage.getItem("hainxName") || "Guest";
+let username =
+    localStorage.getItem("hainxName");
 
-document.getElementById("userName").innerText =
-    userName + " ⚡ HainX";
+if(!username){
+
+    username = "Guest";
+
+}
+
+document.getElementById("userDisplay").textContent =
+    username + " ⚡ HainX";
 
 
-/* =========================
+/* ==============================
    JUNCTION DATA
-========================= */
+============================== */
 
-const junctions = {
+const rooms = {
 
     1:{
         name:"Shadow Forest",
@@ -1052,27 +990,88 @@ const junctions = {
 };
 
 
-let currentJunction = null;
+let currentRoom = null;
 
 
-/* =========================
-   JOIN JUNCTION
-========================= */
+/* ==============================
+   ELEMENTS
+============================== */
 
-function joinJunction(id){
+const modal =
+    document.getElementById("roomModal");
 
-    const room = junctions[id];
+const roomTitle =
+    document.getElementById("roomTitle");
 
-    currentJunction = id;
+const roomIcon =
+    document.getElementById("roomIcon");
 
-    /*
-       Maximum 4 active members
-    */
+const roomInfo =
+    document.getElementById("roomInfo");
 
-    if(room.members.length >= 4){
+const memberList =
+    document.getElementById("memberList");
+
+const messages =
+    document.getElementById("messages");
+
+const messageInput =
+    document.getElementById("messageInput");
+
+const toast =
+    document.getElementById("toast");
+
+
+/* ==============================
+   JUNCTION CLICK
+============================== */
+
+document
+.querySelectorAll(".junction")
+.forEach(card => {
+
+    card.addEventListener("click", function(){
+
+        const id =
+            Number(this.dataset.id);
+
+        enterRoom(id);
+
+    });
+
+});
+
+
+/* ==============================
+   ENTER ROOM
+============================== */
+
+function enterRoom(id){
+
+    const room = rooms[id];
+
+    if(!room){
+
+        return;
+
+    }
+
+
+    const me =
+        username + " ⚡ HainX";
+
+
+    /* FULL ROOM */
+
+    if(
+        room.members.length >= 4 &&
+        !room.members.includes(me)
+    ){
+
+        addToWaiting(id);
 
         showToast(
-            "⏳ Junction full! You have been placed in the Waiting Room."
+            "⏳ Junction full — you are in the Waiting Room."
         );
 
         return;
@@ -1080,42 +1079,159 @@ function joinJunction(id){
     }
 
 
-    if(room.members.includes(userName + " ⚡ HainX")){
+    /* ADD USER */
 
-        openRoom(id);
+    if(!room.members.includes(me)){
+
+        room.members.push(me);
+
+    }
+
+
+    currentRoom = id;
+
+    roomIcon.textContent =
+        room.icon;
+
+    roomTitle.textContent =
+        room.name;
+
+    roomInfo.textContent =
+        "Junction " +
+        room.number +
+        " • " +
+        room.members.length +
+        " / 4 Members";
+
+
+    renderMembers();
+
+
+    modal.classList.add("active");
+
+}
+
+
+/* ==============================
+   MEMBERS
+============================== */
+
+function renderMembers(){
+
+    memberList.innerHTML = "";
+
+    const room =
+        rooms[currentRoom];
+
+    room.members.forEach(name => {
+
+        const div =
+            document.createElement("div");
+
+        div.className = "member";
+
+        const avatar =
+            name.charAt(0).toUpperCase();
+
+        div.innerHTML = `
+            <div class="avatar">
+                ${avatar}
+            </div>
+
+            <div class="member-name">
+                ${safe(name)}
+                <span class="online">
+                    ● ONLINE
+                </span>
+            </div>
+        `;
+
+        memberList.appendChild(div);
+
+    });
+
+}
+
+
+/* ==============================
+   WAITING ROOM
+============================== */
+
+function addToWaiting(id){
+
+    const waiting =
+        document.getElementById("waitingUsers");
+
+    const already =
+        [...waiting.children]
+        .some(el =>
+            el.textContent.includes(username)
+        );
+
+    if(already){
 
         return;
 
     }
 
 
-    room.members.push(
-        userName + " ⚡ HainX"
-    );
+    const user =
+        document.createElement("div");
 
-    updateCounts();
+    user.className =
+        "waiting-user";
 
-    openRoom(id);
+    user.textContent =
+        username + " ⚡ HainX";
 
-    showToast(
-        "⚡ Welcome to " + room.name
-    );
+    waiting.appendChild(user);
+
+
+    updateWaitingCount();
 
 }
 
 
-/* =========================
-   OPEN ROOM
-========================= */
+/* ==============================
+   WAITING COUNT
+============================== */
 
-function openRoom(id){
+function updateWaitingCount(){
 
-    const room = junctions[id];
+    const count =
+        document
+        .getElementById("waitingUsers")
+        .children.length;
 
-    document.getElementById("roomIcon").innerText =
-        room.icon;
+    document
+        .getElementById("waitingCount")
+        .textContent = count;
 
-    document.getElementById("roomName").innerText =
-        room.name;
+}
 
-    doc
+
+/* ==============================
+   CLOSE ROOM
+============================== */
+
+document
+.getElementById("closeRoom")
+.addEventListener("click",leaveRoom);
+
+
+function leaveRoom(){
+
+    if(currentRoom === null){
+
+        modal.classList.remove("active");
+
+        return;
+
+    }
+
+
+    const room =
+        rooms[currentRoom];
+
+    const me =
+        user
