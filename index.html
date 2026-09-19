@@ -1234,4 +1234,149 @@ function leaveRoom(){
         rooms[currentRoom];
 
     const me =
-        user
+        username + " ⚡ HainX";
+
+    const index =
+        room.members.indexOf(me);
+
+
+    if(index !== -1){
+
+        room.members.splice(index,1);
+
+    }
+
+
+    modal.classList.remove("active");
+
+    currentRoom = null;
+
+    showToast(
+        "You left the Junction."
+    );
+
+}
+
+
+/* ==============================
+   SEND MESSAGE
+============================== */
+
+document
+.getElementById("sendButton")
+.addEventListener("click",sendMessage);
+
+
+messageInput
+.addEventListener("keydown",function(event){
+
+    if(event.key === "Enter"){
+
+        sendMessage();
+
+    }
+
+});
+
+
+function sendMessage(){
+
+    const text =
+        messageInput.value.trim();
+
+
+    if(!text){
+
+        return;
+
+    }
+
+
+    const div =
+        document.createElement("div");
+
+    div.className =
+        "msg mine";
+
+
+    div.innerHTML = `
+
+        <div class="sender">
+            ${safe(username)} ⚡ HainX
+        </div>
+
+        <div class="bubble">
+            ${safe(text)}
+        </div>
+
+    `;
+
+
+    messages.appendChild(div);
+
+    messageInput.value = "";
+
+    messages.scrollTop =
+        messages.scrollHeight;
+
+}
+
+
+/* ==============================
+   SAFE TEXT
+============================== */
+
+function safe(text){
+
+    return text
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
+
+}
+
+
+/* ==============================
+   TOAST
+============================== */
+
+function showToast(text){
+
+    toast.textContent =
+        text;
+
+    toast.classList.add("show");
+
+
+    setTimeout(function(){
+
+        toast.classList.remove("show");
+
+    },3000);
+
+}
+
+
+/* ==============================
+   CLOSE WHEN CLICK OUTSIDE
+============================== */
+
+modal.addEventListener("click",function(event){
+
+    if(event.target === modal){
+
+        leaveRoom();
+
+    }
+
+});
+
+
+updateWaitingCount();
+
+</script>
+
+</body>
+</html>
