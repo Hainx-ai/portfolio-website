@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>HainX ⚡ Junction World</title>
+<title>HainX ⚡ Junction</title>
 
 <style>
 *{
@@ -14,212 +14,232 @@
     font-family:Arial,Helvetica,sans-serif;
 }
 
+:root{
+    --cyan:#55e2ff;
+    --blue:#008cff;
+    --orange:#ff9d50;
+    --green:#45e39b;
+    --red:#ff5577;
+    --bg:#02060b;
+    --panel:#07111e;
+    --text:#eaf7ff;
+    --muted:#718197;
+}
+
 body{
     min-height:100vh;
-    color:#fff;
+    color:var(--text);
     background:
-      radial-gradient(circle at 50% 0%,#12345a 0%,#06101d 35%,#010307 80%);
+        radial-gradient(circle at 50% -10%,#123b62 0%,#071522 32%,#010307 75%);
     overflow-x:hidden;
 }
 
-/* BACKGROUND */
-
-body:before{
+body::before{
     content:"";
     position:fixed;
     inset:0;
     pointer-events:none;
-    opacity:.15;
+    opacity:.12;
     background-image:
-      radial-gradient(circle,#ffffff 1px,transparent 1px);
-    background-size:100px 100px;
+        radial-gradient(circle,#fff 1px,transparent 1px);
+    background-size:90px 90px;
 }
-
-/* SIDE BRAND */
-
-.side{
-    position:fixed;
-    top:50%;
-    z-index:5;
-    writing-mode:vertical-rl;
-    transform:translateY(-50%);
-    font-size:11px;
-    letter-spacing:4px;
-    font-weight:bold;
-    color:#42dfff;
-    opacity:.55;
-}
-
-.side.left{left:12px;}
-
-.side.right{
-    right:12px;
-    transform:translateY(-50%) rotate(180deg);
-}
-
-.side span{
-    color:#ff9d50;
-}
-
-/* HEADER */
 
 header{
-    height:72px;
-    padding:0 7%;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+    height:70px;
     position:sticky;
     top:0;
     z-index:20;
-    background:rgba(2,7,14,.9);
-    border-bottom:1px solid rgba(100,220,255,.12);
-    backdrop-filter:blur(15px);
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 6%;
+
+    background:rgba(2,7,14,.88);
+    backdrop-filter:blur(18px);
+
+    border-bottom:1px solid rgba(85,226,255,.12);
 }
 
 .logo{
-    font-size:27px;
+    font-size:26px;
     font-weight:900;
-    color:#55e2ff;
-    text-shadow:0 0 18px #009dff;
+    color:var(--cyan);
+    text-shadow:0 0 20px rgba(0,180,255,.7);
 }
 
 .logo span{
-    color:#ff9d50;
+    color:var(--orange);
 }
 
-.user{
+.user-pill{
     padding:9px 15px;
     border-radius:30px;
-    border:1px solid rgba(80,220,255,.2);
-    background:rgba(255,255,255,.04);
-    font-size:12px;
-}
 
-/* MAIN */
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(85,226,255,.15);
+
+    font-size:11px;
+    color:#c9d7e5;
+}
 
 main{
     width:90%;
     max-width:1150px;
     margin:auto;
-    padding:45px 0 70px;
+    padding:55px 0 80px;
 }
 
 .hero{
     text-align:center;
-    margin-bottom:35px;
+    margin-bottom:40px;
 }
 
 .hero small{
-    color:#ff9d50;
-    letter-spacing:4px;
+    color:var(--orange);
     font-size:10px;
+    letter-spacing:5px;
 }
 
 .hero h1{
-    font-size:42px;
-    margin:12px 0;
+    font-size:46px;
+    margin:13px 0;
 }
 
 .hero h1 span{
-    color:#55e2ff;
+    color:var(--cyan);
 }
 
 .hero p{
-    color:#8799ae;
-    line-height:1.6;
+    max-width:650px;
+    margin:auto;
+    color:#8192a7;
+    line-height:1.7;
+    font-size:13px;
 }
 
-/* STATS */
+.status{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+
+    margin-top:18px;
+    padding:7px 12px;
+
+    border-radius:20px;
+    background:rgba(69,227,155,.06);
+    border:1px solid rgba(69,227,155,.15);
+
+    color:var(--green);
+    font-size:10px;
+}
+
+.status-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 10px var(--green);
+}
 
 .stats{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:14px;
-    margin-bottom:35px;
+    gap:15px;
+    margin-bottom:38px;
 }
 
 .stat{
-    padding:18px;
+    padding:20px;
     text-align:center;
-    border-radius:17px;
+
+    border-radius:18px;
     background:rgba(255,255,255,.035);
     border:1px solid rgba(255,255,255,.07);
 }
 
 .stat b{
     display:block;
-    color:#55e2ff;
-    font-size:23px;
+    font-size:25px;
+    color:var(--cyan);
     margin-bottom:5px;
 }
 
 .stat small{
-    color:#718197;
+    color:var(--muted);
 }
 
-/* TITLE */
-
-.title{
+.section-head{
     display:flex;
-    justify-content:space-between;
     align-items:center;
+    justify-content:space-between;
     margin-bottom:17px;
 }
 
-.title h2{
+.section-head h2{
     font-size:20px;
 }
 
-.title span{
-    color:#718197;
-    font-size:11px;
+.section-head span{
+    font-size:10px;
+    color:var(--muted);
 }
-
-/* JUNCTION GRID */
 
 .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(225px,1fr));
     gap:17px;
 }
 
 .junction{
     position:relative;
-    min-height:215px;
-    padding:23px;
-    border-radius:22px;
+    min-height:225px;
+    padding:24px;
+
     cursor:pointer;
 
-    background:
-      linear-gradient(145deg,
-      rgba(16,40,67,.9),
-      rgba(3,9,17,.97));
+    border-radius:22px;
 
-    border:1px solid rgba(80,220,255,.16);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(16,43,70,.9),
+            rgba(3,9,17,.98)
+        );
+
+    border:1px solid rgba(85,226,255,.14);
 
     transition:.25s;
 }
 
 .junction:hover{
     transform:translateY(-6px);
-    border-color:#42dfff;
-    box-shadow:0 15px 40px rgba(0,180,255,.15);
+
+    border-color:rgba(85,226,255,.65);
+
+    box-shadow:
+        0 20px 50px rgba(0,160,255,.16);
 }
 
-.junction.full:hover{
-    border-color:#ff9d50;
+.junction.locked{
+    opacity:.72;
 }
 
-.num{
-    color:#ff9d50;
-    font-size:10px;
+.junction.locked:hover{
+    border-color:rgba(255,157,80,.5);
+}
+
+.number{
+    color:var(--orange);
+    font-size:9px;
     letter-spacing:3px;
 }
 
 .icon{
-    font-size:38px;
-    margin:12px 0;
+    font-size:40px;
+    margin:13px 0;
 }
 
 .junction h3{
@@ -231,46 +251,47 @@ main{
     color:#8292a7;
     font-size:12px;
     line-height:1.5;
-    min-height:38px;
 }
 
-.bottom{
+.junction-bottom{
     position:absolute;
-    left:23px;
-    right:23px;
+    left:24px;
+    right:24px;
     bottom:18px;
+
     display:flex;
     justify-content:space-between;
-    font-size:11px;
+
+    font-size:10px;
 }
 
 .open{
-    color:#45e39b;
+    color:var(--green);
 }
 
 .full{
-    color:#ff9d50;
+    color:var(--orange);
 }
 
-/* WAITING */
-
 .waiting{
-    margin-top:35px;
-    padding:25px;
+    margin-top:38px;
+    padding:24px;
+
     border-radius:20px;
-    background:rgba(255,150,70,.035);
-    border:1px solid rgba(255,150,70,.15);
+
+    background:rgba(255,157,80,.035);
+    border:1px solid rgba(255,157,80,.13);
 }
 
 .waiting h2{
-    color:#ffb06c;
+    color:#ffb16d;
     font-size:18px;
     margin-bottom:7px;
 }
 
 .waiting p{
-    color:#7e8ea2;
-    font-size:12px;
+    color:#78899e;
+    font-size:11px;
 }
 
 .waiting-users{
@@ -283,38 +304,51 @@ main{
 .waiting-user{
     padding:8px 12px;
     border-radius:20px;
+
     background:rgba(255,255,255,.04);
+
     color:#aab7c7;
-    font-size:11px;
+    font-size:10px;
 }
 
-/* FOOTER */
+.empty-waiting{
+    color:#55667a;
+    font-size:11px;
+}
 
 footer{
     text-align:center;
     padding:30px;
+
     border-top:1px solid rgba(255,255,255,.06);
-    color:#506074;
-    font-size:11px;
+
+    color:#526176;
+    font-size:10px;
     letter-spacing:1px;
 }
 
 footer strong{
-    color:#ff9d50;
+    color:var(--orange);
 }
 
-/* MODAL */
+
+/* ==============================
+   MODAL
+============================== */
 
 .modal{
     position:fixed;
     inset:0;
     z-index:100;
+
     display:none;
     align-items:center;
     justify-content:center;
-    padding:20px;
-    background:rgba(0,0,0,.8);
-    backdrop-filter:blur(12px);
+
+    padding:15px;
+
+    background:rgba(0,0,0,.84);
+    backdrop-filter:blur(15px);
 }
 
 .modal.active{
@@ -323,233 +357,413 @@ footer strong{
 
 .room{
     width:100%;
-    max-width:850px;
-    height:min(680px,90vh);
+    max-width:920px;
+    height:min(720px,94vh);
+
     display:flex;
     flex-direction:column;
-    background:#050b14;
-    border:1px solid rgba(80,220,255,.2);
-    border-radius:25px;
+
     overflow:hidden;
-    box-shadow:0 0 80px rgba(0,150,255,.18);
+
+    background:#040a12;
+
+    border:1px solid rgba(85,226,255,.18);
+    border-radius:25px;
+
+    box-shadow:
+        0 0 100px rgba(0,140,255,.18);
 }
 
-/* ROOM HEADER */
-
-.room-head{
+.room-header{
     display:flex;
     align-items:center;
     justify-content:space-between;
+
     padding:18px 22px;
+
     border-bottom:1px solid rgba(255,255,255,.07);
 }
 
-.room-name{
+.room-title{
     display:flex;
     align-items:center;
     gap:12px;
 }
 
-.room-icon{
-    font-size:30px;
+.room-title .room-icon{
+    font-size:31px;
 }
 
-.room-name h2{
+.room-title h2{
     font-size:18px;
 }
 
-.room-name p{
-    color:#718197;
-    font-size:11px;
+.room-title p{
+    color:var(--muted);
+    font-size:10px;
     margin-top:4px;
 }
 
 .close{
     border:0;
-    background:rgba(255,255,255,.06);
-    color:white;
-    border-radius:10px;
-    padding:9px 13px;
     cursor:pointer;
+
+    padding:9px 12px;
+    border-radius:10px;
+
+    color:#fff;
+    background:rgba(255,255,255,.06);
 }
 
-/* ROOM CONTENT */
+.close:hover{
+    background:rgba(255,255,255,.1);
+}
 
-.room-content{
+
+/* ROOM BODY */
+
+.room-body{
     flex:1;
-    display:grid;
-    grid-template-columns:220px 1fr;
     min-height:0;
+
+    display:grid;
+    grid-template-columns:260px 1fr;
 }
+
 
 /* MEMBERS */
 
 .members{
-    padding:18px;
-    border-right:1px solid rgba(255,255,255,.07);
+    padding:20px;
+
     overflow-y:auto;
+
+    border-right:1px solid rgba(255,255,255,.07);
 }
 
-.member-title{
-    color:#718197;
-    font-size:10px;
+.member-label{
+    color:#65758a;
+    font-size:9px;
     letter-spacing:2px;
+
     margin-bottom:12px;
 }
 
 .member{
     display:flex;
     align-items:center;
-    gap:9px;
-    padding:10px;
+    gap:10px;
+
+    padding:11px;
+
     margin-bottom:8px;
-    border-radius:12px;
+
+    border-radius:14px;
+
     background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.04);
 }
 
 .avatar{
-    width:30px;
-    height:30px;
+    width:34px;
+    height:34px;
+
+    flex-shrink:0;
+
     display:flex;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
+
     border-radius:50%;
-    background:#0b2c45;
-    color:#55e2ff;
+
+    color:var(--cyan);
+    background:#0b2b43;
+
     font-size:12px;
+    font-weight:bold;
+}
+
+.member-info{
+    min-width:0;
+    flex:1;
 }
 
 .member-name{
     font-size:11px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 
-.online{
-    display:block;
-    color:#45e39b;
+.member-status{
+    color:#56687c;
     font-size:8px;
-    margin-top:3px;
+    margin-top:4px;
 }
 
-/* CHAT */
+.member-status.speaking{
+    color:var(--green);
+}
 
-.chat{
+.speaking-ring{
+    box-shadow:0 0 0 2px rgba(69,227,155,.15),
+               0 0 18px rgba(69,227,155,.45);
+}
+
+
+/* VOICE AREA */
+
+.voice-area{
+    min-width:0;
+    min-height:0;
+
     display:flex;
     flex-direction:column;
-    min-width:0;
 }
 
-.messages{
+.voice-stage{
     flex:1;
-    overflow-y:auto;
+    min-height:0;
+
     padding:22px;
+
+    overflow-y:auto;
 }
 
-.system{
+.voice-intro{
     text-align:center;
-    color:#596b80;
+    padding:15px 0 20px;
+}
+
+.voice-intro h3{
+    font-size:18px;
+    margin-bottom:7px;
+}
+
+.voice-intro p{
+    color:#718197;
     font-size:10px;
-    margin:12px 0;
 }
 
-.msg{
-    margin-bottom:15px;
+.voice-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
 }
 
-.sender{
-    color:#55e2ff;
-    font-size:10px;
-    margin-bottom:5px;
+.voice-card{
+    position:relative;
+
+    min-height:150px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:20px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(30,83,120,.28),
+            rgba(5,12,20,.95)
+        );
+
+    border:1px solid rgba(85,226,255,.10);
+
+    transition:.2s;
 }
 
-.bubble{
-    display:inline-block;
-    padding:10px 13px;
-    max-width:80%;
-    border-radius:5px 15px 15px 15px;
-    background:#0b1828;
-    border:1px solid rgba(255,255,255,.05);
-    color:#d7e2ee;
+.voice-card.active-speaker{
+    border-color:rgba(69,227,155,.55);
+
+    box-shadow:
+        0 0 30px rgba(69,227,155,.09);
+}
+
+.voice-avatar{
+    width:56px;
+    height:56px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    color:var(--cyan);
+    background:#0b2c45;
+
+    font-weight:bold;
+    font-size:18px;
+
+    margin-bottom:10px;
+}
+
+.voice-card.active-speaker .voice-avatar{
+    box-shadow:
+        0 0 0 3px rgba(69,227,155,.18),
+        0 0 25px rgba(69,227,155,.3);
+}
+
+.voice-name{
+    font-size:12px;
+    max-width:90%;
+    text-align:center;
+
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.voice-state{
+    color:#55677b;
+    font-size:8px;
+    margin-top:6px;
+}
+
+.voice-state.speaking{
+    color:var(--green);
+}
+
+.mic-icon{
+    position:absolute;
+    right:12px;
+    top:12px;
+
     font-size:12px;
 }
 
-.mine{
-    text-align:right;
-}
 
-.mine .bubble{
-    border-radius:15px 5px 15px 15px;
-    background:#0b2942;
-}
+/* CONTROLS */
 
-.chat-input{
+.controls{
     display:flex;
-    gap:8px;
-    padding:13px;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+
+    padding:15px;
+
     border-top:1px solid rgba(255,255,255,.07);
+
+    background:rgba(2,7,13,.7);
 }
 
-.chat-input input{
-    flex:1;
-    min-width:0;
-    border:1px solid rgba(80,220,255,.14);
-    border-radius:12px;
-    padding:12px;
-    outline:none;
-    background:#07111e;
-    color:white;
-}
+.control{
+    min-width:105px;
 
-.send{
-    border:0;
-    border-radius:12px;
-    padding:0 18px;
-    color:white;
-    background:linear-gradient(90deg,#00bfff,#625cff);
+    padding:12px 15px;
+
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:13px;
+
+    color:#dceaf5;
+
+    background:rgba(255,255,255,.045);
+
     cursor:pointer;
+
+    font-size:10px;
 }
+
+.control:hover{
+    border-color:rgba(85,226,255,.35);
+}
+
+.control.primary{
+    color:white;
+    background:linear-gradient(90deg,#008cff,#625cff);
+    border:0;
+}
+
+.control.danger{
+    color:#ffb0bf;
+    border-color:rgba(255,85,119,.2);
+    background:rgba(255,85,119,.07);
+}
+
+
+/* CONNECTION */
+
+.connection{
+    text-align:center;
+
+    padding:7px;
+
+    font-size:9px;
+
+    color:#607287;
+
+    background:rgba(255,255,255,.02);
+
+    border-top:1px solid rgba(255,255,255,.04);
+}
+
+.connection.online{
+    color:var(--green);
+}
+
+.connection.warning{
+    color:var(--orange);
+}
+
 
 /* TOAST */
 
 .toast{
     position:fixed;
-    bottom:25px;
+    z-index:300;
+
     left:50%;
-    z-index:200;
-    transform:translate(-50%,100px);
-    padding:13px 20px;
+    bottom:25px;
+
+    transform:translate(-50%,120px);
+
+    padding:13px 18px;
+
     border-radius:13px;
-    background:#0a1929;
-    border:1px solid rgba(80,220,255,.25);
-    color:#d8f7ff;
-    font-size:12px;
+
+    color:#e6f8ff;
+
+    background:#081725;
+    border:1px solid rgba(85,226,255,.2);
+
+    font-size:11px;
+
     transition:.3s;
+
+    box-shadow:0 10px 40px rgba(0,0,0,.4);
 }
 
 .toast.show{
     transform:translate(-50%,0);
 }
 
+
 /* MOBILE */
 
-@media(max-width:650px){
-
-    .side{
-        display:none;
-    }
+@media(max-width:700px){
 
     header{
         padding:0 5%;
     }
 
     .hero h1{
-        font-size:30px;
+        font-size:32px;
     }
 
     .stats{
         grid-template-columns:1fr;
     }
 
-    .room-content{
+    .room{
+        height:96vh;
+        border-radius:18px;
+    }
+
+    .room-body{
         grid-template-columns:1fr;
     }
 
@@ -557,25 +771,25 @@ footer strong{
         display:none;
     }
 
-    .room{
-        height:94vh;
-        border-radius:18px;
+    .voice-grid{
+        grid-template-columns:1fr;
     }
 
+    .voice-card{
+        min-height:125px;
+    }
+
+    .control{
+        min-width:0;
+        flex:1;
+        padding:12px 8px;
+    }
 }
 </style>
 </head>
 
 
 <body>
-
-<div class="side left">
-    HAINX ⚡ <span>BADNAAM JACK</span>
-</div>
-
-<div class="side right">
-    HAINX ⚡ <span>BADNAAM JACK</span>
-</div>
 
 
 <header>
@@ -584,8 +798,8 @@ footer strong{
         HainX <span>⚡</span>
     </div>
 
-    <div class="user" id="userDisplay">
-        Guest ⚡ HainX
+    <div class="user-pill" id="userDisplay">
+        Connecting...
     </div>
 
 </header>
@@ -602,9 +816,14 @@ footer strong{
     </h1>
 
     <p>
-        Enter a Junction. Meet people. Talk freely.
-        Every Junction has only four seats.
+        Enter a Junction. Meet real people.
+        Talk freely. Every Junction has only four seats.
     </p>
+
+    <div class="status">
+        <span class="status-dot"></span>
+        REAL PEOPLE • LIVE JUNCTION
+    </div>
 
 </section>
 
@@ -622,14 +841,14 @@ footer strong{
     </div>
 
     <div class="stat">
-        <b id="waitingCount">5</b>
+        <b id="waitingCount">0</b>
         <small>Waiting Users</small>
     </div>
 
 </section>
 
 
-<div class="title">
+<div class="section-head">
 
     <h2>🌑 Enter a Junction</h2>
 
@@ -642,7 +861,7 @@ footer strong{
 
     <div class="junction" data-id="1">
 
-        <div class="num">JUNCTION 01</div>
+        <div class="number">JUNCTION 01</div>
 
         <div class="icon">🌲</div>
 
@@ -653,9 +872,9 @@ footer strong{
             disappear into the darkness.
         </p>
 
-        <div class="bottom">
-            <span class="count">👥 2 / 4</span>
-            <span class="open">● OPEN</span>
+        <div class="junction-bottom">
+            <span class="count">👥 <span class="room-count">0</span> / 4</span>
+            <span class="open room-state">● OPEN</span>
         </div>
 
     </div>
@@ -663,7 +882,7 @@ footer strong{
 
     <div class="junction" data-id="2">
 
-        <div class="num">JUNCTION 02</div>
+        <div class="number">JUNCTION 02</div>
 
         <div class="icon">🌊</div>
 
@@ -674,9 +893,9 @@ footer strong{
             after midnight.
         </p>
 
-        <div class="bottom">
-            <span class="count">👥 4 / 4</span>
-            <span class="full">● FULL</span>
+        <div class="junction-bottom">
+            <span class="count">👥 <span class="room-count">0</span> / 4</span>
+            <span class="open room-state">● OPEN</span>
         </div>
 
     </div>
@@ -684,7 +903,7 @@ footer strong{
 
     <div class="junction" data-id="3">
 
-        <div class="num">JUNCTION 03</div>
+        <div class="number">JUNCTION 03</div>
 
         <div class="icon">🏚️</div>
 
@@ -695,9 +914,9 @@ footer strong{
             Somebody is always inside.
         </p>
 
-        <div class="bottom">
-            <span class="count">👥 1 / 4</span>
-            <span class="open">● OPEN</span>
+        <div class="junction-bottom">
+            <span class="count">👥 <span class="room-count">0</span> / 4</span>
+            <span class="open room-state">● OPEN</span>
         </div>
 
     </div>
@@ -705,7 +924,7 @@ footer strong{
 
     <div class="junction" data-id="4">
 
-        <div class="num">JUNCTION 04</div>
+        <div class="number">JUNCTION 04</div>
 
         <div class="icon">🪨</div>
 
@@ -716,9 +935,9 @@ footer strong{
             to meet and talk.
         </p>
 
-        <div class="bottom">
-            <span class="count">👥 3 / 4</span>
-            <span class="open">● OPEN</span>
+        <div class="junction-bottom">
+            <span class="count">👥 <span class="room-count">0</span> / 4</span>
+            <span class="open room-state">● OPEN</span>
         </div>
 
     </div>
@@ -726,7 +945,7 @@ footer strong{
 
     <div class="junction" data-id="5">
 
-        <div class="num">JUNCTION 05</div>
+        <div class="number">JUNCTION 05</div>
 
         <div class="icon">🌙</div>
 
@@ -737,9 +956,9 @@ footer strong{
             Only four seats exist.
         </p>
 
-        <div class="bottom">
-            <span class="count">👥 4 / 4</span>
-            <span class="full">● FULL</span>
+        <div class="junction-bottom">
+            <span class="count">👥 <span class="room-count">0</span> / 4</span>
+            <span class="open room-state">● OPEN</span>
         </div>
 
     </div>
@@ -752,18 +971,15 @@ footer strong{
     <h2>⏳ Waiting Room</h2>
 
     <p>
-        Agar kisi Junction mein 4 log hain,
-        naye users yahan waiting mein rahenge.
-        Seat free hote hi queue se next user aa sakta hai.
+        Full Junction mein enter karne par
+        aap waiting queue mein aa sakte ho.
     </p>
 
     <div class="waiting-users" id="waitingUsers">
 
-        <div class="waiting-user">Alex ⚡ HainX</div>
-        <div class="waiting-user">Maya ⚡ HainX</div>
-        <div class="waiting-user">Shadow ⚡ HainX</div>
-        <div class="waiting-user">Riya ⚡ HainX</div>
-        <div class="waiting-user">NightOwl ⚡ HainX</div>
+        <div class="empty-waiting">
+            Waiting room is empty.
+        </div>
 
     </div>
 
@@ -773,610 +989,299 @@ footer strong{
 
 
 <footer>
+
     HainX ⚡ &nbsp; | &nbsp;
     <strong>BADNAAM JACK 🃏</strong>
-    &nbsp; | &nbsp; REAL PEOPLE • REAL CONVERSATIONS
+    &nbsp; | &nbsp;
+    REAL PEOPLE • REAL CONVERSATIONS
+
 </footer>
 
 
-<!-- ROOM -->
+
+<!-- ==========================
+     ROOM MODAL
+========================== -->
 
 <div class="modal" id="roomModal">
 
-    <div class="room">
+<div class="room">
 
-        <div class="room-head">
 
-            <div class="room-name">
+    <div class="room-header">
 
-                <div class="room-icon" id="roomIcon">
-                    🌲
+        <div class="room-title">
+
+            <div class="room-icon" id="roomIcon">
+                🌲
+            </div>
+
+            <div>
+
+                <h2 id="roomTitle">
+                    Shadow Forest
+                </h2>
+
+                <p id="roomInfo">
+                    Junction 01 • 0 / 4 Members
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <button class="close" id="closeRoom">
+            ✕
+        </button>
+
+    </div>
+
+
+
+    <div class="room-body">
+
+
+        <!-- MEMBERS -->
+
+        <aside class="members">
+
+            <div class="member-label">
+                ACTIVE MEMBERS
+            </div>
+
+            <div id="memberList"></div>
+
+            <br>
+
+            <div class="member-label">
+                COMMUNITY
+            </div>
+
+            <div class="member">
+
+                <div class="avatar">
+                    🃏
                 </div>
 
-                <div>
-                    <h2 id="roomTitle">
-                        Shadow Forest
-                    </h2>
+                <div class="member-info">
 
-                    <p id="roomInfo">
-                        Junction 01 • 2 / 4 Members
-                    </p>
+                    <div class="member-name">
+                        Badnaam Jack ⚡
+                    </div>
+
+                    <div class="member-status">
+                        Community Moderator
+                    </div>
+
                 </div>
 
             </div>
 
-            <button class="close" id="closeRoom">
-                ✕
-            </button>
-
-        </div>
+        </aside>
 
 
-        <div class="room-content">
 
-            <aside class="members">
+        <!-- VOICE -->
 
-                <div class="member-title">
-                    ACTIVE MEMBERS
-                </div>
-
-                <div id="memberList"></div>
-
-                <br>
-
-                <div class="member-title">
-                    COMMUNITY MODERATOR
-                </div>
-
-                <div class="member">
-
-                    <div class="avatar">🃏</div>
-
-                    <div class="member-name">
-                        Badnaam Jack ⚡
-                        <span class="online">
-                            ● MODERATOR
-                        </span>
-                    </div>
-
-                </div>
-
-            </aside>
+        <section class="voice-area">
 
 
-            <section class="chat">
+            <div class="voice-stage">
 
-                <div class="messages" id="messages">
+                <div class="voice-intro">
 
-                    <div class="system">
-                        🔒 You entered the Junction.
-                    </div>
+                    <h3>
+                        🎙️ Live Voice Junction
+                    </h3>
 
-                    <div class="system">
-                        🛡️ Respect everyone.
-                    </div>
-
-                    <div class="msg">
-
-                        <div class="sender">
-                            Maya ⚡ HainX
-                        </div>
-
-                        <div class="bubble">
-                            Hey 👋 anyone here?
-                        </div>
-
-                    </div>
-
-                    <div class="msg">
-
-                        <div class="sender">
-                            Alex ⚡ HainX
-                        </div>
-
-                        <div class="bubble">
-                            Yeah 😄 just joined.
-                        </div>
-
-                    </div>
+                    <p>
+                        Real people • Live audio • Maximum 4
+                    </p>
 
                 </div>
 
 
-                <div class="chat-input">
-
-                    <input
-                        id="messageInput"
-                        placeholder="Write something..."
-                    >
-
-                    <button class="send" id="sendButton">
-                        SEND
-                    </button>
-
+                <div
+                    class="voice-grid"
+                    id="voiceGrid">
                 </div>
 
-            </section>
+            </div>
 
-        </div>
+
+            <div
+                class="connection"
+                id="connectionStatus">
+                Connecting to Junction...
+            </div>
+
+
+            <div class="controls">
+
+                <button
+                    class="control primary"
+                    id="micButton">
+                    🎙️ MIC ON
+                </button>
+
+                <button
+                    class="control danger"
+                    id="leaveButton">
+                    🚪 LEAVE
+                </button>
+
+            </div>
+
+        </section>
 
     </div>
 
 </div>
 
+</div>
+
+
 
 <div class="toast" id="toast"></div>
 
 
-<script>
+<!-- REMOTE AUDIO ELEMENTS -->
 
-/* ==============================
-   USER
-============================== */
+<div id="audioContainer"></div>
+
+
+
+<script type="module">
+
+/* =========================================================
+   FIREBASE
+========================================================= */
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+import {
+    getAuth,
+    signInAnonymously,
+    onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+import {
+    getDatabase,
+    ref,
+    set,
+    get,
+    remove,
+    push,
+    onValue,
+    onChildAdded,
+    onChildRemoved,
+    onDisconnect,
+    runTransaction,
+    serverTimestamp
+}
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
+
+
+/* =========================================================
+   FIREBASE CONFIG
+========================================================= */
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyAFjfk27HrCPqDxfDFTYuP9KyG8knbnUi8",
+
+    authDomain:
+        "hainx-b7dfa.firebaseapp.com",
+
+    databaseURL:
+        "https://hainx-b7dfa-default-rtdb.asia-southeast1.firebasedatabase.app",
+
+    projectId:
+        "hainx-b7dfa",
+
+    storageBucket:
+        "hainx-b7dfa.firebasestorage.app",
+
+    messagingSenderId:
+        "1077891362069",
+
+    appId:
+        "1:1077891362069:web:8ffab71bfcf4e4c8cd0d1c",
+
+    measurementId:
+        "G-Y01RM0068"
+};
+
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getDatabase(app);
+
+
+/* =========================================================
+   APP STATE
+========================================================= */
+
+let currentUser = null;
 
 let username =
-    localStorage.getItem("hainxName");
+    localStorage.getItem("hainxName") ||
+    "Guest";
 
-if(!username){
+let currentRoom = null;
 
-    username = "Guest";
+let localStream = null;
 
-}
+let micEnabled = false;
 
-document.getElementById("userDisplay").textContent =
-    username + " ⚡ HainX";
+let roomMembers = {};
+
+let peerConnections = {};
+
+let remoteStreams = {};
+
+let speakingAnalyzers = {};
+
+let listeners = [];
+
+let joining = false;
 
 
-/* ==============================
+/* =========================================================
    JUNCTION DATA
-============================== */
+========================================================= */
 
 const rooms = {
 
     1:{
         name:"Shadow Forest",
         icon:"🌲",
-        number:"01",
-        members:[
-            "Maya ⚡ HainX",
-            "Alex ⚡ HainX"
-        ]
+        number:"01"
     },
 
     2:{
         name:"Midnight Lake",
         icon:"🌊",
-        number:"02",
-        members:[
-            "Raven ⚡ HainX",
-            "Leo ⚡ HainX",
-            "Nora ⚡ HainX",
-            "Ghost ⚡ HainX"
-        ]
+        number:"02"
     },
 
     3:{
         name:"Forgotten House",
         icon:"🏚️",
-        number:"03",
-        members:[
-            "Sam ⚡ HainX"
-        ]
+        number:"03"
     },
 
     4:{
         name:"Silent Valley",
         icon:"🪨",
-        number:"04",
-        members:[
-            "Ayaan ⚡ HainX",
-            "Luna ⚡ HainX",
-            "DarkFox ⚡ HainX"
-        ]
+        number:"04"
     },
 
     5:{
-        name:"Moon Chamber",
-        icon:"🌙",
-        number:"05",
-        members:[
-            "Nova ⚡ HainX",
-            "Shadow ⚡ HainX",
-            "Kai ⚡ HainX",
-            "Mystic ⚡ HainX"
-        ]
-    }
-
-};
-
-
-let currentRoom = null;
-
-
-/* ==============================
-   ELEMENTS
-============================== */
-
-const modal =
-    document.getElementById("roomModal");
-
-const roomTitle =
-    document.getElementById("roomTitle");
-
-const roomIcon =
-    document.getElementById("roomIcon");
-
-const roomInfo =
-    document.getElementById("roomInfo");
-
-const memberList =
-    document.getElementById("memberList");
-
-const messages =
-    document.getElementById("messages");
-
-const messageInput =
-    document.getElementById("messageInput");
-
-const toast =
-    document.getElementById("toast");
-
-
-/* ==============================
-   JUNCTION CLICK
-============================== */
-
-document
-.querySelectorAll(".junction")
-.forEach(card => {
-
-    card.addEventListener("click", function(){
-
-        const id =
-            Number(this.dataset.id);
-
-        enterRoom(id);
-
-    });
-
-});
-
-
-/* ==============================
-   ENTER ROOM
-============================== */
-
-function enterRoom(id){
-
-    const room = rooms[id];
-
-    if(!room){
-
-        return;
-
-    }
-
-
-    const me =
-        username + " ⚡ HainX";
-
-
-    /* FULL ROOM */
-
-    if(
-        room.members.length >= 4 &&
-        !room.members.includes(me)
-    ){
-
-        addToWaiting(id);
-
-        showToast(
-            "⏳ Junction full — you are in the Waiting Room."
-        );
-
-        return;
-
-    }
-
-
-    /* ADD USER */
-
-    if(!room.members.includes(me)){
-
-        room.members.push(me);
-
-    }
-
-
-    currentRoom = id;
-
-    roomIcon.textContent =
-        room.icon;
-
-    roomTitle.textContent =
-        room.name;
-
-    roomInfo.textContent =
-        "Junction " +
-        room.number +
-        " • " +
-        room.members.length +
-        " / 4 Members";
-
-
-    renderMembers();
-
-
-    modal.classList.add("active");
-
-}
-
-
-/* ==============================
-   MEMBERS
-============================== */
-
-function renderMembers(){
-
-    memberList.innerHTML = "";
-
-    const room =
-        rooms[currentRoom];
-
-    room.members.forEach(name => {
-
-        const div =
-            document.createElement("div");
-
-        div.className = "member";
-
-        const avatar =
-            name.charAt(0).toUpperCase();
-
-        div.innerHTML = `
-            <div class="avatar">
-                ${avatar}
-            </div>
-
-            <div class="member-name">
-                ${safe(name)}
-                <span class="online">
-                    ● ONLINE
-                </span>
-            </div>
-        `;
-
-        memberList.appendChild(div);
-
-    });
-
-}
-
-
-/* ==============================
-   WAITING ROOM
-============================== */
-
-function addToWaiting(id){
-
-    const waiting =
-        document.getElementById("waitingUsers");
-
-    const already =
-        [...waiting.children]
-        .some(el =>
-            el.textContent.includes(username)
-        );
-
-    if(already){
-
-        return;
-
-    }
-
-
-    const user =
-        document.createElement("div");
-
-    user.className =
-        "waiting-user";
-
-    user.textContent =
-        username + " ⚡ HainX";
-
-    waiting.appendChild(user);
-
-
-    updateWaitingCount();
-
-}
-
-
-/* ==============================
-   WAITING COUNT
-============================== */
-
-function updateWaitingCount(){
-
-    const count =
-        document
-        .getElementById("waitingUsers")
-        .children.length;
-
-    document
-        .getElementById("waitingCount")
-        .textContent = count;
-
-}
-
-
-/* ==============================
-   CLOSE ROOM
-============================== */
-
-document
-.getElementById("closeRoom")
-.addEventListener("click",leaveRoom);
-
-
-function leaveRoom(){
-
-    if(currentRoom === null){
-
-        modal.classList.remove("active");
-
-        return;
-
-    }
-
-
-    const room =
-        rooms[currentRoom];
-
-    const me =
-        username + " ⚡ HainX";
-
-    const index =
-        room.members.indexOf(me);
-
-
-    if(index !== -1){
-
-        room.members.splice(index,1);
-
-    }
-
-
-    modal.classList.remove("active");
-
-    currentRoom = null;
-
-    showToast(
-        "You left the Junction."
-    );
-
-}
-
-
-/* ==============================
-   SEND MESSAGE
-============================== */
-
-document
-.getElementById("sendButton")
-.addEventListener("click",sendMessage);
-
-
-messageInput
-.addEventListener("keydown",function(event){
-
-    if(event.key === "Enter"){
-
-        sendMessage();
-
-    }
-
-});
-
-
-function sendMessage(){
-
-    const text =
-        messageInput.value.trim();
-
-
-    if(!text){
-
-        return;
-
-    }
-
-
-    const div =
-        document.createElement("div");
-
-    div.className =
-        "msg mine";
-
-
-    div.innerHTML = `
-
-        <div class="sender">
-            ${safe(username)} ⚡ HainX
-        </div>
-
-        <div class="bubble">
-            ${safe(text)}
-        </div>
-
-    `;
-
-
-    messages.appendChild(div);
-
-    messageInput.value = "";
-
-    messages.scrollTop =
-        messages.scrollHeight;
-
-}
-
-
-/* ==============================
-   SAFE TEXT
-============================== */
-
-function safe(text){
-
-    return text
-      .replace(/&/g,"&amp;")
-      .replace(/</g,"&lt;")
-      .replace(/>/g,"&gt;")
-      .replace(/"/g,"&quot;")
-      .replace(/'/g,"&#039;");
-
-}
-
-
-/* ==============================
-   TOAST
-============================== */
-
-function showToast(text){
-
-    toast.textContent =
-        text;
-
-    toast.classList.add("show");
-
-
-    setTimeout(function(){
-
-        toast.classList.remove("show");
-
-    },3000);
-
-}
-
-
-/* ==============================
-   CLOSE WHEN CLICK OUTSIDE
-============================== */
-
-modal.addEventListener("click",function(event){
-
-    if(event.target === modal){
-
-        leaveRoom();
-
-    }
-
-});
-
-
-updateWaitingCount();
-
-</script>
-
-</body>
-</html>
+        name:"Moon Chambe
