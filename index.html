@@ -15,64 +15,63 @@
 
 body{
   font-family:Arial,Helvetica,sans-serif;
-  background:
-    radial-gradient(circle at 20% 10%,#102c4b 0%,transparent 35%),
-    radial-gradient(circle at 80% 80%,#101d38 0%,transparent 35%),
-    #030712;
-  color:white;
   min-height:100vh;
+  color:#fff;
+  background:
+    radial-gradient(circle at 15% 10%,#12345a 0%,transparent 32%),
+    radial-gradient(circle at 85% 85%,#101d42 0%,transparent 35%),
+    #020711;
 }
 
 header{
-  height:65px;
+  height:64px;
+  padding:0 25px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 28px;
-  border-bottom:1px solid #16304d;
-  background:rgba(2,8,20,.85);
-  backdrop-filter:blur(15px);
+  border-bottom:1px solid #173653;
+  background:rgba(2,8,19,.9);
   position:sticky;
   top:0;
   z-index:20;
+  backdrop-filter:blur(12px);
 }
 
 .logo{
   font-size:23px;
   font-weight:900;
-  color:#35d9ff;
+  color:#38d9ff;
 }
 
 .logo span{
-  color:#ffb13b;
+  color:#ffae3d;
 }
 
 .jack{
-  font-size:13px;
-  color:#ffb13b;
+  color:#ffb64c;
+  font-size:12px;
   font-weight:bold;
 }
 
 .status{
+  color:#8ca2ba;
   font-size:11px;
-  color:#62ffb1;
 }
 
 .container{
   max-width:1150px;
   margin:auto;
-  padding:35px 20px 60px;
+  padding:38px 20px 60px;
 }
 
 .hero{
   text-align:center;
-  margin-bottom:30px;
 }
 
 .hero small{
-  color:#ff8d5c;
+  color:#ff885e;
   letter-spacing:4px;
-  font-size:10px;
+  font-size:9px;
 }
 
 .hero h1{
@@ -81,44 +80,44 @@ header{
 }
 
 .hero h1 span{
-  color:#35d9ff;
+  color:#38d9ff;
 }
 
 .hero p{
-  color:#91a5bd;
-  font-size:13px;
+  color:#8da1b8;
+  font-size:12px;
 }
 
 .stats{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:15px;
-  margin:25px 0 35px;
+  margin:28px 0 34px;
 }
 
 .stat{
-  border:1px solid #173451;
-  background:rgba(7,18,35,.75);
+  background:rgba(8,21,39,.85);
+  border:1px solid #183852;
   border-radius:16px;
-  padding:18px;
+  padding:17px;
   text-align:center;
 }
 
 .stat strong{
   display:block;
+  color:#3cdbff;
   font-size:25px;
-  color:#38d9ff;
 }
 
 .stat span{
-  color:#8ca0b8;
-  font-size:11px;
+  color:#849ab1;
+  font-size:10px;
 }
 
 .section-title{
-  margin:20px 0 15px;
+  color:#dce7f2;
   font-size:14px;
-  color:#e7eef8;
+  margin-bottom:15px;
 }
 
 .junction-grid{
@@ -128,31 +127,30 @@ header{
 }
 
 .junction{
-  cursor:pointer;
-  border:1px solid #183854;
-  background:
-    linear-gradient(145deg,rgba(13,34,59,.95),rgba(5,13,27,.95));
-  border-radius:18px;
-  padding:18px;
   min-height:175px;
+  padding:17px;
+  cursor:pointer;
+  border:1px solid #183954;
+  border-radius:18px;
+  background:linear-gradient(145deg,#0d233d,#06101f);
   transition:.25s;
 }
 
 .junction:hover{
   transform:translateY(-5px);
-  border-color:#2bdcff;
-  box-shadow:0 12px 35px rgba(0,210,255,.12);
+  border-color:#35d9ff;
+  box-shadow:0 15px 40px rgba(0,210,255,.13);
 }
 
 .j-number{
-  font-size:9px;
-  color:#66819c;
+  color:#637e99;
+  font-size:8px;
   letter-spacing:2px;
 }
 
 .icon{
   font-size:30px;
-  margin:15px 0 8px;
+  margin:14px 0 7px;
 }
 
 .junction h3{
@@ -161,79 +159,80 @@ header{
 }
 
 .junction p{
-  color:#8499b1;
-  font-size:11px;
+  color:#8297ad;
+  font-size:10px;
   line-height:1.5;
 }
 
 .room-count{
-  margin-top:13px;
   display:flex;
   justify-content:space-between;
-  align-items:center;
+  margin-top:14px;
   font-size:10px;
 }
 
 .open{
-  color:#57ffae;
+  color:#59ffb0;
 }
 
 .full{
-  color:#ff7777;
+  color:#ff727d;
 }
 
 .waiting{
-  margin-top:35px;
-  border:1px solid #1b3550;
-  background:rgba(8,18,34,.8);
-  padding:20px;
+  margin-top:34px;
+  padding:19px;
   border-radius:18px;
+  border:1px solid #193650;
+  background:rgba(7,18,33,.8);
 }
 
 .waiting h3{
+  color:#ffbd54;
   font-size:14px;
-  color:#ffbe55;
 }
 
 .waiting p{
+  color:#8297ad;
+  font-size:10px;
   margin-top:7px;
-  font-size:11px;
-  color:#8095ac;
 }
 
 #waitingList{
   margin-top:12px;
-  color:#8fa4bc;
-  font-size:12px;
+  color:#9aadc1;
+  font-size:11px;
 }
 
 .modal-bg{
+  display:none;
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.75);
-  backdrop-filter:blur(10px);
-  display:none;
-  align-items:center;
-  justify-content:center;
   z-index:100;
   padding:15px;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.78);
+  backdrop-filter:blur(10px);
 }
 
 .modal{
   width:100%;
   max-width:520px;
-  background:#071323;
-  border:1px solid #21435e;
-  border-radius:22px;
+  max-height:90vh;
+  overflow:auto;
   padding:22px;
-  box-shadow:0 30px 100px rgba(0,0,0,.6);
+  border:1px solid #24455f;
+  border-radius:22px;
+  background:#061221;
+  box-shadow:0 30px 100px rgba(0,0,0,.7);
 }
 
 .modal-top{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:20px;
+  margin-bottom:18px;
 }
 
 .modal-top h2{
@@ -241,62 +240,74 @@ header{
 }
 
 .close{
-  border:0;
-  background:#17283c;
-  color:white;
   width:35px;
   height:35px;
+  border:0;
   border-radius:50%;
+  background:#172a40;
+  color:#fff;
+  font-size:20px;
   cursor:pointer;
-  font-size:18px;
 }
 
 .room-info{
-  background:#0b1c30;
-  border-radius:14px;
-  padding:14px;
-  margin-bottom:15px;
+  padding:13px;
+  border-radius:13px;
+  background:#0b1d31;
+  margin-bottom:16px;
 }
 
 .room-info small{
-  color:#738ca5;
+  color:#70879f;
+  font-size:9px;
+}
+
+#roomStatus{
+  margin-top:6px;
+  font-size:12px;
+}
+
+.members-title{
+  color:#70879f;
+  font-size:9px;
 }
 
 .members{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:10px;
-  margin-top:12px;
+  gap:9px;
+  margin-top:10px;
 }
 
 .member{
-  background:#0d2035;
-  border:1px solid #183b57;
+  padding:11px;
   border-radius:12px;
-  padding:12px;
+  border:1px solid #183b56;
+  background:#0c2035;
 }
 
 .member .name{
-  font-size:13px;
+  font-size:12px;
   font-weight:bold;
+  word-break:break-word;
 }
 
 .member .role{
-  font-size:9px;
-  color:#ffb84d;
+  color:#ffb64c;
+  font-size:8px;
   margin-top:4px;
 }
 
 .join-btn{
   width:100%;
-  border:0;
+  margin-top:18px;
   padding:14px;
+  border:0;
   border-radius:13px;
-  background:linear-gradient(90deg,#16c8ff,#3478ff);
+  cursor:pointer;
   color:white;
   font-weight:bold;
-  cursor:pointer;
-  margin-top:18px;
+  background:linear-gradient(90deg,#10caff,#3a73ff);
 }
 
 .join-btn:disabled{
@@ -305,56 +316,58 @@ header{
 }
 
 .leave-btn{
+  display:none;
   width:100%;
-  border:1px solid #773c45;
+  margin-top:10px;
   padding:12px;
   border-radius:13px;
-  background:#24151a;
-  color:#ff8793;
-  font-weight:bold;
   cursor:pointer;
-  margin-top:10px;
-  display:none;
-}
-
-.mic-status{
-  text-align:center;
-  color:#83a1ba;
-  font-size:11px;
-  margin-top:12px;
+  color:#ff8791;
+  background:#24151b;
+  border:1px solid #713d47;
 }
 
 .voice-area{
   display:none;
-  margin-top:15px;
+  margin-top:17px;
+  padding:15px;
+  border-radius:14px;
+  background:#081b2d;
+  border:1px solid #183c57;
 }
 
 .voice-title{
-  color:#5effb1;
-  font-size:11px;
   text-align:center;
+  color:#5dffb2;
+  font-size:10px;
   margin-bottom:12px;
 }
 
 .controls{
   display:flex;
-  gap:10px;
   justify-content:center;
 }
 
 .control-btn{
-  border:1px solid #254a67;
-  background:#0c2035;
-  color:white;
   padding:10px 18px;
   border-radius:10px;
+  color:#fff;
+  background:#0d253c;
+  border:1px solid #28516d;
   cursor:pointer;
 }
 
-.control-btn.active{
-  background:#392126;
-  border-color:#a34a58;
-  color:#ff8793;
+.control-btn.muted{
+  color:#ff8b96;
+  background:#351b21;
+  border-color:#884652;
+}
+
+.mic-status{
+  text-align:center;
+  margin-top:11px;
+  color:#849bb1;
+  font-size:10px;
 }
 
 audio{
@@ -367,9 +380,10 @@ audio{
   }
 }
 
-@media(max-width:550px){
+@media(max-width:560px){
+
   header{
-    padding:0 15px;
+    padding:0 14px;
   }
 
   .jack{
@@ -377,7 +391,7 @@ audio{
   }
 
   .hero h1{
-    font-size:31px;
+    font-size:32px;
   }
 
   .stats{
@@ -399,24 +413,37 @@ audio{
 
 <header>
   <div class="logo">HainX <span>⚡</span></div>
-  <div class="jack">BADNAAM JACK 🃏</div>
-  <div class="status" id="connectionStatus">Connecting...</div>
+
+  <div class="jack">
+    BADNAAM JACK 🃏
+  </div>
+
+  <div class="status" id="connectionStatus">
+    Connecting...
+  </div>
 </header>
+
 
 <div class="container">
 
   <section class="hero">
     <small>THE WORLD BEHIND THE SCREEN</small>
-    <h1>Welcome to <span>HainX</span></h1>
+
+    <h1>
+      Welcome to <span>HainX</span>
+    </h1>
+
     <p>
       Enter a Junction. Meet real people. Talk freely.
       Every Junction has only four seats.
     </p>
   </section>
 
+
   <section class="stats">
+
     <div class="stat">
-      <strong id="junctionCount">5</strong>
+      <strong>5</strong>
       <span>Junctions</span>
     </div>
 
@@ -429,73 +456,132 @@ audio{
       <strong id="waitingCount">0</strong>
       <span>Waiting Users</span>
     </div>
+
   </section>
 
-  <div class="section-title">🌑 Enter a Junction</div>
+
+  <div class="section-title">
+    🌑 Enter a Junction
+  </div>
+
 
   <div class="junction-grid">
 
     <div class="junction" data-room="shadow">
+
       <div class="j-number">JUNCTION 01</div>
+
       <div class="icon">🌲</div>
+
       <h3>Shadow Forest</h3>
-      <p>A mysterious forest where conversations disappear into the darkness.</p>
+
+      <p>
+        A mysterious forest where conversations disappear
+        into the darkness.
+      </p>
+
       <div class="room-count">
         <span id="count-shadow">0/4</span>
-        <span class="open">● OPEN</span>
+        <span class="open" id="status-shadow">● OPEN</span>
       </div>
+
     </div>
+
 
     <div class="junction" data-room="lake">
+
       <div class="j-number">JUNCTION 02</div>
+
       <div class="icon">🌊</div>
+
       <h3>Midnight Lake</h3>
-      <p>Moonlight, water and conversations after midnight.</p>
+
+      <p>
+        Moonlight, water and conversations after midnight.
+      </p>
+
       <div class="room-count">
         <span id="count-lake">0/4</span>
-        <span class="open">● OPEN</span>
+        <span class="open" id="status-lake">● OPEN</span>
       </div>
+
     </div>
+
 
     <div class="junction" data-room="house">
+
       <div class="j-number">JUNCTION 03</div>
+
       <div class="icon">🏚️</div>
+
       <h3>Forgotten House</h3>
-      <p>Nobody knows who built it. Somebody is always inside.</p>
+
+      <p>
+        Nobody knows who built it. Somebody is always inside.
+      </p>
+
       <div class="room-count">
         <span id="count-house">0/4</span>
-        <span class="open">● OPEN</span>
+        <span class="open" id="status-house">● OPEN</span>
       </div>
+
     </div>
+
 
     <div class="junction" data-room="valley">
+
       <div class="j-number">JUNCTION 04</div>
+
       <div class="icon">🪨</div>
+
       <h3>Silent Valley</h3>
-      <p>A quiet place for strangers to meet and talk.</p>
+
+      <p>
+        A quiet place for strangers to meet and talk.
+      </p>
+
       <div class="room-count">
         <span id="count-valley">0/4</span>
-        <span class="open">● OPEN</span>
+        <span class="open" id="status-valley">● OPEN</span>
       </div>
+
     </div>
 
+
     <div class="junction" data-room="moon">
+
       <div class="j-number">JUNCTION 05</div>
+
       <div class="icon">🌙</div>
+
       <h3>Moon Chamber</h3>
-      <p>The deepest Junction. Only four seats.</p>
+
+      <p>
+        The deepest Junction. Only four seats.
+      </p>
+
       <div class="room-count">
         <span id="count-moon">0/4</span>
-        <span class="open">● OPEN</span>
+        <span class="open" id="status-moon">● OPEN</span>
       </div>
+
     </div>
 
   </div>
 
+
   <section class="waiting">
+
     <h3>⏳ Waiting Room</h3>
-    <p>If a Junction is full, you can wait for the next available seat.</p>
-    <div id="waitingList">No one is waiting.</div>
+
+    <p>
+      If a Junction is full, you can wait for the next available seat.
+    </p>
+
+    <div id="waitingList">
+      No one is waiting.
+    </div>
+
   </section>
 
 </div>
@@ -508,37 +594,65 @@ audio{
   <div class="modal">
 
     <div class="modal-top">
-      <h2 id="modalTitle">Junction</h2>
-      <button class="close" id="closeBtn">×</button>
+
+      <h2 id="modalTitle">
+        Junction
+      </h2>
+
+      <button class="close" id="closeBtn">
+        ×
+      </button>
+
     </div>
+
 
     <div class="room-info">
-      <small>ROOM STATUS</small>
-      <div id="roomStatus" style="margin-top:6px;">Ready</div>
+
+      <small>
+        ROOM STATUS
+      </small>
+
+      <div id="roomStatus">
+        Checking...
+      </div>
+
     </div>
 
-    <div>
-      <small style="color:#738ca5;">PEOPLE INSIDE</small>
-      <div class="members" id="members"></div>
+
+    <div class="members-title">
+      PEOPLE INSIDE
     </div>
+
+    <div class="members" id="members">
+    </div>
+
 
     <button class="join-btn" id="joinBtn">
       🎙️ JOIN & ENABLE MIC
     </button>
 
+
     <button class="leave-btn" id="leaveBtn">
       LEAVE JUNCTION
     </button>
 
+
     <div class="voice-area" id="voiceArea">
-      <div class="voice-title">● LIVE VOICE CONNECTION</div>
+
+      <div class="voice-title">
+        ● LIVE VOICE CONNECTION
+      </div>
 
       <div class="controls">
+
         <button class="control-btn" id="micBtn">
           🎤 Mic ON
         </button>
+
       </div>
+
     </div>
+
 
     <div class="mic-status" id="micStatus">
       Voice is disabled until you join.
@@ -549,555 +663,719 @@ audio{
 </div>
 
 
-<!-- Firebase Compat SDK -->
+<!-- =====================================================
+     FIREBASE COMPAT SDK
+===================================================== -->
 
 <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-auth-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
 
 
 <script>
 
-/* =========================================================
-   HAINX FIREBASE CONFIG
-========================================================= */
+/* =====================================================
+   FIREBASE CONFIG
+===================================================== */
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAFjfk27HrCPQdxfDFTYuP9KyG8knbnUi8",
-  authDomain: "hainx-b7dfa.firebaseapp.com",
-  projectId: "hainx-b7dfa",
-  storageBucket: "hainx-b7dfa.firebasestorage.app",
-  messagingSenderId: "1077891362069",
-  appId: "1:1077891362069:web:8ffab71bfcf4e4c8cd0d1c",
-  measurementId: "G-Y01RM0068"
+
+  apiKey:
+    "AIzaSyAFjfk27HrCPQdxfDFTYuP9KyG8knbnUi8",
+
+  authDomain:
+    "hainx-b7dfa.firebaseapp.com",
+
+  projectId:
+    "hainx-b7dfa",
+
+  storageBucket:
+    "hainx-b7dfa.firebasestorage.app",
+
+  messagingSenderId:
+    "1077891362069",
+
+  appId:
+    "1:1077891362069:web:8ffab71bfcf4e4c8cd0d1c",
+
+  measurementId:
+    "G-Y01RM0068"
 };
 
 
-/* =========================================================
-   FIREBASE INITIALIZATION
-========================================================= */
+/* =====================================================
+   IMPORTANT: INITIALIZE FIREBASE
+===================================================== */
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
+try {
+
+  if (!firebase.apps.length) {
+
+    firebase.initializeApp(firebaseConfig);
+
+  }
+
+  console.log(
+    "🔥 HainX Firebase:",
+    firebase.apps.length
+  );
+
+} catch(error) {
+
+  console.error(
+    "Firebase initialization failed:",
+    error
+  );
+
 }
 
+
+/* =====================================================
+   FIREBASE SERVICES
+===================================================== */
+
 const auth = firebase.auth();
+
 const db = firebase.database();
 
 
-/* =========================================================
-   GLOBAL VARIABLES
-========================================================= */
+/* =====================================================
+   VARIABLES
+===================================================== */
 
 let currentUser = null;
+
 let currentRoom = null;
+
 let localStream = null;
+
 let micEnabled = false;
 
+let roomListener = null;
+
 const peerConnections = {};
+
 const remoteAudios = {};
+
 const pendingCandidates = {};
 
+const signalListeners = {};
+
 const roomNames = {
+
   shadow: "Shadow Forest",
+
   lake: "Midnight Lake",
+
   house: "Forgotten House",
+
   valley: "Silent Valley",
+
   moon: "Moon Chamber"
+
 };
 
 
-/* =========================================================
-   WEBRTC CONFIG
-========================================================= */
+/* =====================================================
+   WEBRTC
+===================================================== */
 
 const rtcConfig = {
+
   iceServers: [
+
     {
-      urls: [
-        "stun:stun.l.google.com:19302",
-        "stun:stun1.l.google.com:19302"
-      ]
+      urls: "stun:stun.l.google.com:19302"
+    },
+
+    {
+      urls: "stun:stun1.l.google.com:19302"
     }
+
   ]
+
 };
 
 
-/* =========================================================
-   UI HELPERS
-========================================================= */
+/* =====================================================
+   ELEMENTS
+===================================================== */
 
-const statusEl = document.getElementById("connectionStatus");
-const modalBg = document.getElementById("modalBg");
-const modalTitle = document.getElementById("modalTitle");
-const membersEl = document.getElementById("members");
-const roomStatus = document.getElementById("roomStatus");
-const joinBtn = document.getElementById("joinBtn");
-const leaveBtn = document.getElementById("leaveBtn");
-const voiceArea = document.getElementById("voiceArea");
-const micBtn = document.getElementById("micBtn");
-const micStatus = document.getElementById("micStatus");
+const connectionStatus =
+  document.getElementById("connectionStatus");
+
+const modalBg =
+  document.getElementById("modalBg");
+
+const modalTitle =
+  document.getElementById("modalTitle");
+
+const roomStatus =
+  document.getElementById("roomStatus");
+
+const membersEl =
+  document.getElementById("members");
+
+const joinBtn =
+  document.getElementById("joinBtn");
+
+const leaveBtn =
+  document.getElementById("leaveBtn");
+
+const voiceArea =
+  document.getElementById("voiceArea");
+
+const micBtn =
+  document.getElementById("micBtn");
+
+const micStatus =
+  document.getElementById("micStatus");
 
 
-/* =========================================================
-   ANONYMOUS LOGIN
-========================================================= */
+/* =====================================================
+   ANONYMOUS AUTH
+===================================================== */
 
 auth.onAuthStateChanged(async user => {
 
   if (!user) {
-    statusEl.textContent = "Signing in...";
+
+    connectionStatus.textContent =
+      "Signing in...";
 
     try {
+
       await auth.signInAnonymously();
-    } catch (error) {
-      console.error(error);
-      statusEl.textContent = "Auth Error";
+
+    } catch(error) {
+
+      console.error(
+        "Anonymous auth error:",
+        error
+      );
+
+      connectionStatus.textContent =
+        "Auth Error";
+
     }
 
     return;
+
   }
+
 
   currentUser = user;
 
-  statusEl.textContent = "● ONLINE";
 
-  console.log("HainX Authenticated:", user.uid);
+  connectionStatus.textContent =
+    "● ONLINE";
 
-  listenToAllRooms();
-  listenToWaitingRoom();
+
+  console.log(
+    "🔥 HainX User:",
+    currentUser.uid
+  );
+
+
+  listenToRooms();
+
+  listenToWaiting();
+
 });
 
 
-/* =========================================================
-   JUNCTION CARD CLICK
-========================================================= */
+/* =====================================================
+   JUNCTION CLICK
+===================================================== */
 
-document.querySelectorAll(".junction").forEach(card => {
+document.querySelectorAll(".junction")
+.forEach(card => {
 
   card.addEventListener("click", () => {
 
-    const roomId = card.dataset.room;
-
-    openRoom(roomId);
+    openRoom(
+      card.dataset.room
+    );
 
   });
 
 });
 
 
-/* =========================================================
+/* =====================================================
    OPEN ROOM
-========================================================= */
+===================================================== */
 
 function openRoom(roomId) {
 
   currentRoom = roomId;
 
-  modalTitle.textContent = roomNames[roomId];
+  modalTitle.textContent =
+    roomNames[roomId];
 
-  modalBg.style.display = "flex";
+  modalBg.style.display =
+    "flex";
 
-  roomStatus.textContent = "Checking room...";
+  roomStatus.textContent =
+    "Checking room...";
 
-  joinBtn.style.display = "block";
-  joinBtn.disabled = false;
+  joinBtn.style.display =
+    "block";
 
-  leaveBtn.style.display = "none";
+  joinBtn.disabled =
+    false;
 
-  voiceArea.style.display = "none";
+  leaveBtn.style.display =
+    "none";
+
+  voiceArea.style.display =
+    "none";
 
   micStatus.textContent =
     "Voice is disabled until you join.";
 
-  listenToRoomMembers(roomId);
+  listenToRoom(roomId);
 
 }
 
 
-/* =========================================================
-   CLOSE MODAL
-========================================================= */
+/* =====================================================
+   CLOSE ROOM
+===================================================== */
 
-document.getElementById("closeBtn").addEventListener("click", () => {
+document.getElementById("closeBtn")
+.addEventListener("click", async () => {
 
-  if (currentRoom && localStream) {
-    leaveRoom();
+  if (localStream) {
+
+    await leaveRoom();
+
   }
 
-  modalBg.style.display = "none";
+  modalBg.style.display =
+    "none";
 
 });
 
 
-/* =========================================================
-   ROOM MEMBERS LISTENER
-========================================================= */
+/* =====================================================
+   ROOM LISTENER
+===================================================== */
 
-function listenToRoomMembers(roomId) {
+function listenToRoom(roomId) {
 
-  const ref = db.ref(`rooms/${roomId}/members`);
+  if (roomListener) {
 
-  ref.on("value", snapshot => {
+    roomListener.off();
 
-    const data = snapshot.val() || {};
+  }
 
-    const users = Object.entries(data);
 
-    updateRoomCount(roomId, users.length);
+  roomListener =
+    db.ref(
+      `rooms/${roomId}/members`
+    );
 
-    membersEl.innerHTML = "";
 
-    if (!users.length) {
+  roomListener.on(
+    "value",
+    snapshot => {
 
-      membersEl.innerHTML = `
-        <div class="member">
-          <div class="name">Empty Junction</div>
-          <div class="role">Waiting for someone...</div>
-        </div>
-      `;
+      const data =
+        snapshot.val() || {};
 
-      roomStatus.textContent = "0 / 4 seats occupied";
+      const users =
+        Object.entries(data);
+
+
+      updateRoomCount(
+        roomId,
+        users.length
+      );
+
+
+      membersEl.innerHTML =
+        "";
+
+
+      if (!users.length) {
+
+        membersEl.innerHTML = `
+          <div class="member">
+            <div class="name">
+              Empty Junction
+            </div>
+
+            <div class="role">
+              Waiting for someone...
+            </div>
+          </div>
+        `;
+
+        roomStatus.textContent =
+          "0 / 4 seats occupied";
+
+        return;
+
+      }
+
+
+      users.forEach(
+        ([uid,member]) => {
+
+          const div =
+            document.createElement("div");
+
+          div.className =
+            "member";
+
+
+          const name =
+            escapeHTML(
+              member.name ||
+              "Anonymous"
+            );
+
+
+          div.innerHTML = `
+            <div class="name">
+              ${name}
+            </div>
+
+            <div class="role">
+              ${member.moderator
+                ? "🃏 BADNAAM JACK"
+                : "● MEMBER"}
+            </div>
+          `;
+
+
+          membersEl.appendChild(div);
+
+        }
+      );
+
+
+      roomStatus.textContent =
+        `${users.length} / 4 seats occupied`;
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   JOIN BUTTON
+===================================================== */
+
+joinBtn.addEventListener(
+  "click",
+  async () => {
+
+    if (!currentUser) {
+
+      micStatus.textContent =
+        "Connecting to HainX...";
 
       return;
+
     }
 
-    users.forEach(([uid, member]) => {
 
-      const div = document.createElement("div");
+    if (!currentRoom) {
 
-      div.className = "member";
+      return;
 
-      div.innerHTML = `
-        <div class="name">
-          ${escapeHTML(member.name || "Anonymous")}
-        </div>
-
-        <div class="role">
-          ${member.moderator ? "🃏 BADNAAM JACK" : "● MEMBER"}
-        </div>
-      `;
-
-      membersEl.appendChild(div);
-
-    });
-
-    roomStatus.textContent =
-      `${users.length} / 4 seats occupied`;
-
-  });
-
-}
+    }
 
 
-/* =========================================================
-   JOIN BUTTON
-========================================================= */
+    joinBtn.disabled =
+      true;
 
-joinBtn.addEventListener("click", async () => {
 
-  if (!currentUser || !currentRoom) {
-    return;
-  }
+    try {
 
-  joinBtn.disabled = true;
+      /*
+        Ask microphone permission
+      */
 
-  micStatus.textContent =
-    "Requesting microphone permission...";
+      localStream =
+        await navigator.mediaDevices
+        .getUserMedia({
 
-  try {
+          audio: {
 
-    localStream = await navigator.mediaDevices.getUserMedia({
-      audio: {
-        echoCancellation: true,
-        noiseSuppression: true,
-        autoGainControl: true,
-        channelCount: 1
-      },
-      video: false
-    });
+            echoCancellation: true,
 
-    micEnabled = true;
+            noiseSuppression: true,
 
-    await joinRoom();
+            autoGainControl: true,
 
-  } catch (error) {
+            channelCount: 1
 
-    console.error("Microphone error:", error);
+          },
 
-    micStatus.textContent =
-      "Microphone permission was not granted.";
+          video: false
 
-    joinBtn.disabled = false;
+        });
+
+
+      micEnabled =
+        true;
+
+
+      await joinRoom();
+
+    }
+
+    catch(error) {
+
+      console.error(
+        "Microphone error:",
+        error
+      );
+
+
+      micStatus.textContent =
+        "Microphone permission denied.";
+
+
+      joinBtn.disabled =
+        false;
+
+    }
 
   }
+);
 
-});
 
-
-/* =========================================================
-   JOIN ROOM WITH TRANSACTION
-========================================================= */
+/* =====================================================
+   JOIN ROOM
+===================================================== */
 
 async function joinRoom() {
 
   const membersRef =
-    db.ref(`rooms/${currentRoom}/members`);
+    db.ref(
+      `rooms/${currentRoom}/members`
+    );
 
-  let joined = false;
 
-  await membersRef.transaction(current => {
+  let joined =
+    false;
 
-    current = current || {};
 
-    const ids = Object.keys(current);
+  await membersRef.transaction(
+    current => {
 
-    if (ids.includes(currentUser.uid)) {
-      joined = true;
+      current =
+        current || {};
+
+
+      const ids =
+        Object.keys(current);
+
+
+      /*
+        Already inside
+      */
+
+      if (
+        ids.includes(
+          currentUser.uid
+        )
+      ) {
+
+        joined =
+          true;
+
+        return current;
+
+      }
+
+
+      /*
+        Maximum 4 people
+      */
+
+      if (
+        ids.length >= 4
+      ) {
+
+        return;
+
+      }
+
+
+      current[
+        currentUser.uid
+      ] = {
+
+        name:
+          getUserName(),
+
+        joinedAt:
+          firebase.database.ServerValue
+          .TIMESTAMP,
+
+        moderator:
+          false
+
+      };
+
+
+      joined =
+        true;
+
+
       return current;
+
     }
+  );
 
-    if (ids.length >= 4) {
-      return;
-    }
 
-    current[currentUser.uid] = {
-      name: getUserName(),
-      joinedAt: firebase.database.ServerValue.TIMESTAMP,
-      moderator: false
-    };
-
-    joined = true;
-
-    return current;
-
-  });
+  /*
+    Junction full
+  */
 
   if (!joined) {
 
     stopLocalStream();
 
-    await addToWaitingRoom();
+
+    await addToWaiting();
+
 
     roomStatus.textContent =
-      "Junction is full. You are in Waiting Room.";
+      "Junction full — Waiting Room";
+
 
     micStatus.textContent =
       "All 4 seats are occupied.";
 
-    joinBtn.disabled = false;
+
+    joinBtn.disabled =
+      false;
+
 
     return;
+
   }
 
 
-  /* Remove user automatically if connection drops */
+  /*
+    Automatic cleanup
+  */
 
-  const myRef =
-    membersRef.child(currentUser.uid);
+  const myMemberRef =
+    membersRef.child(
+      currentUser.uid
+    );
 
-  await myRef.onDisconnect().remove();
+
+  myMemberRef
+    .onDisconnect()
+    .remove();
 
 
-  joinBtn.style.display = "none";
+  /*
+    UI
+  */
 
-  leaveBtn.style.display = "block";
+  joinBtn.style.display =
+    "none";
 
-  voiceArea.style.display = "block";
+  leaveBtn.style.display =
+    "block";
+
+  voiceArea.style.display =
+    "block";
+
 
   micStatus.textContent =
-    "🎤 Microphone ON — connecting to people...";
+    "🎤 Mic ON — connecting...";
 
 
-  setupWebRTCListeners();
+  /*
+    WebRTC
+  */
+
+  setupWebRTC();
 
 }
 
 
-/* =========================================================
-   GET USER NAME
-========================================================= */
+/* =====================================================
+   USER NAME
+===================================================== */
 
 function getUserName() {
 
-  let name = localStorage.getItem("hainxName");
+  let name =
+    localStorage.getItem(
+      "hainxName"
+    );
+
 
   if (!name) {
 
     name =
-      prompt("Enter your HainX name:");
+      prompt(
+        "Enter your HainX name:"
+      );
 
-    if (!name || !name.trim()) {
-      name = "Anonymous";
+
+    if (
+      !name ||
+      !name.trim()
+    ) {
+
+      name =
+        "Anonymous";
+
     }
+
+
+    name =
+      name
+      .trim()
+      .slice(0,25);
+
 
     localStorage.setItem(
       "hainxName",
-      name.trim().slice(0,25)
+      name
     );
 
   }
+
 
   return name;
 
 }
 
 
-/* =========================================================
-   WEBRTC LISTENERS
-========================================================= */
+/* =====================================================
+   WEBRTC SETUP
+===================================================== */
 
-function setupWebRTCListeners() {
+function setupWebRTC() {
 
   const membersRef =
-    db.ref(`rooms/${currentRoom}/members`);
-
-  membersRef.on("child_added", snapshot => {
-
-    const remoteUid = snapshot.key;
-
-    if (!remoteUid || remoteUid === currentUser.uid) {
-      return;
-    }
-
-    createPeerConnection(remoteUid);
-
-  });
-
-
-  membersRef.on("child_removed", snapshot => {
-
-    const remoteUid = snapshot.key;
-
-    removePeer(remoteUid);
-
-  });
-
-
-  listenForSignals();
-
-}
-
-
-/* =========================================================
-   CREATE PEER CONNECTION
-========================================================= */
-
-function createPeerConnection(remoteUid) {
-
-  if (peerConnections[remoteUid]) {
-    return peerConnections[remoteUid];
-  }
-
-  const pc =
-    new RTCPeerConnection(rtcConfig);
-
-  peerConnections[remoteUid] = pc;
-
-  pendingCandidates[remoteUid] = [];
-
-
-  /* Add microphone */
-
-  if (localStream) {
-
-    localStream.getTracks().forEach(track => {
-
-      pc.addTrack(track, localStream);
-
-    });
-
-  }
-
-
-  /* Remote audio */
-
-  pc.ontrack = event => {
-
-    const stream = event.streams[0];
-
-    if (!remoteAudios[remoteUid]) {
-
-      const audio =
-        document.createElement("audio");
-
-      audio.autoplay = true;
-      audio.playsInline = true;
-
-      audio.volume = 1;
-
-      audio.srcObject = stream;
-
-      audio.id = `audio-${remoteUid}`;
-
-      document.body.appendChild(audio);
-
-      remoteAudios[remoteUid] = audio;
-
-      audio.play().catch(() => {
-        console.log("Audio waiting for user interaction");
-      });
-
-    }
-
-  };
-
-
-  /* ICE candidate */
-
-  pc.onicecandidate = event => {
-
-    if (!event.candidate) {
-      return;
-    }
-
-    const signalRef =
-      db.ref(
-        `rooms/${currentRoom}/signals/${currentUser.uid}/${remoteUid}`
-      );
-
-    signalRef.push({
-      type: "candidate",
-      candidate: event.candidate.toJSON()
-    });
-
-  };
-
-
-  pc.onconnectionstatechange = () => {
-
-    console.log(
-      remoteUid,
-      pc.connectionState
+    db.ref(
+      `rooms/${currentRoom}/members`
     );
-
-  };
 
 
   /*
-    Deterministic offer:
-    Smaller UID creates the offer.
+    Existing + new users
   */
 
-  if (currentUser.uid < remoteUid) {
+  membersRef.on(
+    "child_added",
+    snapshot => {
 
-    createOffer(remoteUid, pc);
-
-  }
-
-
-  return pc;
-
-}
-
-
-/* =========================================================
-   CREATE OFFER
-========================================================= */
-
-async function createOffer(remoteUid, pc) {
-
-  try {
-
-    const offer =
-      await pc.cre
+      const remoteUid =
