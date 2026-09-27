@@ -3,9 +3,19 @@
 <head>
   <meta charset="UTF-8">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>HainX ⚡ Junction</title>
+
+  <meta
+    name="description"
+    content="HainX — Enter a Junction. Meet real people. Talk freely."
+  >
+
+  <link rel="icon" href="data:,">
 
   <style>
     * {
@@ -14,15 +24,42 @@
       padding: 0;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       min-height: 100vh;
-      font-family: Arial, sans-serif;
-      color: white;
+
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      color: #ffffff;
 
       background:
-        radial-gradient(circle at 20% 10%, rgba(30,100,255,.18), transparent 35%),
-        radial-gradient(circle at 80% 80%, rgba(0,180,255,.10), transparent 35%),
-        #020617;
+        radial-gradient(
+          circle at 15% 10%,
+          rgba(37, 99, 235, 0.22),
+          transparent 35%
+        ),
+        radial-gradient(
+          circle at 85% 80%,
+          rgba(14, 165, 233, 0.12),
+          transparent 35%
+        ),
+        linear-gradient(
+          135deg,
+          #020617,
+          #071126 50%,
+          #02040b
+        );
+
+      overflow-x: hidden;
     }
 
     button,
@@ -30,305 +67,483 @@
       font-family: inherit;
     }
 
+    button {
+      cursor: pointer;
+    }
+
+    /* =========================
+       TOP BAR
+    ========================== */
+
     .topbar {
       height: 64px;
-      padding: 0 22px;
+
+      padding: 0 24px;
 
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      border-bottom: 1px solid rgba(255,255,255,.08);
-
-      background: rgba(2,6,23,.85);
-      backdrop-filter: blur(15px);
-
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 50;
+
+      background: rgba(2, 6, 23, 0.78);
+
+      border-bottom:
+        1px solid rgba(255, 255, 255, 0.08);
+
+      backdrop-filter: blur(16px);
     }
 
     .logo {
       color: #67e8f9;
+
       font-size: 20px;
-      font-weight: 900;
+      font-weight: 950;
+
+      letter-spacing: 1px;
     }
 
     .jack {
       color: #fbbf24;
+
       font-size: 10px;
       font-weight: 900;
-      letter-spacing: 1px;
+
+      letter-spacing: 1.5px;
     }
 
-    #connectionStatus {
+    .connection {
       color: #94a3b8;
+
       font-size: 10px;
+      font-weight: 700;
     }
 
-    #connectionStatus.online {
+    .connection.online {
       color: #4ade80;
     }
 
-    #connectionStatus.error {
+    .connection.error {
       color: #fb7185;
     }
 
+    /* =========================
+       HERO
+    ========================== */
+
     .hero {
-      max-width: 1050px;
-      margin: auto;
-      padding: 55px 20px 30px;
+      max-width: 1100px;
+
+      margin: 0 auto;
+
+      padding:
+        58px 20px
+        32px;
+
       text-align: center;
     }
 
     .eyebrow {
-      color: #fbbf24;
-      font-size: 9px;
-      font-weight: 900;
-      letter-spacing: 3px;
       margin-bottom: 12px;
+
+      color: #fbbf24;
+
+      font-size: 9px;
+      font-weight: 950;
+
+      letter-spacing: 3px;
     }
 
     h1 {
-      font-size: clamp(38px, 8vw, 64px);
-      font-weight: 900;
+      font-size: clamp(36px, 7vw, 64px);
+
+      line-height: 1;
+
+      font-weight: 950;
+
+      letter-spacing: -2px;
     }
 
-    .hero p {
-      max-width: 620px;
-      margin: 16px auto;
+    .hero-description {
+      max-width: 650px;
+
+      margin:
+        18px auto
+        0;
+
       color: #94a3b8;
-      font-size: 13px;
+
+      font-size: 14px;
+
       line-height: 1.7;
     }
 
+    /* =========================
+       NAME BOX
+    ========================== */
+
     .name-box {
-      max-width: 430px;
-      margin: 25px auto;
+      max-width: 450px;
+
+      margin:
+        28px auto
+        0;
 
       display: flex;
-      gap: 8px;
-    }
 
-    .name-box input {
-      flex: 1;
-      min-width: 0;
-
-      padding: 13px;
-
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: 12px;
-
-      background: rgba(255,255,255,.05);
-      color: white;
-
-      outline: none;
-    }
-
-    .name-box input:focus {
-      border-color: #38bdf8;
-    }
-
-    .name-box button {
-      padding: 0 18px;
-
-      border: 0;
-      border-radius: 12px;
-
-      background: #38bdf8;
-      color: #001018;
-
-      font-weight: 900;
-      cursor: pointer;
-    }
-
-    .stats {
-      max-width: 850px;
-      margin: 25px auto;
-
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
       gap: 10px;
     }
 
+    .name-input {
+      flex: 1;
+
+      min-width: 0;
+
+      padding:
+        13px 15px;
+
+      border:
+        1px solid rgba(255, 255, 255, 0.10);
+
+      border-radius: 12px;
+
+      outline: none;
+
+      background:
+        rgba(255, 255, 255, 0.05);
+
+      color: #ffffff;
+
+      font-size: 14px;
+    }
+
+    .name-input::placeholder {
+      color: #64748b;
+    }
+
+    .name-input:focus {
+      border-color: #38bdf8;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(56, 189, 248, 0.08);
+    }
+
+    .enter-button {
+      border: 0;
+
+      border-radius: 12px;
+
+      padding:
+        0 20px;
+
+      background: #38bdf8;
+
+      color: #001018;
+
+      font-weight: 950;
+
+      transition:
+        transform 0.15s ease,
+        background 0.15s ease;
+    }
+
+    .enter-button:hover {
+      transform: translateY(-2px);
+
+      background: #67e8f9;
+    }
+
+    /* =========================
+       STATS
+    ========================== */
+
+    .stats {
+      max-width: 900px;
+
+      margin:
+        28px auto
+        0;
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 12px;
+    }
+
     .stat {
-      padding: 17px;
+      padding: 18px 10px;
 
-      border: 1px solid rgba(255,255,255,.07);
-      border-radius: 15px;
+      border:
+        1px solid rgba(255, 255, 255, 0.08);
 
-      background: rgba(255,255,255,.035);
+      border-radius: 16px;
+
+      background:
+        rgba(255, 255, 255, 0.035);
     }
 
     .stat-number {
       color: #67e8f9;
-      font-size: 24px;
-      font-weight: 900;
+
+      font-size: 25px;
+
+      font-weight: 950;
     }
 
     .stat-label {
       margin-top: 4px;
+
       color: #64748b;
-      font-size: 8px;
+
+      font-size: 9px;
+
       text-transform: uppercase;
+
       letter-spacing: 1px;
     }
 
+    /* =========================
+       MAIN SECTION
+    ========================== */
+
     .section {
-      max-width: 1050px;
-      margin: auto;
-      padding: 20px;
+      max-width: 1100px;
+
+      margin: 0 auto;
+
+      padding:
+        25px 20px;
     }
 
     .section-title {
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
       margin-bottom: 14px;
+
       color: #e2e8f0;
+
       font-size: 13px;
+
       font-weight: 900;
     }
 
+    /* =========================
+       JUNCTION GRID
+    ========================== */
+
     .junction-grid {
       display: grid;
-      grid-template-columns: repeat(3,1fr);
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
       gap: 14px;
     }
 
     .junction {
-      padding: 20px;
-      min-height: 175px;
+      min-height: 180px;
 
-      border: 1px solid rgba(255,255,255,.08);
+      padding: 20px;
+
+      border:
+        1px solid rgba(255, 255, 255, 0.08);
+
       border-radius: 20px;
 
       background:
         linear-gradient(
           145deg,
-          rgba(18,45,83,.72),
-          rgba(3,10,25,.95)
+          rgba(18, 45, 83, 0.72),
+          rgba(3, 10, 25, 0.92)
         );
 
-      cursor: pointer;
+      box-shadow:
+        0 15px 40px
+        rgba(0, 0, 0, 0.22);
 
-      transition: .2s;
+      transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
     }
 
     .junction:hover {
       transform: translateY(-4px);
-      border-color: rgba(56,189,248,.4);
+
+      border-color:
+        rgba(56, 189, 248, 0.38);
+
+      box-shadow:
+        0 20px 55px
+        rgba(0, 0, 0, 0.35);
     }
 
     .junction-number {
       color: #64748b;
+
       font-size: 8px;
+
       font-weight: 900;
+
       letter-spacing: 2px;
     }
 
     .junction-icon {
-      margin: 15px 0 8px;
-      font-size: 28px;
+      margin:
+        15px 0
+        10px;
+
+      font-size: 30px;
     }
 
     .junction h3 {
+      margin-bottom: 7px;
+
       font-size: 17px;
-      margin-bottom: 6px;
     }
 
     .junction p {
-      min-height: 32px;
       color: #94a3b8;
-      font-size: 10px;
+
+      font-size: 11px;
+
       line-height: 1.5;
     }
 
     .junction-bottom {
-      margin-top: 17px;
-
       display: flex;
-      justify-content: space-between;
+
       align-items: center;
+
+      justify-content: space-between;
+
+      margin-top: 18px;
     }
 
-    .count {
+    .people-count {
       color: #cbd5e1;
-      font-size: 10px;
+
+      font-size: 11px;
+
+      font-weight: 700;
     }
 
-    .status-open {
+    .open {
       color: #4ade80;
+
       font-size: 9px;
-      font-weight: 900;
+
+      font-weight: 950;
     }
 
-    .status-full {
+    .open.full {
       color: #fb7185;
-      font-size: 9px;
-      font-weight: 900;
     }
+
+    /* =========================
+       WAITING ROOM
+    ========================== */
 
     .waiting {
-      max-width: 1010px;
-      margin: 15px auto 50px;
+      max-width: 1100px;
+
+      margin:
+        5px auto
+        50px;
+
       padding: 20px;
 
-      border: 1px solid rgba(251,191,36,.15);
+      border:
+        1px solid rgba(251, 191, 36, 0.15);
+
       border-radius: 18px;
 
-      background: rgba(251,191,36,.03);
+      background:
+        linear-gradient(
+          145deg,
+          rgba(80, 55, 10, 0.20),
+          rgba(20, 15, 5, 0.25)
+        );
     }
 
     .waiting-title {
       color: #fbbf24;
+
       font-size: 13px;
-      font-weight: 900;
+
+      font-weight: 950;
     }
 
     .waiting-text {
-      margin-top: 6px;
-      color: #64748b;
-      font-size: 10px;
+      margin-top: 7px;
+
+      color: #94a3b8;
+
+      font-size: 11px;
     }
 
-    #waitingList {
+    .waiting-list {
       margin-top: 12px;
 
       display: flex;
+
       flex-wrap: wrap;
+
       gap: 7px;
     }
 
     .waiting-user {
-      padding: 7px 10px;
+      padding:
+        7px 10px;
 
-      border-radius: 9px;
+      border-radius: 10px;
 
-      background: rgba(255,255,255,.05);
+      background:
+        rgba(255, 255, 255, 0.05);
 
       color: #cbd5e1;
+
       font-size: 10px;
     }
 
     .empty {
       color: #475569;
+
       font-size: 10px;
     }
 
-    /* MODAL */
+    /* =========================
+       MODAL
+    ========================== */
 
     .modal {
       position: fixed;
+
       inset: 0;
 
       display: none;
+
       align-items: center;
+
       justify-content: center;
 
       padding: 18px;
 
-      background: rgba(0,0,0,.75);
-      backdrop-filter: blur(12px);
-
       z-index: 100;
+
+      background:
+        rgba(0, 0, 0, 0.75);
+
+      backdrop-filter: blur(12px);
     }
 
     .modal.show {
@@ -336,153 +551,247 @@
     }
 
     .modal-card {
-      width: min(520px,100%);
+      width: min(560px, 100%);
+
       max-height: 90vh;
+
       overflow-y: auto;
 
       padding: 22px;
 
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: 22px;
+      border:
+        1px solid rgba(255, 255, 255, 0.10);
 
-      background: #071326;
-      box-shadow: 0 30px 100px rgba(0,0,0,.6);
+      border-radius: 24px;
+
+      background:
+        linear-gradient(
+          145deg,
+          #0b1930,
+          #020712
+        );
+
+      box-shadow:
+        0 30px 100px
+        rgba(0, 0, 0, 0.65);
     }
 
-    .modal-header {
+    .modal-top {
       display: flex;
-      justify-content: space-between;
+
       align-items: flex-start;
+
+      justify-content: space-between;
+
+      gap: 15px;
     }
 
-    .modal-header h2 {
-      font-size: 22px;
+    .modal-top h2 {
+      font-size: 23px;
     }
 
-    .modal-header p {
+    .modal-top p {
       margin-top: 5px;
+
       color: #64748b;
-      font-size: 10px;
+
+      font-size: 11px;
     }
 
-    .close-btn {
-      width: 35px;
-      height: 35px;
+    .close-button {
+      width: 36px;
+      height: 36px;
 
-      border: 1px solid rgba(255,255,255,.08);
+      flex-shrink: 0;
+
+      border:
+        1px solid rgba(255, 255, 255, 0.08);
+
       border-radius: 10px;
 
-      background: rgba(255,255,255,.05);
-      color: white;
+      background:
+        rgba(255, 255, 255, 0.05);
 
-      cursor: pointer;
+      color: #ffffff;
+
       font-size: 18px;
     }
 
-    .identity {
-      margin-top: 18px;
-      padding: 13px;
-
-      border-radius: 12px;
-      background: rgba(255,255,255,.04);
+    .close-button:hover {
+      background:
+        rgba(255, 255, 255, 0.10);
     }
 
-    .identity-label {
+    .room-info {
+      margin-top: 20px;
+
+      padding: 14px;
+
+      border-radius: 15px;
+
+      background:
+        rgba(255, 255, 255, 0.035);
+    }
+
+    .room-info-label {
       color: #64748b;
+
       font-size: 8px;
+
       text-transform: uppercase;
+
+      letter-spacing: 1.5px;
     }
 
-    .identity-name {
-      margin-top: 5px;
+    .room-info-value {
+      margin-top: 6px;
+
       color: #e2e8f0;
-      font-size: 12px;
+
+      font-size: 13px;
+
+      font-weight: 800;
+    }
+
+    .members {
+      margin-top: 18px;
     }
 
     .members-title {
-      margin: 18px 0 9px;
+      margin-bottom: 10px;
+
       font-size: 11px;
+
       font-weight: 900;
     }
 
     .member {
       display: flex;
-      justify-content: space-between;
+
       align-items: center;
 
-      margin-bottom: 7px;
-      padding: 11px;
+      justify-content: space-between;
 
-      border-radius: 11px;
-      background: rgba(255,255,255,.04);
+      margin-bottom: 7px;
+
+      padding:
+        11px 12px;
+
+      border-radius: 12px;
+
+      background:
+        rgba(255, 255, 255, 0.04);
     }
 
     .member-name {
       color: #e2e8f0;
-      font-size: 11px;
+
+      font-size: 12px;
+
+      font-weight: 700;
     }
 
     .member-role {
       color: #fbbf24;
+
       font-size: 8px;
-      font-weight: 900;
+
+      font-weight: 950;
     }
 
-    .message {
+    .join-message {
       display: none;
 
-      margin-top: 12px;
-      padding: 10px;
+      margin-top: 14px;
+
+      padding: 11px;
 
       border-radius: 10px;
 
-      background: rgba(56,189,248,.08);
+      background:
+        rgba(56, 189, 248, 0.08);
+
       color: #7dd3fc;
 
       font-size: 10px;
+
+      line-height: 1.5;
     }
 
-    .message.show {
+    .join-message.show {
       display: block;
     }
 
-    .leave-btn {
+    .leave-button {
       width: 100%;
-      margin-top: 18px;
+
+      margin-top: 20px;
+
       padding: 13px;
 
       border: 0;
-      border-radius: 11px;
+
+      border-radius: 12px;
 
       background: #ef4444;
-      color: white;
 
-      font-weight: 900;
-      cursor: pointer;
+      color: #ffffff;
+
+      font-weight: 950;
     }
 
+    .leave-button:hover {
+      background: #dc2626;
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+
     .footer {
-      padding: 30px 20px 50px;
+      padding:
+        30px 20px
+        50px;
+
       text-align: center;
 
       color: #334155;
+
       font-size: 9px;
+
       letter-spacing: 1px;
     }
 
-    @media(max-width:800px) {
+    /* =========================
+       MOBILE
+    ========================== */
+
+    @media (max-width: 800px) {
       .junction-grid {
-        grid-template-columns: repeat(2,1fr);
+        grid-template-columns:
+          repeat(2, 1fr);
       }
     }
 
-    @media(max-width:560px) {
+    @media (max-width: 560px) {
+      .topbar {
+        padding: 0 15px;
+      }
+
+      .jack {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 40px;
+      }
+
       .name-box {
         flex-direction: column;
       }
 
-      .name-box button {
-        height: 44px;
+      .enter-button {
+        height: 45px;
       }
 
       .stats {
@@ -492,705 +801,523 @@
       .junction-grid {
         grid-template-columns: 1fr;
       }
-
-      .topbar {
-        padding: 0 14px;
-      }
-
-      .jack {
-        display: none;
-      }
     }
   </style>
 </head>
 
 <body>
 
-<header class="topbar">
+  <!-- =========================
+       TOP BAR
+  ========================== -->
 
-  <div class="logo">
-    HainX ⚡
-  </div>
+  <header class="topbar">
 
-  <div class="jack">
-    BADNAAM JACK 🃏
-  </div>
-
-  <div id="connectionStatus">
-    Connecting...
-  </div>
-
-</header>
-
-
-<main>
-
-  <section class="hero">
-
-    <div class="eyebrow">
-      THE WORLD BEHIND THE SCREEN
+    <div class="logo">
+      HainX ⚡
     </div>
 
-    <h1>
-      Welcome to HainX
-    </h1>
+    <div class="jack">
+      BADNAAM JACK 🃏
+    </div>
 
-    <p>
-      Enter a Junction. Meet real people. Talk freely.
-      Every Junction has only four seats.
-    </p>
+    <div
+      id="connectionStatus"
+      class="connection"
+    >
+      Connecting...
+    </div>
 
-    <div class="name-box">
+  </header>
 
-      <input
-        id="nameInput"
-        type="text"
-        maxlength="30"
-        placeholder="Enter your name..."
+
+  <!-- =========================
+       MAIN
+  ========================== -->
+
+  <main>
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+      <div class="eyebrow">
+        THE WORLD BEHIND THE SCREEN
+      </div>
+
+      <h1>
+        Welcome to HainX
+      </h1>
+
+      <p class="hero-description">
+        Enter a Junction. Meet real people. Talk freely.
+        Every Junction has only four seats.
+      </p>
+
+
+      <!-- NAME -->
+
+      <div class="name-box">
+
+        <input
+          id="nameInput"
+          class="name-input"
+          type="text"
+          maxlength="30"
+          placeholder="Enter your name..."
+          autocomplete="off"
+        >
+
+        <button
+          id="saveNameBtn"
+          class="enter-button"
+          type="button"
+        >
+          ENTER
+        </button>
+
+      </div>
+
+
+      <!-- STATS -->
+
+      <div class="stats">
+
+        <div class="stat">
+
+          <div
+            id="junctionCount"
+            class="stat-number"
+          >
+            5
+          </div>
+
+          <div class="stat-label">
+            Junctions
+          </div>
+
+        </div>
+
+
+        <div class="stat">
+
+          <div
+            id="peopleCount"
+            class="stat-number"
+          >
+            0
+          </div>
+
+          <div class="stat-label">
+            People in Junctions
+          </div>
+
+        </div>
+
+
+        <div class="stat">
+
+          <div
+            id="waitingCount"
+            class="stat-number"
+          >
+            0
+          </div>
+
+          <div class="stat-label">
+            Waiting Users
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- JUNCTIONS -->
+
+    <section class="section">
+
+      <div class="section-title">
+        🌌 Enter a Junction
+      </div>
+
+      <div
+        id="junctionGrid"
+        class="junction-grid"
       >
 
-      <button id="saveNameBtn">
-        ENTER
+        <!-- SHADOW -->
+
+        <div
+          class="junction"
+          data-room="shadow"
+        >
+
+          <div class="junction-number">
+            JUNCTION 01
+          </div>
+
+          <div class="junction-icon">
+            🌲
+          </div>
+
+          <h3>
+            Shadow Forest
+          </h3>
+
+          <p>
+            A mysterious forest where conversations disappear into the darkness.
+          </p>
+
+          <div class="junction-bottom">
+
+            <span
+              id="count-shadow"
+              class="people-count"
+            >
+              0/4
+            </span>
+
+            <span
+              id="open-shadow"
+              class="open"
+            >
+              • OPEN
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- LAKE -->
+
+        <div
+          class="junction"
+          data-room="lake"
+        >
+
+          <div class="junction-number">
+            JUNCTION 02
+          </div>
+
+          <div class="junction-icon">
+            🌊
+          </div>
+
+          <h3>
+            Midnight Lake
+          </h3>
+
+          <p>
+            Moonlight, water and conversations after midnight.
+          </p>
+
+          <div class="junction-bottom">
+
+            <span
+              id="count-lake"
+              class="people-count"
+            >
+              0/4
+            </span>
+
+            <span
+              id="open-lake"
+              class="open"
+            >
+              • OPEN
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- HOUSE -->
+
+        <div
+          class="junction"
+          data-room="house"
+        >
+
+          <div class="junction-number">
+            JUNCTION 03
+          </div>
+
+          <div class="junction-icon">
+            🏚️
+          </div>
+
+          <h3>
+            Forgotten House
+          </h3>
+
+          <p>
+            Nobody knows who owns it. Somebody is always there.
+          </p>
+
+          <div class="junction-bottom">
+
+            <span
+              id="count-house"
+              class="people-count"
+            >
+              0/4
+            </span>
+
+            <span
+              id="open-house"
+              class="open"
+            >
+              • OPEN
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- VALLEY -->
+
+        <div
+          class="junction"
+          data-room="valley"
+        >
+
+          <div class="junction-number">
+            JUNCTION 04
+          </div>
+
+          <div class="junction-icon">
+            🪨
+          </div>
+
+          <h3>
+            Silent Valley
+          </h3>
+
+          <p>
+            A quiet place for strangers to meet and talk.
+          </p>
+
+          <div class="junction-bottom">
+
+            <span
+              id="count-valley"
+              class="people-count"
+            >
+              0/4
+            </span>
+
+            <span
+              id="open-valley"
+              class="open"
+            >
+              • OPEN
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- MOON -->
+
+        <div
+          class="junction"
+          data-room="moon"
+        >
+
+          <div class="junction-number">
+            JUNCTION 05
+          </div>
+
+          <div class="junction-icon">
+            🌙
+          </div>
+
+          <h3>
+            Moon Chamber
+          </h3>
+
+          <p>
+            The secret Junction. Only four can enter.
+          </p>
+
+          <div class="junction-bottom">
+
+            <span
+              id="count-moon"
+              class="people-count"
+            >
+              0/4
+            </span>
+
+            <span
+              id="open-moon"
+              class="open"
+            >
+              • OPEN
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- WAITING -->
+
+    <section class="waiting">
+
+      <div class="waiting-title">
+        👥 Waiting Room
+      </div>
+
+      <div class="waiting-text">
+        If a Junction is full, you can wait for the next available seat.
+      </div>
+
+      <div
+        id="waitingList"
+        class="waiting-list"
+      >
+
+        <span class="empty">
+          Nobody is waiting.
+        </span>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================
+       ROOM MODAL
+  ========================== -->
+
+  <div
+    id="roomModal"
+    class="modal"
+  >
+
+    <div class="modal-card">
+
+      <div class="modal-top">
+
+        <div>
+
+          <h2 id="modalTitle">
+            Junction
+          </h2>
+
+          <p id="modalSubtitle">
+            Real people. One room.
+          </p>
+
+        </div>
+
+
+        <button
+          id="closeModalBtn"
+          class="close-button"
+          type="button"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="room-info">
+
+        <div class="room-info-label">
+          Your identity
+        </div>
+
+        <div
+          id="modalIdentity"
+          class="room-info-value"
+        >
+          Anonymous
+        </div>
+
+      </div>
+
+
+      <div class="members">
+
+        <div class="members-title">
+          People in this Junction
+        </div>
+
+        <div id="memberList">
+
+          <div class="empty">
+            Loading...
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="joinMessage"
+        class="join-message"
+      ></div>
+
+
+      <button
+        id="leaveBtn"
+        class="leave-button"
+        type="button"
+      >
+        Leave Junction
       </button>
 
     </div>
-
-    <div class="stats">
-
-      <div class="stat">
-        <div class="stat-number">5</div>
-        <div class="stat-label">Junctions</div>
-      </div>
-
-      <div class="stat">
-        <div id="peopleCount" class="stat-number">0</div>
-        <div class="stat-label">People in Junctions</div>
-      </div>
-
-      <div class="stat">
-        <div id="waitingCount" class="stat-number">0</div>
-        <div class="stat-label">Waiting Users</div>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <section class="section">
-
-    <div class="section-title">
-      🌌 Enter a Junction
-    </div>
-
-    <div class="junction-grid">
-
-      <div class="junction" data-room="shadow">
-        <div class="junction-number">JUNCTION 01</div>
-        <div class="junction-icon">🌲</div>
-        <h3>Shadow Forest</h3>
-        <p>
-          A mysterious forest where conversations disappear into the darkness.
-        </p>
-
-        <div class="junction-bottom">
-          <span id="count-shadow" class="count">0/4</span>
-          <span id="status-shadow" class="status-open">• OPEN</span>
-        </div>
-      </div>
-
-
-      <div class="junction" data-room="lake">
-        <div class="junction-number">JUNCTION 02</div>
-        <div class="junction-icon">🌊</div>
-        <h3>Midnight Lake</h3>
-        <p>
-          Moonlight, water and conversations after midnight.
-        </p>
-
-        <div class="junction-bottom">
-          <span id="count-lake" class="count">0/4</span>
-          <span id="status-lake" class="status-open">• OPEN</span>
-        </div>
-      </div>
-
-
-      <div class="junction" data-room="house">
-        <div class="junction-number">JUNCTION 03</div>
-        <div class="junction-icon">🏚️</div>
-        <h3>Forgotten House</h3>
-        <p>
-          Nobody knows who owns it. Somebody is always there.
-        </p>
-
-        <div class="junction-bottom">
-          <span id="count-house" class="count">0/4</span>
-          <span id="status-house" class="status-open">• OPEN</span>
-        </div>
-      </div>
-
-
-      <div class="junction" data-room="valley">
-        <div class="junction-number">JUNCTION 04</div>
-        <div class="junction-icon">🪨</div>
-        <h3>Silent Valley</h3>
-        <p>
-          A quiet place for strangers to meet and talk.
-        </p>
-
-        <div class="junction-bottom">
-          <span id="count-valley" class="count">0/4</span>
-          <span id="status-valley" class="status-open">• OPEN</span>
-        </div>
-      </div>
-
-
-      <div class="junction" data-room="moon">
-        <div class="junction-number">JUNCTION 05</div>
-        <div class="junction-icon">🌙</div>
-        <h3>Moon Chamber</h3>
-        <p>
-          The secret Junction. Only four can enter.
-        </p>
-
-        <div class="junction-bottom">
-          <span id="count-moon" class="count">0/4</span>
-          <span id="status-moon" class="status-open">• OPEN</span>
-        </div>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <section class="waiting">
-
-    <div class="waiting-title">
-      👥 Waiting Room
-    </div>
-
-    <div class="waiting-text">
-      Full Junction mein seat available hone tak yahan wait kar sakte ho.
-    </div>
-
-    <div id="waitingList">
-      <span class="empty">
-        Nobody is waiting.
-      </span>
-    </div>
-
-  </section>
-
-</main>
-
-
-<!-- ROOM MODAL -->
-
-<div id="roomModal" class="modal">
-
-  <div class="modal-card">
-
-    <div class="modal-header">
-
-      <div>
-        <h2 id="modalTitle">
-          Junction
-        </h2>
-
-        <p>
-          Real people • Maximum 4
-        </p>
-      </div>
-
-      <button id="closeBtn" class="close-btn">
-        ×
-      </button>
-
-    </div>
-
-
-    <div class="identity">
-
-      <div class="identity-label">
-        Your identity
-      </div>
-
-      <div id="identityName" class="identity-name">
-        Anonymous
-      </div>
-
-    </div>
-
-
-    <div class="members-title">
-      👥 People in this Junction
-    </div>
-
-    <div id="memberList">
-      <div class="empty">
-        Loading...
-      </div>
-    </div>
-
-
-    <div id="message" class="message"></div>
-
-
-    <button id="leaveBtn" class="leave-btn">
-      Leave Junction
-    </button>
 
   </div>
 
-</div>
 
+  <div class="footer">
+    HainX ⚡ — BADNAAM JACK 🃏
+  </div>
 
-<div class="footer">
-  HainX ⚡ — BADNAAM JACK 🃏
-</div>
 
+  <!-- =====================================================
+       FIREBASE SDK
+  ====================================================== -->
 
-<!-- FIREBASE SDK -->
+  <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-auth-compat.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
 
+  <!-- =====================================================
+       FIREBASE BOOTSTRAP
+  ====================================================== -->
 
-<script>
+  <script>
 
-console.log("HainX boot started");
+    console.log("HAINX BOOT STARTED");
 
 
-/* =========================
-   FIREBASE
-========================= */
+    const HAINX_FIREBASE_CONFIG = {
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAFjfk27HrCPqDxfDFTYuP9KyG8knbnUi8",
-  authDomain: "hainx-b7dfa.firebaseapp.com",
-  projectId: "hainx-b7dfa",
-  storageBucket: "hainx-b7dfa.firebasestorage.app",
-  messagingSenderId: "1077891362069",
-  appId: "1:1077891362069:web:8ffab71bfcf4e4c8cd0d1c",
-  measurementId: "G-Y01RM0068"
-};
+      apiKey:
+        "AIzaSyAFjfk27HrCPqDxfDFTYuP9KyG8knbnUi8",
 
-
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
-
-
-const auth = firebase.auth();
-const db = firebase.database();
-
-
-console.log(
-  "Firebase initialized:",
-  firebase.apps.length
-);
-
-
-/* =========================
-   DATA
-========================= */
-
-const rooms = {
-
-  shadow: {
-    name: "Shadow Forest",
-    icon: "🌲"
-  },
-
-  lake: {
-    name: "Midnight Lake",
-    icon: "🌊"
-  },
-
-  house: {
-    name: "Forgotten House",
-    icon: "🏚️"
-  },
-
-  valley: {
-    name: "Silent Valley",
-    icon: "🪨"
-  },
-
-  moon: {
-    name: "Moon Chamber",
-    icon: "🌙"
-  }
-
-};
-
-
-/* =========================
-   STATE
-========================= */
-
-let currentUser = null;
-let currentRoom = null;
-let currentRoomRef = null;
-
-
-/* =========================
-   DOM
-========================= */
-
-const statusEl =
-  document.getElementById("connectionStatus");
-
-const nameInput =
-  document.getElementById("nameInput");
-
-const peopleCount =
-  document.getElementById("peopleCount");
-
-const waitingCount =
-  document.getElementById("waitingCount");
-
-const waitingList =
-  document.getElementById("waitingList");
-
-const roomModal =
-  document.getElementById("roomModal");
-
-const modalTitle =
-  document.getElementById("modalTitle");
-
-const identityName =
-  document.getElementById("identityName");
-
-const memberList =
-  document.getElementById("memberList");
-
-const messageEl =
-  document.getElementById("message");
-
-
-/* =========================
-   NAME
-========================= */
-
-const savedName =
-  localStorage.getItem("hainxName");
-
-if (savedName) {
-  nameInput.value = savedName;
-}
-
-
-function getName() {
-
-  const name =
-    nameInput.value.trim();
-
-  return name
-    ? name.substring(0, 30)
-    : "Anonymous";
-
-}
-
-
-document
-  .getElementById("saveNameBtn")
-  .addEventListener("click", function() {
-
-    const name = getName();
-
-    localStorage.setItem(
-      "hainxName",
-      name
-    );
-
-    identityName.textContent =
-      name;
-
-    showMessage(
-      "Name saved successfully."
-    );
-
-    if (currentUser) {
-      db.ref("users/" + currentUser.uid)
-        .update({
-          name: name
-        });
-    }
-
-  });
-
-
-/* =========================
-   CONNECTION
-========================= */
-
-db.ref(".info/connected").on(
-  "value",
-  function(snapshot) {
-
-    if (snapshot.val() === true) {
-
-      statusEl.textContent =
-        "● Connected";
-
-      statusEl.className =
-        "online";
-
-    } else {
-
-      statusEl.textContent =
-        "Connecting...";
-
-      statusEl.className =
-        "";
-
-    }
-
-  }
-);
-
-
-/* =========================
-   AUTH
-========================= */
-
-auth.onAuthStateChanged(
-  async function(user) {
-
-    if (!user) {
-
-      try {
-
-        await auth.signInAnonymously();
-
-      } catch (error) {
-
-        console.error(
-          "Anonymous login failed:",
-          error
-        );
-
-        statusEl.textContent =
-          "Auth Error";
-
-        statusEl.className =
-          "error";
-
-      }
-
-      return;
-    }
-
-
-    currentUser = user;
-
-
-    await db.ref(
-      "users/" + user.uid
-    ).update({
-
-      name: getName(),
-
-      online: true,
-
-      lastSeen:
-        firebase.database.ServerValue.TIMESTAMP
-
-    });
-
-
-    db.ref(
-      "users/" + user.uid
-    )
-    .onDisconnect()
-    .update({
-
-      online: false,
-
-      lastSeen:
-        firebase.database.ServerValue.TIMESTAMP
-
-    });
-
-
-    db.ref(
-      "waiting/" + user.uid
-    )
-    .onDisconnect()
-    .remove();
-
-
-    startRoomListeners();
-    startWaitingListener();
-
-  }
-);
-
-
-/* =========================
-   ROOM LISTENERS
-========================= */
-
-function startRoomListeners() {
-
-  Object.keys(rooms).forEach(
-    function(roomId) {
-
-      db.ref(
-        "junctions/" +
-        roomId +
-        "/members"
-      ).on(
-        "value",
-        function(snapshot) {
-
-          const members =
-            snapshot.val() || {};
-
-          const count =
-            Object.keys(members).length;
-
-
-          const countEl =
-            document.getElementById(
-              "count-" + roomId
-            );
-
-          const status =
-            document.getElementById(
-              "status-" + roomId
-            );
-
-
-          countEl.textContent =
-            count + "/4";
-
-
-          if (count >= 4) {
-
-            status.textContent =
-              "• FULL";
-
-            status.className =
-              "status-full";
-
-          } else {
-
-            status.textContent =
-              "• OPEN";
-
-            status.className =
-              "status-open";
-
-          }
-
-
-          updateTotalPeople();
-
-        }
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================
-   TOTAL PEOPLE
-========================= */
-
-function updateTotalPeople() {
-
-  let total = 0;
-
-  const requests =
-    Object.keys(rooms).map(
-      function(roomId) {
-
-        return db.ref(
-          "junctions/" +
-          roomId +
-          "/members"
-        ).once("value");
-
-      }
-    );
-
-
-  Promise.all(requests)
-    .then(
-      function(results) {
-
-        results.forEach(
-          function(snapshot) {
-
-            const members =
-              snapshot.val() || {};
-
-            total +=
-              Object.keys(members).length;
-
-          }
-        );
-
-
-        peopleCount.textContent =
-          total;
-
-      }
-    );
-
-}
-
-
-/* =========================
-   WAITING LIST
-========================= */
-
-function startWaitingListener() {
-
-  db.ref("waiting").on(
-    "value",
-    function(snapshot) {
-
-      const waiting =
-        snapshot.val() || {};
-
-      const users =
-        Object.values(waiting);
-
-
-      waitingCount.textContent =
-        users.length;
-
-
-      if (!users.length) {
-
-        waitingList.innerHTML =
-          '<span class="empty">Nobody is waiting.</span>';
-
-        return;
-
-      }
-
-
-      waitingList.innerHTML =
-        "";
-
-
-      users.forEach(
-        function(user) {
-
-          const item =
-            document.createElement("div");
-
-          item.className =
-            "waiting-user";
-
-          it
+      authDomain:
+        "hainx-b7dfa.firebaseapp.com",
