@@ -1,119 +1,384 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HainX ⚡ — Junction</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>HainX ⚡ | Junction</title>
+
 <style>
-:root{
-  --bg1:#65c9ff; --bg2:#238be6; --bg3:#0b4f9c;
-  --panel:rgba(8,35,78,.78); --panel2:rgba(15,65,125,.72);
-  --line:rgba(255,255,255,.20); --text:#f7fbff; --muted:#cce9ff;
-  --green:#79ffad; --danger:#ff6d91; --gold:#ffd76a;
+*{
+  box-sizing:border-box;
 }
-*{box-sizing:border-box}
+
 body{
-  margin:0; min-height:100vh; color:var(--text);
-  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
   background:
-    radial-gradient(circle at 15% 10%,rgba(255,255,255,.32),transparent 25%),
-    radial-gradient(circle at 85% 20%,rgba(127,221,255,.35),transparent 24%),
-    linear-gradient(145deg,var(--bg1),var(--bg2) 48%,var(--bg3));
-  background-attachment:fixed;
+    radial-gradient(circle at top,#8fd8ff 0%,#58b7ee 35%,#2474b7 100%);
+  min-height:100vh;
+  color:#fff;
 }
-body:before{
-  content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;
-  background-image:radial-gradient(rgba(255,255,255,.7) 1px,transparent 1px);
-  background-size:28px 28px;
+
+header{
+  padding:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
-button,input{font:inherit}
-button{cursor:pointer}
-.top{
-  position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;
-  padding:18px 5vw;background:rgba(4,28,65,.72);backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--line)
+
+.logo{
+  font-size:26px;
+  font-weight:bold;
+  letter-spacing:1px;
 }
-.brand{font-weight:900;letter-spacing:.8px}.brand span{color:#9ee9ff}
-.status{font-size:12px;color:var(--muted)}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#777;margin-right:7px}
-.dot.ok{background:var(--green);box-shadow:0 0 14px var(--green)}
-.wrap{width:min(1120px,92vw);margin:0 auto;padding:38px 0 70px}
-.eyebrow{font-size:11px;letter-spacing:2px;color:#d9f6ff;font-weight:800}
-h1{font-size:clamp(34px,6vw,66px);line-height:.98;margin:12px 0}
-.lead{color:#e0f3ff;max-width:720px}
-.identity{margin:22px 0;padding:14px 18px;border:1px solid var(--line);border-radius:18px;background:rgba(8,35,78,.38)}
-.identity b{color:#fff}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:15px;margin-top:25px}
+
+.status{
+  background:#ffffff25;
+  border:1px solid #ffffff40;
+  padding:8px 13px;
+  border-radius:20px;
+  font-size:13px;
+}
+
+.hero{
+  text-align:center;
+  padding:30px 20px 20px;
+}
+
+.hero h1{
+  font-size:42px;
+  margin:0 0 10px;
+}
+
+.hero p{
+  margin:0;
+  opacity:.9;
+}
+
+.junctions{
+  max-width:1100px;
+  margin:30px auto;
+  padding:0 18px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+}
+
 .card{
-  min-height:155px;padding:22px;border:1px solid var(--line);border-radius:24px;
-  background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(4,37,87,.48));
-  box-shadow:0 16px 40px rgba(0,35,85,.22);transition:.18s;position:relative;
+  background:#ffffff18;
+  border:1px solid #ffffff45;
+  backdrop-filter:blur(12px);
+  border-radius:22px;
+  padding:24px;
+  box-shadow:0 15px 40px #0002;
 }
-.card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.45)}
-.icon{font-size:30px}.card h3{margin:12px 0 7px}.card p{margin:0;color:var(--muted);font-size:13px;min-height:38px}
-.count{position:absolute;right:16px;top:16px;font-size:12px;color:#fff}
-.enter{margin-top:15px;width:100%;border:0;border-radius:12px;padding:11px;background:#dff7ff;color:#075293;font-weight:900}
-.wait{
-  margin-top:24px;padding:20px;border-radius:22px;background:rgba(5,31,72,.56);border:1px solid var(--line)
+
+.card h2{
+  margin:0 0 8px;
 }
-.waitHead{display:flex;justify-content:space-between;gap:15px}.queue{margin-top:12px;color:var(--muted);font-size:13px}
-.overlay{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(0,20,50,.64);backdrop-filter:blur(12px)}
-.overlay.show{display:flex}
-.modal{width:min(980px,96vw);max-height:92vh;overflow:auto;border:1px solid rgba(255,255,255,.25);border-radius:28px;background:linear-gradient(160deg,#0d4e96,#072d65);box-shadow:0 30px 100px rgba(0,0,0,.45);padding:24px}
-.roomTop{display:flex;justify-content:space-between;align-items:flex-start;gap:15px}.close{background:transparent;border:1px solid var(--line);color:#fff;border-radius:12px;padding:9px 13px}
-.seats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}
-.seat{min-height:150px;border:1px solid var(--line);border-radius:20px;padding:16px;background:rgba(255,255,255,.07);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
-.avatar{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#a9edff,#3b9cff);color:#073b73;font-size:24px;font-weight:900;margin-bottom:10px}
-.empty{color:#bfe4ff;font-size:12px}.live{color:var(--green);font-size:11px;font-weight:800}
-.moderator{color:var(--gold);font-size:11px;margin-top:5px}
-.controls{display:flex;gap:10px;flex-wrap:wrap;padding:16px;border:1px solid var(--line);border-radius:18px;background:rgba(0,0,0,.12)}
-.btn{border:0;border-radius:12px;padding:12px 16px;font-weight:900}
-.mic{background:#e9fbff;color:#075293}.leave{background:transparent;border:1px solid var(--danger);color:#ffb4c7}
-.notice{margin-top:14px;color:#d9f3ff;font-size:12px}.error{color:#ffb5c6}
-@media(max-width:700px){.seats{grid-template-columns:repeat(2,1fr)}.modal{padding:16px}}
+
+.card p{
+  opacity:.8;
+  font-size:14px;
+  min-height:40px;
+}
+
+.count{
+  font-size:15px;
+  margin:18px 0;
+}
+
+.enter{
+  width:100%;
+  border:0;
+  border-radius:14px;
+  padding:13px;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
+  background:#fff;
+  color:#14639c;
+}
+
+.enter:active{
+  transform:scale(.98);
+}
+
+.waiting{
+  max-width:1100px;
+  margin:25px auto 50px;
+  padding:0 18px;
+}
+
+.waitbox{
+  background:#ffffff15;
+  border:1px solid #ffffff40;
+  border-radius:20px;
+  padding:20px;
+}
+
+.waitbox h2{
+  margin-top:0;
+}
+
+#waitingList{
+  opacity:.85;
+}
+
+/* MODAL */
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:#000b;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+
+.modal.show{
+  display:flex;
+}
+
+.room{
+  width:100%;
+  max-width:520px;
+  background:#123c61;
+  border:1px solid #ffffff35;
+  border-radius:24px;
+  padding:22px;
+  box-shadow:0 25px 80px #0008;
+}
+
+.roomHead{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:15px;
+}
+
+.roomHead h2{
+  margin:0;
+}
+
+.roomHead p{
+  margin:6px 0 0;
+  opacity:.7;
+  font-size:13px;
+}
+
+.close{
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:50%;
+  background:#ffffff18;
+  color:#fff;
+  font-size:23px;
+  cursor:pointer;
+}
+
+.identity{
+  margin:20px 0;
+  padding:14px;
+  border-radius:14px;
+  background:#ffffff10;
+}
+
+.members{
+  background:#ffffff0d;
+  border-radius:16px;
+  padding:15px;
+}
+
+.members h3{
+  margin-top:0;
+  font-size:15px;
+}
+
+.member{
+  padding:11px;
+  border-bottom:1px solid #ffffff12;
+}
+
+.member:last-child{
+  border-bottom:0;
+}
+
+.member.you{
+  font-weight:bold;
+}
+
+.message{
+  margin-top:15px;
+  padding:12px;
+  border-radius:12px;
+  background:#ffffff10;
+  font-size:14px;
+}
+
+.leave{
+  width:100%;
+  margin-top:18px;
+  padding:13px;
+  border:0;
+  border-radius:13px;
+  background:#ff5757;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+footer{
+  text-align:center;
+  opacity:.6;
+  padding:20px;
+  font-size:12px;
+}
 </style>
 </head>
+
 <body>
-<header class="top">
-  <div class="brand">HainX <span>⚡</span> &nbsp; <small>BADNAAM JACK 🃏</small></div>
-  <div class="status"><span id="statusDot" class="dot"></span><span id="statusText">Connecting...</span></div>
+
+<header>
+  <div class="logo">HainX ⚡</div>
+  <div id="connection" class="status">Connecting...</div>
 </header>
 
-<main class="wrap">
-  <div class="eyebrow">REAL PEOPLE ONLY • VOICE PRESENCE</div>
+<section class="hero">
   <h1>The world behind the screen.</h1>
-  <p class="lead">Enter a Junction, meet real people and talk freely. Each Junction has 4 seats. When it is full, new people wait in the Waiting Room.</p>
+  <p>Real people. Real Junctions. Maximum 4 people.</p>
+</section>
 
-  <div class="identity">Your identity: <b id="identity">Anonymous</b></div>
+<section class="junctions">
 
-  <section class="grid" id="junctionGrid"></section>
-
-  <section class="wait">
-    <div class="waitHead"><b>Waiting Room</b><span id="waitingCount">0 waiting</span></div>
-    <div class="queue" id="waitingList">No one is waiting right now.</div>
-  </section>
-</main>
-
-<div class="overlay" id="roomOverlay">
-  <div class="modal">
-    <div class="roomTop">
-      <div><div class="eyebrow" id="roomEyebrow">JUNCTION</div><h2 id="roomTitle" style="margin:7px 0 4px">Shadow Forest</h2><div id="roomSub" class="lead"></div></div>
-      <button class="close" id="closeRoom">✕</button>
+  <div class="card">
+    <h2>🌲 Shadow Forest</h2>
+    <p>A quiet place where strangers meet.</p>
+    <div class="count">
+      <span id="count-shadow">0</span>/4 people
     </div>
-    <div class="seats" id="seats"></div>
-    <div class="controls">
-      <button class="btn mic" id="micBtn">🎙️ Microphone ON</button>
-      <button class="btn leave" id="leaveBtn">↩ Leave Junction</button>
-    </div>
-    <div class="notice" id="roomNotice">Real-time voice uses WebRTC. No audio is recorded by this page.</div>
-    <div class="notice error" id="roomError"></div>
+    <button class="enter" data-room="shadow">
+      ENTER JUNCTION
+    </button>
   </div>
+
+  <div class="card">
+    <h2>🌊 Midnight Lake</h2>
+    <p>Dark water. Unknown people.</p>
+    <div class="count">
+      <span id="count-lake">0</span>/4 people
+    </div>
+    <button class="enter" data-room="lake">
+      ENTER JUNCTION
+    </button>
+  </div>
+
+  <div class="card">
+    <h2>🏚️ Forgotten House</h2>
+    <p>A place forgotten by everyone.</p>
+    <div class="count">
+      <span id="count-house">0</span>/4 people
+    </div>
+    <button class="enter" data-room="house">
+      ENTER JUNCTION
+    </button>
+  </div>
+
+  <div class="card">
+    <h2>🪨 Silent Valley</h2>
+    <p>No noise. Just people.</p>
+    <div class="count">
+      <span id="count-valley">0</span>/4 people
+    </div>
+    <button class="enter" data-room="valley">
+      ENTER JUNCTION
+    </button>
+  </div>
+
+  <div class="card">
+    <h2>🌙 Moon Chamber</h2>
+    <p>Meet someone under the moon.</p>
+    <div class="count">
+      <span id="count-moon">0</span>/4 people
+    </div>
+    <button class="enter" data-room="moon">
+      ENTER JUNCTION
+    </button>
+  </div>
+
+</section>
+
+<section class="waiting">
+  <div class="waitbox">
+    <h2>⏳ Waiting Room</h2>
+    <div id="waitingList">
+      Nobody is waiting.
+    </div>
+  </div>
+</section>
+
+<footer>
+  BADNAAM JACK 🃏 • HainX ⚡
+</footer>
+
+
+<!-- ROOM MODAL -->
+
+<div id="modal" class="modal">
+
+  <div class="room">
+
+    <div class="roomHead">
+      <div>
+        <h2 id="roomTitle">Junction</h2>
+        <p id="roomSubtitle">
+          Real people. Maximum 4 seats.
+        </p>
+      </div>
+
+      <button id="closeModal" class="close">
+        ×
+      </button>
+    </div>
+
+    <div class="identity">
+      <b>You:</b>
+      <span id="identity">Connecting...</span>
+    </div>
+
+    <div class="members">
+      <h3>👥 People in this Junction</h3>
+      <div id="membersList">
+        Loading...
+      </div>
+    </div>
+
+    <div id="roomMessage" class="message">
+      Connecting...
+    </div>
+
+    <button id="leaveButton" class="leave">
+      LEAVE JUNCTION
+    </button>
+
+  </div>
+
 </div>
+
+
+<!-- FIREBASE -->
 
 <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
 
+
 <script>
+
 const firebaseConfig = {
   apiKey: "AIzaSyAFjfk27HrCPqDxfDFTYuP9KyG8knbnUi8",
   authDomain: "hainx-b7dfa.firebaseapp.com",
@@ -124,218 +389,594 @@ const firebaseConfig = {
   measurementId: "G-Y01RM0068"
 };
 
-const JUNCTIONS = {
-  shadow:{name:"Shadow Forest",icon:"🌲",desc:"Deep whispers among ancient misty pines."},
-  lake:{name:"Midnight Lake",icon:"🌊",desc:"Quiet water. Unknown voices."},
-  house:{name:"Forgotten House",icon:"🏚️",desc:"A place where old stories remain."},
-  valley:{name:"Silent Valley",icon:"🪨",desc:"Somewhere between silence and sound."},
-  moon:{name:"Moon Chamber",icon:"🌙",desc:"A hidden room beneath the night."}
-};
-const rtcConfig = {
-  iceServers:[
-    {urls:"stun:stun.l.google.com:19302"},
-    {urls:"stun:stun1.l.google.com:19302"}
-  ]
+
+const junctionNames = {
+  shadow: "🌲 Shadow Forest",
+  lake: "🌊 Midnight Lake",
+  house: "🏚️ Forgotten House",
+  valley: "🪨 Silent Valley",
+  moon: "🌙 Moon Chamber"
 };
 
-let auth, db, uid=null, displayName=null, currentRoom=null, localStream=null, micOn=true;
-const peers = {};
-const remoteEls = {};
-const candidateBuffers = {};
 
-function setStatus(ok,text){document.getElementById("statusDot").className="dot "+(ok?"ok":"");document.getElementById("statusText").textContent=text}
-function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+let auth = null;
+let db = null;
+let currentUser = null;
+let currentRoom = null;
 
-function initUI(){
-  const grid=document.getElementById("junctionGrid");
-  grid.innerHTML="";
-  Object.entries(JUNCTIONS).forEach(([id,j])=>{
-    const el=document.createElement("article");
-    el.className="card";
-    el.innerHTML=`<div class="count" id="count-${id}">0/4</div><div class="icon">${j.icon}</div><h3>${j.name}</h3><p>${j.desc}</p><button class="enter">ENTER JUNCTION →</button>`;
-    el.querySelector("button").onclick=()=>joinRoom(id);
-    grid.appendChild(el);
-  });
-}
-initUI();
 
-async function boot(){
-  try{
-    if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    auth=firebase.auth(); db=firebase.database();
-    await auth.signInAnonymously();
-    uid=auth.currentUser.uid;
-    displayName=localStorage.getItem("hainxName") || "Jack";
-    document.getElementById("identity").textContent=displayName+" ⚡ HainX";
-    setStatus(true,"Connected");
-    listenCounts();
-    listenWaiting();
-  }catch(e){
-    console.error(e); setStatus(false,"Connection error");
-    document.getElementById("roomError").textContent=e.message||String(e);
+/* --------------------------------
+   FIREBASE START
+-------------------------------- */
+
+try {
+
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
   }
-}
-boot();
 
-function listenCounts(){
-  Object.keys(JUNCTIONS).forEach(id=>{
-    db.ref("rooms/"+id+"/members").on("value",s=>{
-      const n=s.exists()?Object.keys(s.val()).length:0;
-      document.getElementById("count-"+id).textContent=n+"/4";
+  auth = firebase.auth();
+  db = firebase.database();
+
+  console.log(
+    "HAINX FIREBASE READY",
+    firebase.SDK_VERSION,
+    firebase.apps.length
+  );
+
+  db.ref(".info/connected").on("value", function(snapshot) {
+
+    const connected = snapshot.val();
+
+    const status = document.getElementById("connection");
+
+    if (connected) {
+      status.textContent = "Connected";
+    } else {
+      status.textContent = "Connecting...";
+    }
+
+  });
+
+
+  auth.onAuthStateChanged(function(user) {
+
+    if (user) {
+
+      currentUser = user;
+
+      console.log(
+        "HAINX AUTH OK:",
+        user.uid
+      );
+
+      document.getElementById("identity").textContent =
+        getUserName();
+
+      startRoomListeners();
+
+    } else {
+
+      auth.signInAnonymously()
+        .then(function(result) {
+
+          console.log(
+            "Anonymous login OK:",
+            result.user.uid
+          );
+
+        })
+        .catch(function(error) {
+
+          console.error(
+            "Anonymous Auth Error:",
+            error
+          );
+
+          document.getElementById("connection").textContent =
+            "Auth Error";
+
+        });
+
+    }
+
+  });
+
+} catch (error) {
+
+  console.error(
+    "HAINX FIREBASE BOOT ERROR:",
+    error
+  );
+
+  document.getElementById("connection").textContent =
+    "Firebase Error";
+
+}
+
+
+/* --------------------------------
+   USER NAME
+-------------------------------- */
+
+function getUserName() {
+
+  let name = localStorage.getItem("hainxName");
+
+  if (!name) {
+
+    name = prompt(
+      "Enter your name"
+    );
+
+    if (!name || !name.trim()) {
+      name = "Anonymous";
+    }
+
+    localStorage.setItem(
+      "hainxName",
+      name.trim()
+    );
+  }
+
+  return name.trim();
+}
+
+
+/* --------------------------------
+   ROOM COUNTS
+-------------------------------- */
+
+function startRoomListeners() {
+
+  Object.keys(junctionNames).forEach(function(room) {
+
+    db.ref("rooms/" + room + "/members")
+      .on("value", function(snapshot) {
+
+        const data = snapshot.val() || {};
+
+        const count =
+          Object.keys(data).length;
+
+        const counter =
+          document.getElementById(
+            "count-" + room
+          );
+
+        if (counter) {
+          counter.textContent = count;
+        }
+
+      });
+
+  });
+
+
+  db.ref("waiting")
+    .on("value", function(snapshot) {
+
+      const data =
+        snapshot.val() || {};
+
+      const users =
+        Object.values(data);
+
+      const box =
+        document.getElementById(
+          "waitingList"
+        );
+
+      if (!users.length) {
+
+        box.textContent =
+          "Nobody is waiting.";
+
+        return;
+      }
+
+      box.innerHTML =
+        users.map(function(user) {
+
+          return "• " +
+            escapeHtml(
+              user.name || "Anonymous"
+            );
+
+        }).join("<br>");
+
     });
-  });
-}
-function listenWaiting(){
-  db.ref("waiting").on("value",s=>{
-    const v=s.val()||{}; const arr=Object.values(v);
-    document.getElementById("waitingCount").textContent=arr.length+" waiting";
-    document.getElementById("waitingList").textContent=arr.length?arr.map(x=>x.name+" • "+JUNCTIONS[x.room]?.name).join("  |  "):"No one is waiting right now.";
-  });
+
 }
 
-async function joinRoom(room){
-  if(!uid) return alert("Connecting to HainX... please try again.");
-  const ref=db.ref("rooms/"+room+"/members/"+uid);
-  const root=db.ref("rooms/"+room+"/members");
-  let joined=false;
-  await root.transaction(current=>{
-    current=current||{};
-    if(Object.keys(current).length>=4 && !current[uid]) return;
-    current[uid]={name:displayName,joinedAt:firebase.database.ServerValue.TIMESTAMP};
-    return current;
+
+/* --------------------------------
+   BUTTON EVENTS
+-------------------------------- */
+
+document.querySelectorAll(".enter")
+  .forEach(function(button) {
+
+    button.addEventListener(
+      "click",
+      function(event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const room =
+          button.dataset.room;
+
+        console.log(
+          "ENTER CLICK:",
+          room
+        );
+
+        openJunction(room);
+
+      }
+    );
+
   });
-  const snap=await ref.once("value");
-  if(!snap.exists()){
-    const w=db.ref("waiting/"+uid);
-    await w.set({name:displayName,room,createdAt:firebase.database.ServerValue.TIMESTAMP});
-    alert("This Junction is full. You are in the Waiting Room.");
+
+
+/* --------------------------------
+   OPEN JUNCTION
+-------------------------------- */
+
+async function openJunction(room) {
+
+  console.log(
+    "OPEN JUNCTION:",
+    room
+  );
+
+
+  /* IMPORTANT:
+     Modal opens FIRST.
+     Firebase cannot block UI anymore.
+  */
+
+  const modal =
+    document.getElementById("modal");
+
+  modal.classList.add("show");
+
+
+  document.getElementById(
+    "roomTitle"
+  ).textContent =
+    junctionNames[room];
+
+
+  document.getElementById(
+    "identity"
+  ).textContent =
+    getUserName();
+
+
+  document.getElementById(
+    "roomMessage"
+  ).textContent =
+    "Checking Junction...";
+
+
+  document.getElementById(
+    "membersList"
+  ).innerHTML =
+    "Loading...";
+
+
+  if (!currentUser) {
+
+    document.getElementById(
+      "roomMessage"
+    ).textContent =
+      "Connecting to HainX...";
+
     return;
   }
-  joined=true;
-  currentRoom=room;
-  await db.ref("waiting/"+uid).remove();
-  ref.onDisconnect().remove();
-  showRoom(room);
-  await prepareLocalAudio();
-  watchMembers(room);
-}
 
-function showRoom(room){
-  const j=JUNCTIONS[room];
-  document.getElementById("roomTitle").textContent=j.icon+" "+j.name;
-  document.getElementById("roomSub").textContent=j.desc;
-  document.getElementById("roomError").textContent="";
-  document.getElementById("roomOverlay").classList.add("show");
-}
-function closeRoomUI(){document.getElementById("roomOverlay").classList.remove("show")}
 
-document.getElementById("closeRoom").onclick=leaveRoom;
-document.getElementById("leaveBtn").onclick=leaveRoom;
+  try {
 
-async function prepareLocalAudio(){
-  try{
-    localStream=await navigator.mediaDevices.getUserMedia({
-      audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1},
-      video:false
-    });
-    micOn=true;
-    updateMicButton();
-  }catch(e){
-    document.getElementById("roomError").textContent="Microphone permission is needed for voice chat: "+e.message;
-  }
-}
-function updateMicButton(){document.getElementById("micBtn").textContent=micOn?"🎙️ Microphone ON":"🔇 Microphone OFF"}
-document.getElementById("micBtn").onclick=()=>{
-  if(!localStream)return;
-  micOn=!micOn; localStream.getAudioTracks().forEach(t=>t.enabled=micOn); updateMicButton();
-};
+    const memberRef =
+      db.ref(
+        "rooms/" +
+        room +
+        "/members"
+      );
 
-function watchMembers(room){
-  db.ref("rooms/"+room+"/members").on("value",snap=>{
-    const members=snap.val()||{};
-    renderSeats(members);
-    Object.keys(members).filter(id=>id!==uid).forEach(id=>connectPeer(id,members[id]));
-    Object.keys(peers).filter(id=>!members[id]).forEach(id=>destroyPeer(id));
-  });
-}
-function renderSeats(members){
-  const box=document.getElementById("seats"); box.innerHTML="";
-  const list=Object.entries(members);
-  for(let i=0;i<4;i++){
-    const s=document.createElement("div"); s.className="seat";
-    if(list[i]){
-      const [id,m]=list[i]; const initial=(m.name||"?")[0].toUpperCase();
-      s.innerHTML=`<div class="avatar">${esc(initial)}</div><b>${esc(m.name)}${id===uid?" (You)":""}</b><div class="live">● LIVE</div>${i===0?'<div class="moderator">👑 Moderator</div>':""}`;
-      if(id!==uid){
-        const audio=document.createElement("audio"); audio.autoplay=true; audio.playsInline=true; audio.style.display="none"; audio.id="audio-"+id; s.appendChild(audio); remoteEls[id]=audio;
-      }
-    }else s.innerHTML=`<div class="avatar" style="opacity:.35">+</div><div class="empty">OPEN SEAT</div>`;
-    box.appendChild(s);
-  }
-}
 
-async function connectPeer(remoteId,member){
-  if(peers[remoteId]) return;
-  const pc=new RTCPeerConnection(rtcConfig);
-  peers[remoteId]=pc; candidateBuffers[remoteId]=[];
-  if(localStream)localStream.getTracks().forEach(t=>pc.addTrack(t,localStream));
-  pc.ontrack=e=>{
-    let a=remoteEls[remoteId];
-    if(!a){a=document.createElement("audio");a.autoplay=true;a.playsInline=true;a.style.display="none";document.body.appendChild(a);remoteEls[remoteId]=a}
-    a.srcObject=e.streams[0];
-  };
-  pc.onicecandidate=e=>{
-    if(e.candidate) db.ref(`signals/${currentRoom}/${uid}/${remoteId}/candidates`).push(e.candidate.toJSON());
-  };
-  pc.onconnectionstatechange=()=>{
-    if(["failed","closed","disconnected"].includes(pc.connectionState)) console.log("Peer state",remoteId,pc.connectionState);
-  };
+    const transaction =
+      await memberRef.transaction(
+        function(members) {
 
-  const signalRef=db.ref(`signals/${currentRoom}/${remoteId}/${uid}`);
-  signalRef.on("value",async snap=>{
-    const data=snap.val(); if(!data)return;
-    try{
-      if(data.offer && pc.signalingState==="stable"){
-        await pc.setRemoteDescription(new RTCSessionDescription(data.offer));
-        const ans=await pc.createAnswer(); await pc.setLocalDescription(ans);
-        await db.ref(`signals/${currentRoom}/${uid}/${remoteId}/answer`).set({type:ans.type,sdp:ans.sdp});
-      }
-      if(data.answer && pc.signalingState==="have-local-offer"){
-        await pc.setRemoteDescription(new RTCSessionDescription(data.answer));
-      }
-      if(data.candidates){
-        for(const c of Object.values(data.candidates)){
-          try{await pc.addIceCandidate(new RTCIceCandidate(c))}catch(err){}
+          members =
+            members || {};
+
+
+          /* Already inside */
+
+          if (
+            members[currentUser.uid]
+          ) {
+            return members;
+          }
+
+
+          /* Full */
+
+          if (
+            Object.keys(members).length >= 4
+          ) {
+            return;
+          }
+
+
+          /* Add user */
+
+          members[currentUser.uid] = {
+
+            name: getUserName(),
+
+            uid: currentUser.uid,
+
+            joinedAt:
+              firebase.database
+                .ServerValue
+                .TIMESTAMP
+
+          };
+
+
+          return members;
+
         }
-      }
-    }catch(err){console.error("signal",err)}
+      );
+
+
+    if (!transaction.committed) {
+
+      currentRoom = null;
+
+      await db.ref(
+        "waiting/" +
+        currentUser.uid
+      ).set({
+
+        name: getUserName(),
+
+        uid: currentUser.uid,
+
+        requestedRoom: room,
+
+        requestedAt:
+          firebase.database
+            .ServerValue
+            .TIMESTAMP
+
+      });
+
+
+      document.getElementById(
+        "roomMessage"
+      ).textContent =
+        "Junction full — you are in the Waiting Room.";
+
+      document.getElementById(
+        "membersList"
+      ).innerHTML =
+        "This Junction already has 4 people.";
+
+      return;
+
+    }
+
+
+    currentRoom = room;
+
+
+    await db.ref(
+      "waiting/" +
+      currentUser.uid
+    ).remove();
+
+
+    document.getElementById(
+      "roomMessage"
+    ).textContent =
+      "You joined " +
+      junctionNames[room] +
+      ".";
+
+
+    listenToMembers(room);
+
+
+  } catch (error) {
+
+    console.error(
+      "JOIN ERROR:",
+      error
+    );
+
+    document.getElementById(
+      "roomMessage"
+    ).textContent =
+      "Join failed: " +
+      error.message;
+
+  }
+
+}
+
+
+/* --------------------------------
+   MEMBERS
+-------------------------------- */
+
+function listenToMembers(room) {
+
+  db.ref(
+    "rooms/" +
+    room +
+    "/members"
+  ).on("value", function(snapshot) {
+
+    const members =
+      snapshot.val() || {};
+
+    const list =
+      document.getElementById(
+        "membersList"
+      );
+
+
+    const entries =
+      Object.values(members);
+
+
+    if (!entries.length) {
+
+      list.innerHTML =
+        "No one is here.";
+
+      return;
+    }
+
+
+    list.innerHTML =
+      entries.map(function(member) {
+
+        const isYou =
+          currentUser &&
+          member.uid === currentUser.uid;
+
+        return `
+          <div class="member ${isYou ? "you" : ""}">
+            ${escapeHtml(member.name || "Anonymous")}
+            ${isYou ? " — You" : ""}
+          </div>
+        `;
+
+      }).join("");
+
   });
 
-  if(uid < remoteId){
-    try{
-      const offer=await pc.createOffer(); await pc.setLocalDescription(offer);
-      await db.ref(`signals/${currentRoom}/${uid}/${remoteId}/offer`).set({type:offer.type,sdp:offer.sdp});
-    }catch(e){console.error("offer",e)}
+}
+
+
+/* --------------------------------
+   LEAVE
+-------------------------------- */
+
+document.getElementById(
+  "leaveButton"
+).addEventListener(
+  "click",
+  leaveJunction
+);
+
+
+async function leaveJunction() {
+
+  if (
+    currentUser &&
+    currentRoom
+  ) {
+
+    try {
+
+      await db.ref(
+        "rooms/" +
+        currentRoom +
+        "/members/" +
+        currentUser.uid
+      ).remove();
+
+    } catch (error) {
+
+      console.error(
+        "LEAVE ERROR:",
+        error
+      );
+
+    }
+
   }
+
+
+  if (currentUser) {
+
+    await db.ref(
+      "waiting/" +
+      currentUser.uid
+    ).remove();
+
+  }
+
+
+  currentRoom = null;
+
+
+  document.getElementById(
+    "modal"
+  ).classList.remove("show");
+
 }
 
-function destroyPeer(id){
-  try{peers[id]?.close()}catch(e){}
-  delete peers[id]; delete candidateBuffers[id];
-  if(remoteEls[id]){try{remoteEls[id].srcObject=null}catch(e){};remoteEls[id].remove();delete remoteEls[id]}
+
+/* --------------------------------
+   CLOSE
+-------------------------------- */
+
+document.getElementById(
+  "closeModal"
+).addEventListener(
+  "click",
+  leaveJunction
+);
+
+
+/* --------------------------------
+   ESCAPE KEY
+-------------------------------- */
+
+document.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (
+      event.key === "Escape"
+    ) {
+
+      document.getElementById(
+        "modal"
+      ).classList.remove("show");
+
+    }
+
+  }
+);
+
+
+/* --------------------------------
+   HTML SAFETY
+-------------------------------- */
+
+function escapeHtml(text) {
+
+  return String(text)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
 }
 
-async function leaveRoom(){
-  if(!currentRoom||!uid){closeRoomUI();return}
-  const room=currentRoom;
-  try{await db.ref(`rooms/${room}/members/${uid}`).remove()}catch(e){}
-  Object.keys(peers).forEach(destroyPeer);
-  try{localStream?.getTracks().forEach(t=>t.stop())}catch(e){}
-  localStream=null; currentRoom=null;
-  closeRoomUI();
-}
-
-window.addEventListener("beforeunload",()=>{if(currentRoom&&uid)db.ref(`rooms/${currentRoom}/members/${uid}`).remove()});
 </script>
+
 </body>
 </html>
