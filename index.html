@@ -2,153 +2,132 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HainX ⚡ World</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>HainX ⚡ World — Jack World 🌍</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;color:#fff;background:linear-gradient(145deg,#8ddcff,#55b8ea 50%,#2e8bc4);min-height:100vh}
-.hidden{display:none!important}.entry{min-height:100vh;display:grid;place-items:center;padding:20px}.entrybox,.room,.waitbox,.card{background:#071018e8;border:1px solid #62ceff55;box-shadow:0 20px 60px #003b5c55}
-.entrybox{width:min(520px,100%);padding:42px 28px;border-radius:30px;text-align:center}.brand{font-size:44px;font-weight:900}.blue{color:#72d7ff}
-h1{margin:16px 0 8px}.entrybox p{color:#b9d8e8}.name{width:100%;padding:15px;border-radius:14px;border:1px solid #ffffff22;background:#ffffff0d;color:#fff;text-align:center;outline:0}
-.primary,.enter,.mic,.leave{border:0;border-radius:14px;padding:13px;font-weight:900;cursor:pointer}.primary{width:100%;margin-top:12px;background:#ff91b7;color:#26121b}
-.top{max-width:1150px;margin:auto;padding:20px;display:flex;justify-content:space-between}.logo{font-size:24px;font-weight:900}.tag{font-size:12px;color:#d2efff}.status{padding:8px 12px;border-radius:20px;background:#07101888;font-size:12px}
-.hero{text-align:center;padding:25px 18px}.hero h1{font-size:40px;margin:0 0 8px}.hero p{color:#d9f5ff}
-.grid{max-width:1150px;margin:20px auto;padding:0 18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:20px}
-.card{border-radius:23px;padding:23px}.card h2{margin:0 0 8px}.card p{color:#a9c8d8;min-height:38px;font-size:14px}.count{margin:16px 0;color:#bde8f8}.enter{width:100%;background:#fff;color:#13212a}
-.wait{max-width:1150px;margin:25px auto;padding:0 18px 30px}.waitbox{border-radius:22px;padding:20px}.waitbox h2{margin-top:0}.waitbox div{color:#b9d8e8}
-.modal{display:none;position:fixed;inset:0;z-index:50;background:#00131edb;backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:18px}.modal.show{display:flex}
-.room{width:min(570px,100%);max-height:92vh;overflow:auto;border-radius:27px;padding:22px}.head{display:flex;justify-content:space-between}.close{width:40px;height:40px;border:0;border-radius:50%;background:#ffffff12;color:#fff;font-size:24px}.identity,.audio,.members,.msg{margin-top:14px;padding:14px;border-radius:16px;background:#ffffff09;border:1px solid #ffffff0c}.audio{text-align:center}.mic{background:#ff91b7;color:#25121a;min-width:210px}.mic.off{background:#2b3944;color:#fff}.audioState{margin-top:8px;color:#a9c8d8;font-size:12px}.members h3{margin:0 0 8px;font-size:14px}.member{display:flex;justify-content:space-between;padding:9px 3px;border-bottom:1px solid #ffffff0c}.state{font-size:12px;color:#7fcbea}.leave{width:100%;margin-top:14px;background:#d94d67;color:#fff}footer{text-align:center;padding:10px 20px 25px;color:#c9e8f4aa;font-size:11px}
+:root{--sky:#8ed8ff;--ink:#071018;--card:#0a1118;--blue:#58caff;--muted:#b9cbd7;--green:#6df0b2;--red:#ff7180}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;background:linear-gradient(155deg,#8ed8ff,#d9f4ff 48%,#78ceff);color:var(--ink);min-height:100vh}button,input{font:inherit}button{cursor:pointer}.screen{min-height:100vh;display:none;padding:22px 14px}.screen.active{display:block}.wrap{max-width:1120px;margin:auto}
+.brand{text-align:center;padding-top:7vh}.logo{font-size:clamp(36px,8vw,72px);font-weight:950;letter-spacing:-2px;text-shadow:0 5px 0 #00000012}.sub{font-weight:800;color:#173747}.squirrels{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:22px auto;font-size:29px}.squirrels span{display:grid;place-items:center;width:52px;height:52px;background:#ffffff88;border:2px solid #fff;border-radius:18px;box-shadow:0 8px 22px #1682b333}
+.entry{max-width:470px;margin:24px auto;background:#ffffffd9;backdrop-filter:blur(14px);padding:27px;border-radius:28px;box-shadow:0 22px 55px #187fa833}.entry h2{margin:0 0 7px;font-size:28px}.entry p{color:#45616f;margin:0 0 18px}.entry input{width:100%;padding:15px;border:2px solid #b8dbea;border-radius:15px;outline:none}.primary{width:100%;margin-top:12px;border:0;border-radius:15px;padding:15px;background:#07131d;color:#fff;font-weight:950}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}.title{font-size:clamp(29px,6vw,48px);font-weight:950}.tag{font-weight:850;color:#193747}.pill{background:#07131de8;color:#fff;padding:9px 13px;border-radius:999px;font-size:12px;font-weight:900}
+.jack{background:linear-gradient(135deg,#07131d,#172735);color:#fff;border:1px solid #69d3ff66;border-radius:25px;padding:20px;margin:17px 0;box-shadow:0 16px 36px #0877a844}.jack h2{margin:0;font-size:24px}.jack p{margin:6px 0 0;color:#bfeeff}
+.section{display:flex;justify-content:space-between;align-items:end;margin:24px 0 12px}.section h3{margin:0}.section small{color:#315568;font-weight:800}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.room{position:relative;min-height:235px;background:linear-gradient(155deg,#070c12,#111d27);border:1px solid #54caff99;border-radius:25px;padding:19px;color:#fff;box-shadow:0 18px 36px #075c8733;transition:.2s;overflow:hidden}.room:hover{transform:translateY(-5px);border-color:#a6e9ff}.room .sq{position:absolute;right:10px;top:5px;font-size:43px}.room .sq2{position:absolute;right:60px;top:43px;font-size:24px;opacity:.6}.room h4{font-size:22px;margin:42px 0 5px}.room p{color:#aac1cf;min-height:38px}.count{font-size:12px;font-weight:900;color:#cdeeff}.enter{border:0;border-radius:12px;padding:11px;background:#59caff;color:#06121a;font-weight:950;width:100%;margin-top:10px}.wait{margin-top:18px;background:#07131ddd;color:#fff;border:1px solid #69d3ff66;border-radius:22px;padding:17px}.status{margin-top:16px;color:#315568;font-size:12px;font-weight:800}.footer{text-align:center;padding:28px;color:#315568;font-size:12px;font-weight:750}
+.modal{display:none;position:fixed;inset:0;background:#02080dcc;backdrop-filter:blur(8px);z-index:50;padding:14px;align-items:center;justify-content:center}.modal.show{display:flex}.box{width:min(680px,100%);max-height:92vh;overflow:auto;background:linear-gradient(160deg,#071018,#111d28);color:#fff;border:1px solid #63d2ff99;border-radius:28px;padding:19px;box-shadow:0 30px 90px #000}.head{display:flex;justify-content:space-between}.head h2{margin:0;font-size:27px}.close{border:0;background:#fff1;color:#fff;font-size:25px;border-radius:10px;width:42px;height:42px}.worldtag{color:#8fddff;font-weight:850;margin:5px 0 17px}.notice{background:#58caff12;border:1px solid #58caff55;border-radius:16px;padding:12px;color:#ccefff;font-size:13px}.controls{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}.control{border:1px solid #5acbff77;background:#0e1a25;color:#fff;border-radius:13px;padding:12px 15px;font-weight:900}.mic{background:#58caff;color:#06121a}.member{display:flex;align-items:center;justify-content:space-between;background:#ffffff0a;border:1px solid #ffffff12;padding:12px;border-radius:15px;margin:8px 0}.ml{display:flex;align-items:center;gap:10px}.avatar{width:38px;height:38px;border-radius:13px;background:#8ed8ff;color:#071018;display:grid;place-items:center;font-size:21px}.mn{font-weight:900}.ms{font-size:11px;color:#9fb4c3;margin-top:2px}.good{color:var(--green)}.bad{color:var(--red)}.warn{color:#ffd66b}
+@media(max-width:600px){.screen{padding:17px 11px}.top{flex-direction:column;align-items:flex-start}.room{min-height:210px}}
 </style>
 </head>
 <body>
 
-<section id="entry" class="entry">
-<div class="entrybox">
-<div class="brand">HainX <span class="blue">⚡ World</span></div>
-<h1>Welcome to HainX</h1>
-<p>Real people. Real Junctions. Real conversations.</p>
-<input id="name" class="name" maxlength="24" placeholder="Enter your username">
-<button id="enterWorld" class="primary">ENTER HAINX ⚡ WORLD</button>
+<section id="entry" class="screen active">
+<div class="wrap">
+<div class="brand"><div class="logo">HainX ⚡ World</div><div class="sub">Real people. Real voices. One mysterious world.</div>
+<div class="squirrels"><span>🐿️</span><span>🐿️</span><span>🐿️</span><span>🐿️</span><span>🐿️</span><span>🐿️</span></div></div>
+<div class="entry"><h2>Enter your name 🌙</h2><p>Your name will appear like <b>Name ⚡ HainX</b>.</p><input id="name" maxlength="24" placeholder="Your name..." autocomplete="nickname"><button id="start" class="primary">ENTER HAINX ⚡</button><div id="boot" class="status">Connecting to HainX...</div></div>
 </div>
 </section>
 
-<section id="home" class="hidden">
-<div class="top"><div><div class="logo">BADNAAM JACK 🃏</div><div class="tag">Naam to suna hoga 😂</div></div><div id="status" class="status">Connecting...</div></div>
-<div class="hero"><h1>Jack World 🌍</h1><p>The world behind the screen.</p></div>
-<div class="grid">
-<div class="card"><h2>🌲 Shadow Forest</h2><p>A quiet place where strangers meet.</p><div class="count"><span id="c-shadow">0</span>/4 people</div><button class="enter" data-room="shadow">ENTER JUNCTION</button></div>
-<div class="card"><h2>🌊 Midnight Lake</h2><p>Dark water. Unknown people.</p><div class="count"><span id="c-lake">0</span>/4 people</div><button class="enter" data-room="lake">ENTER JUNCTION</button></div>
-<div class="card"><h2>🏚️ Forgotten House</h2><p>A place forgotten by everyone.</p><div class="count"><span id="c-house">0</span>/4 people</div><button class="enter" data-room="house">ENTER JUNCTION</button></div>
-<div class="card"><h2>🪨 Silent Valley</h2><p>No noise. Just people.</p><div class="count"><span id="c-valley">0</span>/4 people</div><button class="enter" data-room="valley">ENTER JUNCTION</button></div>
-<div class="card"><h2>🌙 Moon Chamber</h2><p>Meet someone under the moon.</p><div class="count"><span id="c-moon">0</span>/4 people</div><button class="enter" data-room="moon">ENTER JUNCTION</button></div>
-</div>
-<div class="wait"><div class="waitbox"><h2>⏳ Waiting Room</h2><div id="waiting">Nobody is waiting.</div></div></div>
-<footer>HainX ⚡ • BADNAAM JACK 🃏 • Jack World 🌍</footer>
-</section>
+<section id="home" class="screen"><div class="wrap">
+<div class="top"><div><div class="title">Jack World 🌍</div><div class="tag">Welcome, <span id="hello"></span> ⚡ HainX</div></div><div id="fb" class="pill">● Connecting...</div></div>
+<div class="jack"><h2>BADNAAM JACK 🃏</h2><p>Naam to suna hoga 😂 — choose a Junction and meet real people.</p></div>
+<div class="section"><h3>🌌 Junction World</h3><small>Maximum 4 people per Junction</small></div><div id="rooms" class="grid"></div>
+<div class="wait">🐿️ <b>Waiting Room</b> — Full Junction se aane wale people yahan queue mein rahenge.<div id="waiting" style="margin-top:8px;color:#bcd0dc">Checking...</div></div>
+<div class="status">🎙️ Voice: WebRTC + Metered TURN + Firebase signaling.</div><div class="footer">HainX ⚡ World • Jack World 🌍 • Real humans only</div>
+</div></section>
 
-<div id="modal" class="modal">
-<div class="room">
-<div class="head"><div><h2 id="roomTitle">Junction</h2><p>Jack World 🌍 • Maximum 4 people</p></div><button id="close" class="close">×</button></div>
-<div class="identity"><b>You:</b> <span id="identity"></span></div>
-<div class="audio"><button id="mic" class="mic">🎙️ TURN MIC ON</button><div id="audioState" class="audioState">Microphone is off</div></div>
-<div class="members"><h3>👥 People in this Junction</h3><div id="members">Loading...</div></div>
-<div id="msg" class="msg">Joining Jack World 🌍...</div>
-<button id="leave" class="leave">LEAVE JUNCTION</button>
+<div id="modal" class="modal"><div class="box">
+<div class="head"><div><h2 id="roomTitle">Junction</h2><div class="worldtag">Jack World 🌍 • Real human voice chat</div></div><button id="close" class="close">×</button></div>
+<div id="notice" class="notice">Preparing secure voice connection...</div>
+<div class="controls"><button id="mic" class="control mic">🎙️ TURN MIC ON</button><button id="sound" class="control">🔊 SOUND ON</button><button id="leave" class="control">🚪 LEAVE</button></div>
+<h3>🐿️ People in this Junction</h3><div id="members"></div><div id="conn" class="status" style="color:#b9cbd7">WebRTC: preparing...</div>
 </div></div>
-<div id="audios"></div>
 
 <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
 <script>
-const cfg={apiKey:"AIzaSyAFjfk27HrCPqDxfDFTYuP9KyG8knbnUi8",authDomain:"hainx-b7dfa.firebaseapp.com",databaseURL:"https://hainx-b7dfa-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"hainx-b7dfa",storageBucket:"hainx-b7dfa.firebasestorage.app",messagingSenderId:"1077891362069",appId:"1:1077891362069:web:8ffab71bfcf4e4c8cd0d1c",measurementId:"G-Y01RM0068"};
-const names={shadow:"🌲 Shadow Forest",lake:"🌊 Midnight Lake",house:"🏚️ Forgotten House",valley:"🪨 Silent Valley",moon:"🌙 Moon Chamber"};
-const ICE=[{urls:"stun:stun.l.google.com:19302"}];
-let auth,db,user=null,room=null,stream=null,peers={},members={},signalRef=null,memberRef=null,session="";
-const $=x=>document.getElementById(x);
-const uname=()=>localStorage.getItem("hainxName")||"Anonymous";
-const esc=x=>String(x).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
-function status(x){$("status").textContent=x}
+const firebaseConfig={apiKey:"AIzaSyAFjfk27HrCPqDxfDFTYuP9KyG8knbnUi8",authDomain:"hainx-b7dfa.firebaseapp.com",databaseURL:"https://hainx-b7dfa-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"hainx-b7dfa",storageBucket:"hainx-b7dfa.firebasestorage.app",messagingSenderId:"1077891362069",appId:"1:1077891362069:web:8ffab71bfcf4e4c8cd0d1c",measurementId:"G-Y01RM0068"};
+const METERED_DOMAIN="https://hainx.metered.live";
+/* Paste ONLY your credential-scoped Metered API key here. Never paste the Developers Secret Key. */
+const METERED_API_KEY="d5839f02e703cd05ffa0afdcb12138a0a613";
 
-$("enterWorld").onclick=()=>{let n=$("name").value.trim();if(!n)return $("name").focus();localStorage.setItem("hainxName",n);$("entry").classList.add("hidden");$("home").classList.remove("hidden");boot()};
-$("name").value=localStorage.getItem("hainxName")||"";
-if(localStorage.getItem("hainxName")){$("entry").classList.add("hidden");$("home").classList.remove("hidden");boot()}
+const roomsInfo={
+shadow:{name:"Shadow Forest",icon:"🌲",desc:"Whispers, trees and mysterious night vibes."},
+lake:{name:"Midnight Lake",icon:"🌊",desc:"Calm water, moonlight and hidden voices."},
+house:{name:"Forgotten House",icon:"🏚️",desc:"An old house where every voice has a story."},
+valley:{name:"Silent Valley",icon:"🪨",desc:"Deep valley, quiet atmosphere, real people."},
+moon:{name:"Moon Chamber",icon:"🌙",desc:"A secret chamber under the HainX moon."}};
+const keys=Object.keys(roomsInfo),MAX=4,$=id=>document.getElementById(id);
+let auth,db,user,name="",room=null,session=null,local=null,micOn=false,soundOn=true;
+let ice=[{urls:"stun:stun.l.google.com:19302"}],peers=new Map(),queues=new Map(),members=new Map(),seen=new Set(),memberOff=null,signalOff=null;
 
+function status(t,c=""){ $("fb").textContent="● "+t;$("fb").className="pill "+c}
+function msg(t,c=""){ $("notice").innerHTML=t;$("notice").className="notice "+c}
 function boot(){
- if(auth)return;
- if(!firebase.apps.length)firebase.initializeApp(cfg);
- auth=firebase.auth();db=firebase.database();
- db.ref(".info/connected").on("value",s=>status(s.val()?"Connected":"Connecting..."));
- auth.onAuthStateChanged(u=>{if(u){user=u;loadCounts()}else auth.signInAnonymously().catch(e=>{console.error(e);status("Auth Error")})});
+ try{if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);auth=firebase.auth();db=firebase.database();
+ db.ref(".info/connected").on("value",s=>status(s.val()?"Firebase connected":"Firebase connecting...",s.val()?"":"warn"));
+ auth.onAuthStateChanged(async u=>{if(u){user=u;await getTurn();$("boot").textContent="HainX ready ⚡"}else auth.signInAnonymously().catch(e=>$("boot").textContent=e.message)});
+ }catch(e){$("boot").textContent="Firebase error: "+e.message}
 }
-function loadCounts(){
- Object.keys(names).forEach(r=>db.ref("rooms/"+r+"/members").on("value",s=>$("c-"+r).textContent=Object.keys(s.val()||{}).length));
- db.ref("waiting").on("value",s=>{let a=Object.values(s.val()||{});$("waiting").innerHTML=a.length?a.map(x=>"• "+esc(x.name||"Anonymous")).join("<br>"):"Nobody is waiting."})
-}
-document.querySelectorAll(".enter").forEach(b=>b.onclick=()=>join(b.dataset.room));
-
-async function join(r){
- $("modal").classList.add("show");$("roomTitle").textContent=names[r];$("identity").textContent=uname();$("members").textContent="Loading...";$("msg").textContent="Joining Jack World 🌍...";
- if(!user){$("msg").textContent="Connecting to HainX...";return}
- try{
-  let ref=db.ref("rooms/"+r+"/members");
-  let tx=await ref.transaction(m=>{m=m||{};if(m[user.uid])return m;if(Object.keys(m).length>=4)return;m[user.uid]={name:uname(),uid:user.uid,joinedAt:firebase.database.ServerValue.TIMESTAMP};return m});
-  if(!tx.committed){await db.ref("waiting/"+user.uid).set({name:uname(),uid:user.uid,requestedRoom:r,requestedAt:firebase.database.ServerValue.TIMESTAMP});$("msg").textContent="Junction full — you are in the Waiting Room.";return}
-  room=r;session=Date.now()+"_"+Math.random().toString(36).slice(2);
-  await db.ref("waiting/"+user.uid).remove();
-  memberRef=db.ref("rooms/"+r+"/members");memberRef.on("value",s=>{members=s.val()||{};render()});
-  signalRef=db.ref("signals/"+r+"/"+user.uid);signalRef.on("child_added",s=>signal(s.val()));
-  memberRef.child(user.uid).onDisconnect().remove();
-  $("msg").textContent="You joined "+names[r]+". Turn your mic on when ready.";
- }catch(e){console.error(e);$("msg").textContent="Join failed: "+e.message}
+async function getTurn(){
+ if(METERED_API_KEY.startsWith("PASTE_"))return;
+ try{let r=await fetch(METERED_DOMAIN+"/api/v1/turn/credentials?apiKey="+encodeURIComponent(METERED_API_KEY)+"&region=global");if(!r.ok)throw Error("Metered HTTP "+r.status);let a=await r.json();if(Array.isArray(a)&&a.length)ice=a}catch(e){console.warn("TURN:",e)}
 }
 function render(){
- $("members").innerHTML=Object.keys(members).map(id=>{let m=members[id],p=peers[id],st=p&&p.pc.connectionState==="connected"?"Audio ready":id===user.uid?"You":"Waiting...";return '<div class="member"><b>'+esc(m.name)+(id===user.uid?" — You":"")+'</b><span class="state" id="s-'+id+'">'+st+'</span></div>'}).join("")||"No one is here.";
- Object.keys(members).forEach(id=>{if(id!==user.uid&&!peers[id]){makePeer(id);if(user.uid<id)offer(id)}})
+ $("rooms").innerHTML=keys.map(k=>{let n=members.get("__"+k)||0,i=roomsInfo[k];return `<div class="room"><div class="sq">🐿️</div><div class="sq2">🐿️</div><h4>${i.icon} ${i.name}</h4><p>${i.desc}</p><div class="count">SEATS <b>${n}/${MAX}</b></div><button class="enter" data-r="${k}">${n>=MAX?"JOIN WAITING ROOM":"ENTER JUNCTION"}</button></div>`}).join("");
+ document.querySelectorAll(".enter").forEach(b=>b.onclick=()=>join(b.dataset.r));keys.forEach(k=>db.ref("rooms/"+k+"/members").on("value",s=>{members.set("__"+k,Object.keys(s.val()||{}).length);render()}));
 }
-async function micOn(){
- try{
-  stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1,sampleRate:48000},video:false});
-  $("mic").textContent="🔇 MUTE MICROPHONE";$("mic").classList.add("off");$("audioState").textContent="🎙️ Microphone ON • echo/noise control active";
-  Object.values(peers).forEach(p=>{let s=p.pc.getSenders().find(x=>x.track&&x.track.kind==="audio");let t=stream.getAudioTracks()[0];if(s)s.replaceTrack(t);else p.pc.addTrack(t,stream)})
- }catch(e){console.error(e);$("audioState").textContent=e.name==="NotAllowedError"?"Microphone permission denied.":"Microphone unavailable."}
-}
-function micOff(){if(stream)stream.getTracks().forEach(t=>t.enabled=false);$("mic").textContent="🎙️ TURN MIC ON";$("mic").classList.remove("off");$("audioState").textContent="Microphone is off"}
-$("mic").onclick=()=>stream&&stream.getAudioTracks()[0].enabled?micOff():micOn();
+function waiting(){db.ref("waiting").on("value",s=>{let n=Object.keys(s.val()||{}).length;$("waiting").textContent=n?`${n} person${n>1?"s":""} waiting 🐿️`:"Nobody is waiting right now."})}
+async function enter(){name=$("name").value.trim();if(!name)return $("name").focus();localStorage.setItem("hainxName",name);$("hello").textContent=name;$("entry").classList.remove("active");$("home").classList.add("active");render();waiting()}
+$("start").onclick=enter;$("name").addEventListener("keydown",e=>e.key==="Enter"&&enter());$("name").value=localStorage.getItem("hainxName")||"";
 
-function makePeer(id){
- let pc=new RTCPeerConnection({iceServers:ICE,bundlePolicy:"max-bundle",rtcpMuxPolicy:"require"});
- peers[id]={pc};
- // Reserve the audio sender from the beginning. This lets the user turn
- // the microphone on later without needing a second call setup.
- let tx=pc.addTransceiver("audio",{direction:"sendrecv"});
- if(stream){let t=stream.getAudioTracks()[0];if(t)tx.sender.replaceTrack(t)}
- pc.onicecandidate=e=>{if(e.candidate)db.ref("signals/"+room+"/"+id).push({type:"candidate",from:user.uid,to:id,candidate:e.candidate.toJSON(),session})};
- pc.ontrack=e=>{let a=document.getElementById("a-"+id)||document.createElement("audio");a.id="a-"+id;a.autoplay=true;a.playsInline=true;a.srcObject=e.streams[0];$("audios").appendChild(a);a.play().catch(()=>{})};
- pc.onconnectionstatechange=()=>{let x=$("s-"+id);if(x)x.textContent=pc.connectionState==="connected"?"Audio ready":pc.connectionState==="failed"?"Connection failed":"Connecting..."};
- return pc
-}
-async function offer(id){
- let pc=peers[id]?.pc;if(!pc)return;
- try{let o=await pc.createOffer({offerToReceiveAudio:true});await pc.setLocalDescription(o);await db.ref("signals/"+room+"/"+id).push({type:"offer",from:user.uid,to:id,description:{type:o.type,sdp:o.sdp},session})}catch(e){console.error(e)}
-}
-async function signal(d){
- if(!d||d.to!==user.uid||d.session===session||!members[d.from])return;
- let id=d.from,pc=peers[id]?.pc||makePeer(id);
+async function join(r){
+ if(!user)return msg("Firebase is still connecting. Please wait.");
+ room=r;session=user.uid+"_"+Date.now()+"_"+Math.random().toString(36).slice(2,7);$("roomTitle").textContent=roomsInfo[r].icon+" "+roomsInfo[r].name;$("modal").classList.add("show");msg("Checking seat and preparing voice...");
+ let ref=db.ref("rooms/"+r+"/members");
  try{
-  if(d.type==="offer"){await pc.setRemoteDescription(d.description);let a=await pc.createAnswer();await pc.setLocalDescription(a);await db.ref("signals/"+room+"/"+id).push({type:"answer",from:user.uid,to:id,description:{type:a.type,sdp:a.sdp},session})}
-  else if(d.type==="answer")await pc.setRemoteDescription(d.description);
-  else if(d.type==="candidate"&&pc.remoteDescription)await pc.addIceCandidate(d.candidate);
- }catch(e){console.error("WebRTC signal:",e)}
+  let tx=await ref.transaction(d=>{d=d||{};if(d[user.uid])return d;if(Object.keys(d).length>=MAX)return;d[user.uid]={uid:user.uid,name,session,joinedAt:firebase.database.ServerValue.TIMESTAMP};return d});
+  if(!tx.committed){await db.ref("waiting/"+user.uid).set({uid:user.uid,name,requestedRoom:r,createdAt:firebase.database.ServerValue.TIMESTAMP});msg("Junction full. 🐿️ You are in the Waiting Room.");return}
+  await db.ref("waiting/"+user.uid).remove();await db.ref("rooms/"+r+"/members/"+user.uid).onDisconnect().remove();listenRoom(r);msg("Joined "+roomsInfo[r].name+". Tap TURN MIC ON and speak.");await micStream();
+ }catch(e){console.error(e);msg("Join failed: "+e.message,"bad")}
 }
-async function leave(){
- if(user&&room){try{await db.ref("rooms/"+room+"/members/"+user.uid).remove()}catch(e){}}
- if(memberRef)memberRef.off();if(signalRef)signalRef.off();
- Object.values(peers).forEach(p=>p.pc.close());peers={};
- document.querySelectorAll("#audios audio").forEach(a=>{a.srcObject=null;a.remove()});
- if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;room=null;
- $("mic").textContent="🎙️ TURN MIC ON";$("mic").classList.remove("off");$("audioState").textContent="Microphone is off";$("modal").classList.remove("show")
+function listenRoom(r){
+ let mr=db.ref("rooms/"+r+"/members"),mc=s=>{members.clear();let d=s.val()||{};Object.values(d).forEach(x=>members.set(x.uid,x));drawMembers();Object.keys(d).forEach(async uid=>uid!==user.uid&&ensurePeer(uid));for(let [uid] of peers)if(!d[uid])closePeer(uid)};mr.on("value",mc);memberOff=()=>mr.off("value",mc);
+ let sr=db.ref("signals/"+r+"/"+user.uid),sc=async s=>{let d=s.val()||{};for(let [id,m] of Object.entries(d)){if(seen.has(id)||m.to!==user.uid||m.session===session)continue;seen.add(id);await signal(m);db.ref("signals/"+r+"/"+user.uid+"/"+id).remove().catch(()=>{})}};sr.on("value",sc);signalOff=()=>sr.off("value",sc)
 }
-$("leave").onclick=leave;$("close").onclick=leave;
+async function micStream(){
+ if(local)return local;try{local=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1,sampleRate:48000},video:false});local.getAudioTracks().forEach(t=>t.enabled=micOn);return local}catch(e){msg("Microphone permission not granted. You can still stay in the Junction.","bad");return null}
+}
+async function ensurePeer(uid){
+ if(peers.has(uid))return peers.get(uid);let pc=new RTCPeerConnection({iceServers:ice,bundlePolicy:"max-bundle"});peers.set(uid,pc);queues.set(uid,[]);
+ pc.addTransceiver("audio",{direction:"sendrecv"});if(local)local.getTracks().forEach(t=>pc.addTrack(t,local));
+ pc.ontrack=e=>{if(!e.streams[0])return;let a=document.getElementById("a_"+uid);if(!a){a=document.createElement("audio");a.id="a_"+uid;a.autoplay=true;a.playsInline=true;a.dataset.remote="1";document.body.appendChild(a)}a.srcObject=e.streams[0];a.muted=!soundOn;a.play().catch(()=>msg("🔊 Tap SOUND ON once to allow remote audio.","warn"))};
+ pc.onicecandidate=e=>e.candidate&&send(uid,{type:"candidate",candidate:e.candidate.toJSON()});
+ pc.onconnectionstatechange=()=>{drawMembers();conn();if(["failed","disconnected"].includes(pc.connectionState))setTimeout(()=>restart(uid),1000)};
+ pc.oniceconnectionstatechange=()=>pc.iceConnectionState==="failed"&&restart(uid);
+ if(user.uid<uid)await offer(uid,pc);return pc
+}
+async function offer(uid,pc){try{let o=await pc.createOffer({offerToReceiveAudio:true});await pc.setLocalDescription(o);await send(uid,{type:"offer",sdp:pc.localDescription})}catch(e){console.warn(e)}}
+async function signal(m){
+ let pc=await ensurePeer(m.from);try{
+  if(m.type==="offer"){await pc.setRemoteDescription(new RTCSessionDescription(m.sdp));await flush(m.from,pc);let a=await pc.createAnswer();await pc.setLocalDescription(a);await send(m.from,{type:"answer",sdp:pc.localDescription})}
+  else if(m.type==="answer"){await pc.setRemoteDescription(new RTCSessionDescription(m.sdp));await flush(m.from,pc)}
+  else if(m.type==="candidate"){if(pc.remoteDescription)await pc.addIceCandidate(new RTCIceCandidate(m.candidate));else queues.get(m.from).push(m.candidate)}
+ }catch(e){console.warn(e)}
+}
+async function flush(uid,pc){let q=queues.get(uid)||[];while(q.length)try{await pc.addIceCandidate(new RTCIceCandidate(q.shift()))}catch(e){}}
+function send(to,p){return db.ref("signals/"+room+"/"+to).push({...p,to,from:user.uid,session,createdAt:firebase.database.ServerValue.TIMESTAMP})}
+async function restart(uid){let pc=peers.get(uid);if(!pc)return;try{if(pc.restartIce)pc.restartIce();if(user.uid<uid)await offer(uid,pc)}catch(e){}}
+function closePeer(uid){peers.get(uid)?.close();peers.delete(uid);queues.delete(uid);document.getElementById("a_"+uid)?.remove();drawMembers();conn()}
+function drawMembers(){
+ let arr=[...members.values()];$("members").innerHTML=arr.length?arr.map(m=>{let me=m.uid===user.uid,st=me?"local":(peers.get(m.uid)?.connectionState||"waiting"),good=st==="connected";return `<div class="member"><div class="ml"><div class="avatar">🐿️</div><div><div class="mn">${esc(m.name)} ${me?"⚡ You":""}</div><div class="ms">${good?"🟢 Voice connected":me?"🎙️ Your microphone":st}</div></div></div><div class="${good?"good":st==="failed"?"bad":"warn"}">${st}</div></div>`}).join(""):"No one here yet."}
+function conn(){let a=[...peers.values()],n=a.filter(p=>p.connectionState==="connected").length;$("conn").innerHTML=`WebRTC: <span class="${a.length&&n===a.length?"good":"warn"}">${n}/${a.length} voice connections active</span>`}
+$("mic").onclick=async()=>{if(!local)await micStream();if(!local)return;micOn=!micOn;local.getAudioTracks().forEach(t=>t.enabled=micOn);$("mic").textContent=micOn?"🎙️ MIC ON":"🔇 MIC OFF";msg(micOn?"Mic ON — speak normally 🎙️":"Mic OFF.")};
+$("sound").onclick=()=>{soundOn=!soundOn;document.querySelectorAll('audio[data-remote]').forEach(a=>a.muted=!soundOn);$("sound").textContent=soundOn?"🔊 SOUND ON":"🔇 SOUND OFF"};
+async function leave(){if(!room)return;try{await db.ref("rooms/"+room+"/members/"+user.uid).remove();await db.ref("waiting/"+user.uid).remove()}catch(e){}memberOff?.();signalOff?.();for(let uid of [...peers.keys()])closePeer(uid);if(local){local.getTracks().forEach(t=>t.stop());local=null}room=null;session=null;$("modal").classList.remove("show");render()}
+$("leave").onclick=leave;$("close").onclick=leave;window.addEventListener("beforeunload",()=>room&&user&&db.ref("rooms/"+room+"/members/"+user.uid).remove());
+function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+boot();
 </script>
 </body>
 </html>
