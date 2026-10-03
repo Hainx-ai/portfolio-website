@@ -49,7 +49,7 @@
 const firebaseConfig={apiKey:"AIzaSyAFjfk27HrCPqDxfDFTYuP9KyG8knbnUi8",authDomain:"hainx-b7dfa.firebaseapp.com",databaseURL:"https://hainx-b7dfa-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"hainx-b7dfa",storageBucket:"hainx-b7dfa.firebasestorage.app",messagingSenderId:"1077891362069",appId:"1:1077891362069:web:8ffab71bfcf4e4c8cd0d1c",measurementId:"G-Y01RM0068"};
 const METERED_DOMAIN="https://hainx.metered.live";
 /* Paste ONLY your credential-scoped Metered API key here. Never paste the Developers Secret Key. */
-const METERED_API_KEY="d5839f02e703cd05ffa0afdcb12138a0a613";
+const METERED_API_KEY="PASTE_YOUR_METERED_CREDENTIAL_API_KEY_HERE";
 
 const roomsInfo={
 shadow:{name:"Shadow Forest",icon:"🌲",desc:"Whispers, trees and mysterious night vibes."},
@@ -73,12 +73,23 @@ async function getTurn(){
  if(METERED_API_KEY.startsWith("PASTE_"))return;
  try{let r=await fetch(METERED_DOMAIN+"/api/v1/turn/credentials?apiKey="+encodeURIComponent(METERED_API_KEY)+"&region=global");if(!r.ok)throw Error("Metered HTTP "+r.status);let a=await r.json();if(Array.isArray(a)&&a.length)ice=a}catch(e){console.warn("TURN:",e)}
 }
+let roomCountListenersReady=false;
 function render(){
  $("rooms").innerHTML=keys.map(k=>{let n=members.get("__"+k)||0,i=roomsInfo[k];return `<div class="room"><div class="sq">🐿️</div><div class="sq2">🐿️</div><h4>${i.icon} ${i.name}</h4><p>${i.desc}</p><div class="count">SEATS <b>${n}/${MAX}</b></div><button class="enter" data-r="${k}">${n>=MAX?"JOIN WAITING ROOM":"ENTER JUNCTION"}</button></div>`}).join("");
- document.querySelectorAll(".enter").forEach(b=>b.onclick=()=>join(b.dataset.r));keys.forEach(k=>db.ref("rooms/"+k+"/members").on("value",s=>{members.set("__"+k,Object.keys(s.val()||{}).length);render()}));
+ document.querySelectorAll(".enter").forEach(b=>b.onclick=()=>join(b.dataset.r));
+}
+function watchRoomCounts(){
+ if(roomCountListenersReady)return;
+ roomCountListenersReady=true;
+ keys.forEach(k=>{
+   db.ref("rooms/"+k+"/members").on("value",s=>{
+     members.set("__"+k,Object.keys(s.val()||{}).length);
+     render();
+   });
+ });
 }
 function waiting(){db.ref("waiting").on("value",s=>{let n=Object.keys(s.val()||{}).length;$("waiting").textContent=n?`${n} person${n>1?"s":""} waiting 🐿️`:"Nobody is waiting right now."})}
-async function enter(){name=$("name").value.trim();if(!name)return $("name").focus();localStorage.setItem("hainxName",name);$("hello").textContent=name;$("entry").classList.remove("active");$("home").classList.add("active");render();waiting()}
+async function enter(){name=$("name").value.trim();if(!name)return $("name").focus();localStorage.setItem("hainxName",name);$("hello").textContent=name;$("entry").classList.remove("active");$("home").classList.add("active");render();watchRoomCounts();waiting()}
 $("start").onclick=enter;$("name").addEventListener("keydown",e=>e.key==="Enter"&&enter());$("name").value=localStorage.getItem("hainxName")||"";
 
 async function join(r){
