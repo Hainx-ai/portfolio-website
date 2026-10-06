@@ -42,9 +42,26 @@
 <h3>🐿️ People in this Junction</h3><div id="members"></div><div id="memberDiag" class="status" style="margin-top:6px">Room sync: starting...</div><div class="conn-panel"><div class="conn-title"><span>🎧 Voice connection</span><span id="connText" class="warn">Preparing...</span></div><div class="conn-bar"><div id="connFill" class="conn-fill"></div></div><div class="audio-tip">🐱 Clear voice • Echo control • Noise suppression • TURN fallback</div></div>
 </div></div>
 
-<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
+<script>
+window.firebaseReady=(async()=>{
+  const primary="https://www.gstatic.com/firebasejs/12.19.0/";
+  const fallback="https://cdn.jsdelivr.net/npm/firebase@12.19.0/";
+  function load(src){
+    return new Promise((resolve,reject)=>{
+      const s=document.createElement("script");
+      s.src=src;s.onload=resolve;s.onerror=()=>reject(new Error("Failed to load "+src));
+      document.head.appendChild(s);
+    });
+  }
+  async function loadOne(file){
+    try{return await load(primary+file)}
+    catch(e){console.warn("Firebase primary CDN failed; using fallback:",file);return await load(fallback+file)}
+  }
+  await loadOne("firebase-app-compat.js");
+  await loadOne("firebase-auth-compat.js");
+  await loadOne("firebase-database-compat.js");
+})();
+</script>
 <script>
 const firebaseConfig={apiKey:"AIzaSyAFjfk27HrCPqDxfDFTYuP9KyG8knbnUi8",authDomain:"hainx-b7dfa.firebaseapp.com",databaseURL:"https://hainx-b7dfa-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"hainx-b7dfa",storageBucket:"hainx-b7dfa.firebasestorage.app",messagingSenderId:"1077891362069",appId:"1:1077891362069:web:8ffab71bfcf4e4c8cd0d1c",measurementId:"G-Y01RM0068"};
 const METERED_DOMAIN="https://hainx.metered.live";
@@ -55,55 +72,59 @@ let auth,db,user,name="",room=null,session=null,local=null,micOn=false,soundOn=f
 let ice=[{urls:"stun:stun.l.google.com:19302"}],peers=new Map(),queues=new Map(),roomMembers=new Map(),seen=new Set(),memberOff=null,signalOff=null,restartTimers=new Map();
 function status(t,c=""){$("fb").textContent="● "+t;$('fb').className="pill "+c}
 function msg(t,c=""){$("notice").innerHTML=t;$('notice').className="notice "+c}
-let authRetryTimer=null;
-function boot(){
- try{
-  if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
-  auth=firebase.auth();db=firebase.database();
-  db.ref(".info/connected").on("value",s=>status(s.val()?"Firebase connected":"Firebase connecting...",s.val()?"":"warn"));
-  auth.onAuthStateChanged(u=>{
-   if(u){
-    user=u;
-    $("boot").textContent="HainX ready ⚡";
-    $("boot").className="status ok";
-    if(authRetryTimer){clearTimeout(authRetryTimer);authRetryTimer=null}
-    getTurn().catch(()=>{});
-   }
-  });
-  authRetryTimer=setTimeout(()=>{
-   if(!user){
-    $("boot").textContent="Reconnecting to HainX…";
-    auth.signInAnonymously().catch(e=>{
-      console.error("AUTH RETRY",e);
-      $("boot").textContent="HainX connection failed — try again";
-      $("boot").className="status bad";
+async function boot(){
+  try{
+    await window.firebaseReady;
+    if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
+    auth=firebase.auth();db=firebase.database();
+    db.ref(".info/connected").on("value",s=>status(s.val()?"Firebase connected":"Firebase connecting...",s.val()?"":"warn"));
+    auth.onAuthStateChanged(u=>{
+      if(u){
+        user=u;
+        $("boot").textContent="HainX ready ⚡";
+        $("boot").className="status good";
+        getTurn().catch(()=>{});
+      }
     });
-   }
-  },5000);
-  auth.signInAnonymously().catch(e=>console.warn("AUTH START",e));
- }catch(e){
-  console.error("BOOT",e);
-  $("boot").textContent="Firebase error: "+e.message;
-  $("boot").className="status bad";
- }
+    try{
+      if(!auth.currentUser)await auth.signInAnonymously();
+    }catch(e){
+      console.error("AUTH",e);
+      $("boot").textContent="HainX login failed: "+(e.code||e.message);
+      $("boot").className="status bad";
+    }
+  }catch(e){
+    console.error("FIREBASE LOAD",e);
+    $("boot").textContent="Firebase connection failed — refresh once";
+    $("boot").className="status bad";
+  }
 }
-async function getTurn(){
- if(METERED_API_KEY.startsWith("PASTE_")){console.warn("Metered API key missing; using STUN only");return}
- const ctl=new AbortController();const timer=setTimeout(()=>ctl.abort(),7000);
- try{
-  let r=await fetch(METERED_DOMAIN+"/api/v1/turn/credentials?apiKey="+encodeURIComponent(METERED_API_KEY),{signal:ctl.signal});
-  if(!r.ok)throw Error("Metered HTTP "+r.status);
-  let a=await r.json();
-  if(!Array.isArray(a)||!a.length)throw Error("Metered returned no ICE servers");
-  ice=a;console.log("TURN READY",ice.length,"ICE servers");
- }catch(e){console.warn("TURN FAILED — STUN fallback",e)}
- finally{clearTimeout(timer)}
-}
+async function getTurn(){if(METERED_API_KEY.startsWith("PASTE_")){console.warn("Metered API key missing; using STUN only");return}try{let r=await fetch(METERED_DOMAIN+"/api/v1/turn/credentials?apiKey="+encodeURIComponent(METERED_API_KEY));if(!r.ok)throw Error("Metered HTTP "+r.status);let a=await r.json();if(!Array.isArray(a)||!a.length)throw Error("Metered returned no ICE servers");ice=a;console.log("TURN READY",ice.length,"ICE servers")}catch(e){console.error("TURN FAILED",e);msg("⚠️ TURN could not load. Using STUN fallback.","warn")}}
 let roomCountListenersReady=false;
 function render(){$("rooms").innerHTML=keys.map(k=>{let n=roomMembers.get("__"+k)||0,i=roomsInfo[k];return `<div class="room"><div class="sq">🐿️</div><div class="sq2">🐿️</div><h4>${i.icon} ${i.name}</h4><p>${i.desc}</p><div class="count">SEATS <b>${n}/${MAX}</b></div><button class="enter" data-r="${k}">${n>=MAX?"JOIN WAITING ROOM":"ENTER JUNCTION"}</button></div>`}).join("");document.querySelectorAll(".enter").forEach(b=>b.onclick=()=>join(b.dataset.r))}
 function watchRoomCounts(){if(roomCountListenersReady)return;roomCountListenersReady=true;keys.forEach(k=>db.ref("rooms/"+k+"/members").on("value",s=>{roomMembers.set("__"+k,Object.keys(s.val()||{}).length);render()}))}
 function waiting(){db.ref("waiting").on("value",s=>{let n=Object.keys(s.val()||{}).length;$("waiting").textContent=n?`${n} person${n>1?"s":""} waiting 🐿️`:"Nobody is waiting right now."})}
-async function enter(){name=$("name").value.trim();if(!name)return $("name").focus();localStorage.setItem("hainxName",name);$("hello").textContent=name;$("entry").classList.remove("active");$("home").classList.add("active");render();watchRoomCounts();waiting()}
+async function enter(){
+  name=$("name").value.trim();
+  if(!name)return $("name").focus();
+  if(!user){
+    $("boot").textContent="Connecting to HainX…";
+    try{
+      await window.firebaseReady;
+      if(!auth)await boot();
+      if(!user&&auth)await auth.signInAnonymously();
+    }catch(e){
+      $("boot").textContent="Connection failed — please refresh";
+      return;
+    }
+  }
+  if(!user){$("boot").textContent="Still connecting…";return}
+  localStorage.setItem("hainxName",name);
+  $("hello").textContent=name;
+  $("entry").classList.remove("active");
+  $("home").classList.add("active");
+  render();watchRoomCounts();waiting();
+}
 $("start").onclick=enter;$("name").addEventListener("keydown",e=>e.key==="Enter"&&enter());$("name").value=localStorage.getItem("hainxName")||"";
 async function join(r){if(!user)return msg("Firebase is still connecting. Please wait.");room=r;session=user.uid+"_"+Date.now()+"_"+Math.random().toString(36).slice(2,7);seen.clear();roomMembers.clear();$("roomTitle").textContent=roomsInfo[r].icon+" "+roomsInfo[r].name;$("modal").classList.add("show");msg("Preparing secure voice connection...");try{let ref=db.ref("rooms/"+r+"/members");let tx=await ref.transaction(d=>{d=d||{};if(d[user.uid])return d;if(Object.keys(d).length>=MAX)return;d[user.uid]={uid:user.uid,name,session,joinedAt:firebase.database.ServerValue.TIMESTAMP};return d});if(!tx.committed){await db.ref("waiting/"+user.uid).set({uid:user.uid,name,requestedRoom:r,createdAt:firebase.database.ServerValue.TIMESTAMP});msg("Junction full. 🐿️ You are in the Waiting Room.");return}roomMembers.set(user.uid,{uid:user.uid,name,session});await db.ref("waiting/"+user.uid).remove();await db.ref("rooms/"+r+"/members/"+user.uid).onDisconnect().remove();await micStream();listenRoom(r);msg("Joined "+roomsInfo[r].name+". 🎧 Voice ready — tap MIC ON.");conn();console.log("ICE servers loaded:",ice.length,ice)}catch(e){console.error("JOIN",e);msg("Join failed: "+e.message,"bad")}}
 function listenRoom(r){
@@ -117,14 +138,20 @@ function listenRoom(r){
 async function processPendingSignals(){let s=await db.ref("signals/"+room+"/"+user.uid).once("value");let d=s.val()||{};for(let [id,m] of Object.entries(d)){if(!seen.has(id)&&m&&m.to===user.uid&&m.toSession===session){seen.add(id);try{await signal(m)}catch(e){console.error("PENDING SIGNAL",e)}db.ref("signals/"+room+"/"+user.uid+"/"+id).remove().catch(()=>{})}}}
 async function micStream(){if(local)return local;try{local=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1,sampleRate:48000},video:false});local.getAudioTracks().forEach(t=>t.enabled=micOn);return local}catch(e){console.error("MIC",e);msg("Microphone permission failed: "+e.message,"bad");return null}}
 async function ensurePeer(uid){if(peers.has(uid))return peers.get(uid);let pc;try{pc=new RTCPeerConnection({iceServers:ice,bundlePolicy:"max-bundle"})}catch(e){throw Error("WebRTC unavailable: "+e.message)}peers.set(uid,pc);queues.set(uid,[]);let tr=pc.addTransceiver("audio",{direction:"sendrecv"});let track=local?.getAudioTracks()?.[0];if(track)await tr.sender.replaceTrack(track);pc.ontrack=e=>{
- const stream=e.streams?.[0];if(!stream)return;
- remoteStreams.set(uid,stream);
- let a=document.getElementById("a_"+uid);
- if(!a){a=document.createElement("audio");a.id="a_"+uid;a.autoplay=false;a.playsInline=true;a.volume=1;a.dataset.remote="1";document.body.appendChild(a)}
- a.srcObject=stream;a.muted=true;
- setupRemoteAudio(uid,stream);
- msg("🎧 Voice stream received — audio output ready.","");
-};
+  let stream=e.streams?.[0]; if(!stream)return;
+  let a=document.getElementById("a_"+uid);
+  if(!a){
+    a=document.createElement("audio");
+    a.id="a_"+uid;
+    a.autoplay=false;
+    a.playsInline=true;
+    a.volume=1;
+    a.dataset.remote="1";
+    document.body.appendChild(a);
+  }
+  a.srcObject=stream;
+  a.muted=!soundOn;
+  const playRemote=()=>{if(soundOn)a.play().catch(err=>{console.warn("REMOTE AUDIO PLAY",err);msg("🔊 Tap ENABLE SOUND once to start voice audio.","warn")})};
   a.onloadedmetadata=playRemote;
   e.track.onunmute=playRemote;
   playRemote();
@@ -162,27 +189,13 @@ async function restart(uid){let old=peers.get(uid);if(old&&old.connectionState==
 function closePeer(uid){let t=restartTimers.get(uid);if(t){clearTimeout(t);restartTimers.delete(uid)}peers.get(uid)?.close();peers.delete(uid);queues.delete(uid);$("a_"+uid)?.remove();drawMembers();conn()}
 function drawMembers(){let arr=[...roomMembers.values()];$("memberDiag").textContent="Room sync: "+arr.length+" profile"+(arr.length===1?"":"s")+" loaded";$("members").innerHTML=arr.length?arr.map(m=>{let me=m.uid===user.uid,st=me?"local":(peers.get(m.uid)?.connectionState||"waiting"),good=st==="connected",dot=good?"live":st==="connecting"?"busy":"",label=good?"Voice connected":me?(micOn?"Mic ON":"Mic OFF"):(st==="waiting"?"Connecting...":st);return `<div class="member"><div class="ml"><div class="avatar">🐱</div><div><div class="mn">${esc(m.name)} ${me?"⚡ You":""}<span class="cat-badge">🐱 HainX</span></div><div class="ms"><span class="voice-dot ${dot}"></span>${label}</div></div></div><div class="${good?"good":st==="failed"?"bad":"warn"}">${good?"● LIVE":me?"LOCAL":st.toUpperCase()}</div></div>`}).join(""):"No one here yet. 🐱"}
 function conn(){let a=[...peers.values()],n=a.filter(p=>p.connectionState==="connected").length;let text=a.length?(n===a.length&&n>0?"Connected":n>0?"Partially connected":"Connecting..."):"Waiting for another person...";let pct=a.length?Math.round((n/a.length)*100):0;$("connText").textContent=text;$("connText").className=n===a.length&&n>0?"good":"warn";$("connFill").style.width=pct+"%";drawMembers()}
-async function setupAudioOutput(){
- if(!audioCtx){
-  const C=window.AudioContext||window.webkitAudioContext;
-  if(!C)throw new Error("Web Audio is not supported by this browser.");
-  audioCtx=new C();
- }
- if(audioCtx.state!=="running")await audioCtx.resume();
- for(const [uid,stream] of remoteStreams)setupRemoteAudio(uid,stream);
-}
-function setupRemoteAudio(uid,stream){
- if(!audioCtx||!stream||remoteSources.has(uid))return;
- try{
-  const source=audioCtx.createMediaStreamSource(stream);
-  const gain=audioCtx.createGain();gain.gain.value=1;
-  source.connect(gain);gain.connect(audioCtx.destination);
-  remoteSources.set(uid,{source,gain});
- }catch(e){console.warn("REMOTE AUDIO ENGINE",e)}
-}
 async function playAllRemote(){
- try{await setupAudioOutput()}catch(e){console.warn("AUDIO OUTPUT",e);msg("🔊 Tap SOUND ON again — browser audio output is still locked.","warn")}
- for(const a of document.querySelectorAll('audio[data-remote]')){a.muted=true;try{await a.play().catch(()=>{})}catch(e){}}
+  let list=[...document.querySelectorAll('audio[data-remote]')];
+  for(const a of list){
+    a.muted=false;
+    a.volume=1;
+    try{await a.play()}catch(e){console.warn("PLAY REMOTE",e)}
+  }
 }
 $("mic").onclick=async()=>{
   if(!local)await micStream();
@@ -195,17 +208,20 @@ $("mic").onclick=async()=>{
   if(micOn)await playAllRemote();
 };
 $("sound").onclick=async()=>{
- soundOn=!soundOn;
- if(soundOn){
-  await playAllRemote();
-  $("sound").textContent="🔊 SOUND ON";
-  msg("🔊 Voice audio enabled — speak normally.","");
- }else{
-  if(audioCtx&&audioCtx.state==="running")await audioCtx.suspend().catch(()=>{});
-  $("sound").textContent="🔇 SOUND OFF";
-  msg("🔇 Voice audio muted.","warn");
- }
+  soundOn=!soundOn;
+  let list=[...document.querySelectorAll('audio[data-remote]')];
+  list.forEach(a=>{a.muted=!soundOn;a.volume=1});
+  if(soundOn){
+    await playAllRemote();
+    $("sound").textContent="🔊 SOUND ON";
+    msg("🔊 Voice audio enabled — speak normally.","");
+  }else{
+    $("sound").textContent="🔇 SOUND OFF";
+    msg("🔇 Voice audio muted.","warn");
+  }
 };async function leave(){if(!room)return;try{await db.ref("rooms/"+room+"/members/"+user.uid).remove();await db.ref("waiting/"+user.uid).remove()}catch(e){}memberOff?.();signalOff?.();for(let uid of [...peers.keys()])closePeer(uid);if(local){local.getTracks().forEach(t=>t.stop());local=null}room=null;session=null;roomMembers.clear();$("modal").classList.remove("show");render()}$("leave").onclick=leave;$("close").onclick=leave;window.addEventListener("beforeunload",()=>room&&user&&db.ref("rooms/"+room+"/members/"+user.uid).remove());function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}boot();
+
+window.firebaseReady.then(()=>boot()).catch(e=>console.error("Firebase loader",e));
 </script>
 </body>
 </html>
