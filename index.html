@@ -138,7 +138,9 @@ function listenRoom(r){
 async function processPendingSignals(){let s=await db.ref("signals/"+room+"/"+user.uid).once("value");let d=s.val()||{};for(let [id,m] of Object.entries(d)){if(!seen.has(id)&&m&&m.to===user.uid&&m.toSession===session){seen.add(id);try{await signal(m)}catch(e){console.error("PENDING SIGNAL",e)}db.ref("signals/"+room+"/"+user.uid+"/"+id).remove().catch(()=>{})}}}
 async function micStream(){if(local)return local;try{local=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1,sampleRate:48000},video:false});local.getAudioTracks().forEach(t=>t.enabled=micOn);return local}catch(e){console.error("MIC",e);msg("Microphone permission failed: "+e.message,"bad");return null}}
 async function ensurePeer(uid){if(peers.has(uid))return peers.get(uid);let pc;try{pc=new RTCPeerConnection({iceServers:ice,bundlePolicy:"max-bundle"})}catch(e){throw Error("WebRTC unavailable: "+e.message)}peers.set(uid,pc);queues.set(uid,[]);let tr=pc.addTransceiver("audio",{direction:"sendrecv"});let track=local?.getAudioTracks()?.[0];if(track)await tr.sender.replaceTrack(track);pc.ontrack=e=>{
-  let stream=e.streams?.[0]; if(!stream)return;
+  /* Some browsers deliver a remote track without a MediaStream in e.streams.
+     Build one from the track so the audio element is never skipped. */
+  let stream=e.streams?.[0] || new MediaStream([e.track]);
   let a=document.getElementById("a_"+uid);
   if(!a){
     a=document.createElement("audio");
@@ -151,6 +153,8 @@ async function ensurePeer(uid){if(peers.has(uid))return peers.get(uid);let pc;tr
   }
   a.srcObject=stream;
   a.muted=!soundOn;
+  a.volume=1;
+  a.setAttribute("playsinline","");
   const playRemote=()=>{if(soundOn)a.play().catch(err=>{console.warn("REMOTE AUDIO PLAY",err);msg("🔊 Tap ENABLE SOUND once to start voice audio.","warn")})};
   a.onloadedmetadata=playRemote;
   e.track.onunmute=playRemote;
