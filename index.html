@@ -48,152 +48,43 @@
 <script>
 const firebaseConfig={apiKey:"AIzaSyAFjfk27HrCPqDxfDFTYuP9KyG8knbnUi8",authDomain:"hainx-b7dfa.firebaseapp.com",databaseURL:"https://hainx-b7dfa-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"hainx-b7dfa",storageBucket:"hainx-b7dfa.firebasestorage.app",messagingSenderId:"1077891362069",appId:"1:1077891362069:web:8ffab71bfcf4e4c8cd0d1c",measurementId:"G-Y01RM0068"};
 const METERED_DOMAIN="https://hainx.metered.live";
-/* Paste ONLY your credential-scoped Metered API key here. Never paste the Developers Secret Key. */
 const METERED_API_KEY="d5839f02e703cd05ffa0afdcb12138a0a613";
-
-const roomsInfo={
-shadow:{name:"Shadow Forest",icon:"🌲",desc:"Whispers, trees and mysterious night vibes."},
-lake:{name:"Midnight Lake",icon:"🌊",desc:"Calm water, moonlight and hidden voices."},
-house:{name:"Forgotten House",icon:"🏚️",desc:"An old house where every voice has a story."},
-valley:{name:"Silent Valley",icon:"🪨",desc:"Deep valley, quiet atmosphere, real people."},
-moon:{name:"Moon Chamber",icon:"🌙",desc:"A secret chamber under the HainX moon."}};
+const roomsInfo={shadow:{name:"Shadow Forest",icon:"🌲",desc:"Whispers, trees and mysterious night vibes."},lake:{name:"Midnight Lake",icon:"🌊",desc:"Calm water, moonlight and hidden voices."},house:{name:"Forgotten House",icon:"🏚️",desc:"An old house where every voice has a story."},valley:{name:"Silent Valley",icon:"🪨",desc:"Deep valley, quiet atmosphere, real people."},moon:{name:"Moon Chamber",icon:"🌙",desc:"A secret chamber under the HainX moon."}};
 const keys=Object.keys(roomsInfo),MAX=4,$=id=>document.getElementById(id);
 let auth,db,user,name="",room=null,session=null,local=null,micOn=false,soundOn=true;
-let ice=[{urls:"stun:stun.l.google.com:19302"}],peers=new Map(),queues=new Map(),roomCounts=new Map(),roomMembers=new Map(),seen=new Set(),memberOff=null,signalOff=null;
-
-function status(t,c=""){ $("fb").textContent="● "+t;$("fb").className="pill "+c}
-function msg(t,c=""){ $("notice").innerHTML=t;$("notice").className="notice "+c}
-function boot(){
- try{if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);auth=firebase.auth();db=firebase.database();
- db.ref(".info/connected").on("value",s=>status(s.val()?"Firebase connected":"Firebase connecting...",s.val()?"":"warn"));
- auth.onAuthStateChanged(async u=>{if(u){user=u;await getTurn();$("boot").textContent="HainX ready ⚡"}else auth.signInAnonymously().catch(e=>$("boot").textContent=e.message)});
- }catch(e){$("boot").textContent="Firebase error: "+e.message}
-}
-async function getTurn(){
- if(METERED_API_KEY.startsWith("PASTE_"))return;
- try{let r=await fetch(METERED_DOMAIN+"/api/v1/turn/credentials?apiKey="+encodeURIComponent(METERED_API_KEY)+"&region=global");if(!r.ok)throw Error("Metered HTTP "+r.status);let a=await r.json();if(Array.isArray(a)&&a.length)ice=a}catch(e){console.warn("TURN:",e)}
-}
+let ice=[{urls:"stun:stun.l.google.com:19302"}],peers=new Map(),queues=new Map(),roomMembers=new Map(),seen=new Set(),memberOff=null,signalOff=null,restartTimers=new Map();
+function status(t,c=""){$("fb").textContent="● "+t;$('fb').className="pill "+c}
+function msg(t,c=""){$("notice").innerHTML=t;$('notice').className="notice "+c}
+function boot(){try{if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);auth=firebase.auth();db=firebase.database();db.ref(".info/connected").on("value",s=>status(s.val()?"Firebase connected":"Firebase connecting...",s.val()?"":"warn"));auth.onAuthStateChanged(async u=>{if(u){user=u;await getTurn();$("boot").textContent="HainX ready ⚡"}else auth.signInAnonymously().catch(e=>$("boot").textContent=e.message)})}catch(e){$("boot").textContent="Firebase error: "+e.message}}
+async function getTurn(){if(METERED_API_KEY.startsWith("PASTE_")){console.warn("Metered API key missing; using STUN only");return}try{let r=await fetch(METERED_DOMAIN+"/api/v1/turn/credentials?apiKey="+encodeURIComponent(METERED_API_KEY));if(!r.ok)throw Error("Metered HTTP "+r.status);let a=await r.json();if(!Array.isArray(a)||!a.length)throw Error("Metered returned no ICE servers");ice=a;console.log("TURN READY",ice.length,"ICE servers")}catch(e){console.error("TURN FAILED",e);msg("⚠️ TURN could not load. Using STUN fallback.","warn")}}
 let roomCountListenersReady=false;
-function render(){
- $("rooms").innerHTML=keys.map(k=>{let n=roomCounts.get(k)||0,i=roomsInfo[k];return `<div class="room"><div class="sq">🐿️</div><div class="sq2">🐿️</div><h4>${i.icon} ${i.name}</h4><p>${i.desc}</p><div class="count">SEATS <b>${n}/${MAX}</b></div><button class="enter" data-r="${k}">${n>=MAX?"JOIN WAITING ROOM":"ENTER JUNCTION"}</button></div>`}).join("");
- document.querySelectorAll(".enter").forEach(b=>b.onclick=()=>join(b.dataset.r));
-}
-function watchRoomCounts(){
- if(roomCountListenersReady)return;
- roomCountListenersReady=true;
- keys.forEach(k=>{
-   db.ref("rooms/"+k+"/members").on("value",s=>{
-     roomCounts.set(k,Object.keys(s.val()||{}).length);
-     render();
-   });
- });
-}
+function render(){$("rooms").innerHTML=keys.map(k=>{let n=roomMembers.get("__"+k)||0,i=roomsInfo[k];return `<div class="room"><div class="sq">🐿️</div><div class="sq2">🐿️</div><h4>${i.icon} ${i.name}</h4><p>${i.desc}</p><div class="count">SEATS <b>${n}/${MAX}</b></div><button class="enter" data-r="${k}">${n>=MAX?"JOIN WAITING ROOM":"ENTER JUNCTION"}</button></div>`}).join("");document.querySelectorAll(".enter").forEach(b=>b.onclick=()=>join(b.dataset.r))}
+function watchRoomCounts(){if(roomCountListenersReady)return;roomCountListenersReady=true;keys.forEach(k=>db.ref("rooms/"+k+"/members").on("value",s=>{roomMembers.set("__"+k,Object.keys(s.val()||{}).length);render()}))}
 function waiting(){db.ref("waiting").on("value",s=>{let n=Object.keys(s.val()||{}).length;$("waiting").textContent=n?`${n} person${n>1?"s":""} waiting 🐿️`:"Nobody is waiting right now."})}
 async function enter(){name=$("name").value.trim();if(!name)return $("name").focus();localStorage.setItem("hainxName",name);$("hello").textContent=name;$("entry").classList.remove("active");$("home").classList.add("active");render();watchRoomCounts();waiting()}
 $("start").onclick=enter;$("name").addEventListener("keydown",e=>e.key==="Enter"&&enter());$("name").value=localStorage.getItem("hainxName")||"";
-
-async function join(r){
- if(!user)return msg("Firebase is still connecting. Please wait.");
- room=r;
- session=user.uid+"_"+Date.now()+"_"+Math.random().toString(36).slice(2,7);
- $("roomTitle").textContent=roomsInfo[r].icon+" "+roomsInfo[r].name;
- $("modal").classList.add("show");
- msg("Checking seat and preparing voice...");
- let ref=db.ref("rooms/"+r+"/members");
- try{
-   let tx=await ref.transaction(d=>{
-     d=d||{};
-     if(d[user.uid])return d;
-     if(Object.keys(d).length>=MAX)return;
-     d[user.uid]={uid:user.uid,name:name,session:session,joinedAt:firebase.database.ServerValue.TIMESTAMP};
-     return d
-   });
-   if(!tx.committed){
-     await db.ref("waiting/"+user.uid).set({uid:user.uid,name,requestedRoom:r,createdAt:firebase.database.ServerValue.TIMESTAMP});
-     msg("Junction full. 🐿️ You are in the Waiting Room.");
-     return
-   }
-   roomMembers.set(user.uid,{uid:user.uid,name:name,session:session});
-   drawMembers();
-   await db.ref("waiting/"+user.uid).remove();
-   await db.ref("rooms/"+r+"/members/"+user.uid).onDisconnect().remove();
-   await micStream();
-   listenRoom(r);
-   msg("Joined "+roomsInfo[r].name+". 🎧 Voice ready — tap MIC ON.");
-   conn();
- }catch(e){console.error(e);msg("Join failed: "+e.message,"bad")}
-}
+async function join(r){if(!user)return msg("Firebase is still connecting. Please wait.");room=r;session=user.uid+"_"+Date.now()+"_"+Math.random().toString(36).slice(2,7);seen.clear();roomMembers.clear();$("roomTitle").textContent=roomsInfo[r].icon+" "+roomsInfo[r].name;$("modal").classList.add("show");msg("Preparing secure voice connection...");try{let ref=db.ref("rooms/"+r+"/members");let tx=await ref.transaction(d=>{d=d||{};if(d[user.uid])return d;if(Object.keys(d).length>=MAX)return;d[user.uid]={uid:user.uid,name,session,joinedAt:firebase.database.ServerValue.TIMESTAMP};return d});if(!tx.committed){await db.ref("waiting/"+user.uid).set({uid:user.uid,name,requestedRoom:r,createdAt:firebase.database.ServerValue.TIMESTAMP});msg("Junction full. 🐿️ You are in the Waiting Room.");return}roomMembers.set(user.uid,{uid:user.uid,name,session});await db.ref("waiting/"+user.uid).remove();await db.ref("rooms/"+r+"/members/"+user.uid).onDisconnect().remove();await micStream();listenRoom(r);msg("Joined "+roomsInfo[r].name+". 🎧 Voice ready — tap MIC ON.");conn()}catch(e){console.error("JOIN",e);msg("Join failed: "+e.message,"bad")}}
 function listenRoom(r){
- let mr=db.ref("rooms/"+r+"/members");
- let mc=s=>{
-   let d=s.val()||{};
-   roomMembers.clear();
-   Object.values(d).forEach(x=>{if(x&&x.uid)roomMembers.set(x.uid,x)});
-   drawMembers();
-   Object.keys(d).forEach(async uid=>{if(uid!==user.uid)await ensurePeer(uid)});
-   for(let [uid] of peers)if(!d[uid])closePeer(uid);
-   conn();
- };
- mr.on("value",mc);
- memberOff=()=>mr.off("value",mc);
-
  let sr=db.ref("signals/"+r+"/"+user.uid);
- let sc=async s=>{
-   let d=s.val()||{};
-   for(let [id,m] of Object.entries(d)){
-     if(seen.has(id)||!m||m.to!==user.uid||m.session===session)continue;
-     seen.add(id);
-     await signal(m);
-     db.ref("signals/"+r+"/"+user.uid+"/"+id).remove().catch(()=>{});
-   }
- };
- sr.on("value",sc);
- signalOff=()=>sr.off("value",sc)
+ let sc=async s=>{let d=s.val()||{};for(let [id,m] of Object.entries(d)){if(seen.has(id)||!m||m.to!==user.uid||m.toSession!==session)continue;let sender=roomMembers.get(m.from);if(sender&&m.fromSession&&sender.session!==m.fromSession)continue;seen.add(id);try{await signal(m)}catch(e){console.error("SIGNAL",e);msg("⚠️ Voice signaling error: "+e.message,"bad")}db.ref("signals/"+r+"/"+user.uid+"/"+id).remove().catch(()=>{})}};
+ sr.on("value",sc);signalOff=()=>sr.off("value",sc);
+ let mr=db.ref("rooms/"+r+"/members");
+ let mc=async s=>{let d=s.val()||{};roomMembers.clear();Object.values(d).forEach(x=>{if(x&&x.uid)roomMembers.set(x.uid,x)});drawMembers();for(let uid of Object.keys(d)){if(uid!==user.uid){try{await ensurePeer(uid)}catch(e){console.error("PEER CREATE",uid,e);msg("⚠️ Peer setup failed: "+e.message,"bad")}}}for(let [uid] of [...peers])if(!d[uid])closePeer(uid);conn();processPendingSignals()};
+ mr.on("value",mc);memberOff=()=>mr.off("value",mc)
 }
-async function micStream(){
- if(local)return local;try{local=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1,sampleRate:48000},video:false});local.getAudioTracks().forEach(t=>t.enabled=micOn);return local}catch(e){msg("Microphone permission not granted. You can still stay in the Junction.","bad");return null}
-}
-async function ensurePeer(uid){
- if(peers.has(uid))return peers.get(uid);let pc=new RTCPeerConnection({iceServers:ice,bundlePolicy:"max-bundle"});peers.set(uid,pc);queues.set(uid,[]);
- pc.addTransceiver("audio",{direction:"sendrecv"});if(local)local.getTracks().forEach(t=>pc.addTrack(t,local));
- pc.ontrack=e=>{if(!e.streams[0])return;let a=document.getElementById("a_"+uid);if(!a){a=document.createElement("audio");a.id="a_"+uid;a.autoplay=true;a.playsInline=true;a.dataset.remote="1";document.body.appendChild(a)}a.srcObject=e.streams[0];a.muted=!soundOn;a.play().catch(()=>msg("🔊 Tap SOUND ON once to allow remote audio.","warn"))};
- pc.onicecandidate=e=>e.candidate&&send(uid,{type:"candidate",candidate:e.candidate.toJSON()});
- pc.onconnectionstatechange=()=>{drawMembers();conn();if(["failed","disconnected"].includes(pc.connectionState))setTimeout(()=>restart(uid),1000)};
- pc.oniceconnectionstatechange=()=>pc.iceConnectionState==="failed"&&restart(uid);
- if(user.uid<uid)await offer(uid,pc);return pc
-}
-async function offer(uid,pc){try{let o=await pc.createOffer({offerToReceiveAudio:true});await pc.setLocalDescription(o);await send(uid,{type:"offer",sdp:pc.localDescription})}catch(e){console.warn(e)}}
-async function signal(m){
- let pc=await ensurePeer(m.from);try{
-  if(m.type==="offer"){await pc.setRemoteDescription(new RTCSessionDescription(m.sdp));await flush(m.from,pc);let a=await pc.createAnswer();await pc.setLocalDescription(a);await send(m.from,{type:"answer",sdp:pc.localDescription})}
-  else if(m.type==="answer"){await pc.setRemoteDescription(new RTCSessionDescription(m.sdp));await flush(m.from,pc)}
-  else if(m.type==="candidate"){if(pc.remoteDescription)await pc.addIceCandidate(new RTCIceCandidate(m.candidate));else queues.get(m.from).push(m.candidate)}
- }catch(e){console.warn(e)}
-}
-async function flush(uid,pc){let q=queues.get(uid)||[];while(q.length)try{await pc.addIceCandidate(new RTCIceCandidate(q.shift()))}catch(e){}}
-function send(to,p){return db.ref("signals/"+room+"/"+to).push({...p,to,from:user.uid,session,createdAt:firebase.database.ServerValue.TIMESTAMP})}
-async function restart(uid){let pc=peers.get(uid);if(!pc)return;try{if(pc.restartIce)pc.restartIce();if(user.uid<uid)await offer(uid,pc)}catch(e){}}
-function closePeer(uid){peers.get(uid)?.close();peers.delete(uid);queues.delete(uid);document.getElementById("a_"+uid)?.remove();drawMembers();conn()}
-function drawMembers(){
- let arr=[...roomMembers.values()];
- $("memberDiag").textContent="Room sync: "+arr.length+" profile"+(arr.length===1?"":"s")+" loaded";$("members").innerHTML=arr.length?arr.map(m=>{
-   let me=m.uid===user.uid,st=me?"local":(peers.get(m.uid)?.connectionState||"waiting"),good=st==="connected";
-   let dot=good?"live":st==="connecting"?"busy":"";
-   let label=good?"Voice connected":me?(micOn?"Mic ON":"Mic OFF"):(st==="waiting"?"Connecting...":st);
-   return `<div class="member"><div class="ml"><div class="avatar">🐱</div><div><div class="mn">${esc(m.name)} ${me?"⚡ You":""}<span class="cat-badge">🐱 HainX</span></div><div class="ms"><span class="voice-dot ${dot}"></span>${label}</div></div></div><div class="${good?"good":st==="failed"?"bad":"warn"}">${good?"● LIVE":me?"LOCAL":st.toUpperCase()}</div></div>`;
- }).join(""):"No one here yet. 🐱"}
-function conn(){
- let a=[...peers.values()],n=a.filter(p=>p.connectionState==="connected").length;
- let text=a.length?(n===a.length&&n>0?"Connected":n>0?"Partially connected":"Connecting..."):"Waiting for another person...";
- let pct=a.length?Math.round((n/a.length)*100):0;
- $("connText").textContent=text;$("connText").className=n===a.length&&n>0?"good":"warn";$("connFill").style.width=pct+"%";drawMembers();
-}
-$("mic").onclick=async()=>{if(!local)await micStream();if(!local)return;micOn=!micOn;local.getAudioTracks().forEach(t=>t.enabled=micOn);$("mic").textContent=micOn?"🎙️ MIC ON":"🔇 MIC OFF";msg(micOn?"Mic ON — speak normally 🎙️":"Mic OFF.");drawMembers();conn()};
-$("sound").onclick=()=>{soundOn=!soundOn;document.querySelectorAll('audio[data-remote]').forEach(a=>a.muted=!soundOn);$("sound").textContent=soundOn?"🔊 SOUND ON":"🔇 SOUND OFF"};
-async function leave(){if(!room)return;try{await db.ref("rooms/"+room+"/members/"+user.uid).remove();await db.ref("waiting/"+user.uid).remove()}catch(e){}memberOff?.();signalOff?.();for(let uid of [...peers.keys()])closePeer(uid);if(local){local.getTracks().forEach(t=>t.stop());local=null}room=null;session=null;roomMembers.clear();$("modal").classList.remove("show");render()}
-$("leave").onclick=leave;$("close").onclick=leave;window.addEventListener("beforeunload",()=>room&&user&&db.ref("rooms/"+room+"/members/"+user.uid).remove());
-function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
-boot();
+async function processPendingSignals(){let s=await db.ref("signals/"+room+"/"+user.uid).once("value");let d=s.val()||{};for(let [id,m] of Object.entries(d)){if(!seen.has(id)&&m&&m.to===user.uid&&m.toSession===session){seen.add(id);try{await signal(m)}catch(e){console.error("PENDING SIGNAL",e)}db.ref("signals/"+room+"/"+user.uid+"/"+id).remove().catch(()=>{})}}}
+async function micStream(){if(local)return local;try{local=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1,sampleRate:48000},video:false});local.getAudioTracks().forEach(t=>t.enabled=micOn);return local}catch(e){console.error("MIC",e);msg("Microphone permission failed: "+e.message,"bad");return null}}
+async function ensurePeer(uid){if(peers.has(uid))return peers.get(uid);let pc;try{pc=new RTCPeerConnection({iceServers:ice,bundlePolicy:"max-bundle"})}catch(e){throw Error("WebRTC unavailable: "+e.message)}peers.set(uid,pc);queues.set(uid,[]);let tr=pc.addTransceiver("audio",{direction:"sendrecv"});let track=local?.getAudioTracks()?.[0];if(track)await tr.sender.replaceTrack(track);pc.ontrack=e=>{let stream=e.streams?.[0];if(!stream)return;let a=document.getElementById("a_"+uid);if(!a){a=document.createElement("audio");a.id="a_"+uid;a.autoplay=true;a.playsInline=true;a.dataset.remote="1";document.body.appendChild(a)}a.srcObject=stream;a.muted=!soundOn;a.play().catch(()=>msg("🔊 Tap SOUND ON once to allow remote audio.","warn"))};pc.onicecandidate=e=>{if(e.candidate)send(uid,{type:"candidate",candidate:e.candidate.toJSON()})};pc.onicecandidateerror=e=>{console.warn("ICE ERROR",e);msg("🧊 ICE/TURN checking...","warn")};pc.onconnectionstatechange=()=>{console.log("PC",uid,pc.connectionState,pc.iceConnectionState);drawMembers();conn();if(pc.connectionState==="failed")scheduleRestart(uid)};pc.oniceconnectionstatechange=()=>{console.log("ICE",uid,pc.iceConnectionState);if(pc.iceConnectionState==="failed")scheduleRestart(uid)};if(user.uid<uid)await offer(uid,pc);conn();return pc}
+async function offer(uid,pc){try{let o=await pc.createOffer({offerToReceiveAudio:true});await pc.setLocalDescription(o);await send(uid,{type:"offer",sdp:pc.localDescription})}catch(e){console.error("OFFER",e);throw e}}
+async function signal(m){let pc=await ensurePeer(m.from);if(m.type==="offer"){if(pc.signalingState!=="stable")return;await pc.setRemoteDescription(new RTCSessionDescription(m.sdp));await flush(m.from,pc);let a=await pc.createAnswer();await pc.setLocalDescription(a);await send(m.from,{type:"answer",sdp:pc.localDescription})}else if(m.type==="answer"){if(pc.signalingState!=="have-local-offer")return;await pc.setRemoteDescription(new RTCSessionDescription(m.sdp));await flush(m.from,pc)}else if(m.type==="candidate"){if(pc.remoteDescription)await pc.addIceCandidate(new RTCIceCandidate(m.candidate));else queues.get(m.from).push(m.candidate)}}
+async function flush(uid,pc){let q=queues.get(uid)||[];while(q.length){let c=q.shift();try{await pc.addIceCandidate(new RTCIceCandidate(c))}catch(e){console.warn("CANDIDATE",e)}}}
+function send(to,p){let target=roomMembers.get(to);if(!target?.session)return Promise.reject(Error("Remote member session not ready"));return db.ref("signals/"+room+"/"+to).push({...p,to,from:user.uid,fromSession:session,toSession:target.session,createdAt:firebase.database.ServerValue.TIMESTAMP})}
+function scheduleRestart(uid){if(restartTimers.has(uid))return;let t=setTimeout(()=>{restartTimers.delete(uid);restart(uid)},1500);restartTimers.set(uid,t)}
+async function restart(uid){let old=peers.get(uid);if(old&&old.connectionState==="connected")return;closePeer(uid);try{await ensurePeer(uid)}catch(e){console.error("RESTART",e)}}
+function closePeer(uid){let t=restartTimers.get(uid);if(t){clearTimeout(t);restartTimers.delete(uid)}peers.get(uid)?.close();peers.delete(uid);queues.delete(uid);$("a_"+uid)?.remove();drawMembers();conn()}
+function drawMembers(){let arr=[...roomMembers.values()];$("memberDiag").textContent="Room sync: "+arr.length+" profile"+(arr.length===1?"":"s")+" loaded";$("members").innerHTML=arr.length?arr.map(m=>{let me=m.uid===user.uid,st=me?"local":(peers.get(m.uid)?.connectionState||"waiting"),good=st==="connected",dot=good?"live":st==="connecting"?"busy":"",label=good?"Voice connected":me?(micOn?"Mic ON":"Mic OFF"):(st==="waiting"?"Connecting...":st);return `<div class="member"><div class="ml"><div class="avatar">🐱</div><div><div class="mn">${esc(m.name)} ${me?"⚡ You":""}<span class="cat-badge">🐱 HainX</span></div><div class="ms"><span class="voice-dot ${dot}"></span>${label}</div></div></div><div class="${good?"good":st==="failed"?"bad":"warn"}">${good?"● LIVE":me?"LOCAL":st.toUpperCase()}</div></div>`}).join(""):"No one here yet. 🐱"}
+function conn(){let a=[...peers.values()],n=a.filter(p=>p.connectionState==="connected").length;let text=a.length?(n===a.length&&n>0?"Connected":n>0?"Partially connected":"Connecting..."):"Waiting for another person...";let pct=a.length?Math.round((n/a.length)*100):0;$("connText").textContent=text;$("connText").className=n===a.length&&n>0?"good":"warn";$("connFill").style.width=pct+"%";drawMembers()}
+$("mic").onclick=async()=>{if(!local)await micStream();if(!local)return;micOn=!micOn;local.getAudioTracks().forEach(t=>t.enabled=micOn);$("mic").textContent=micOn?"🎙️ MIC ON":"🔇 MIC OFF";msg(micOn?"Mic ON — speak normally 🎙️":"Mic OFF.");drawMembers();conn()};$("sound").onclick=()=>{soundOn=!soundOn;document.querySelectorAll('audio[data-remote]').forEach(a=>a.muted=!soundOn);$("sound").textContent=soundOn?"🔊 SOUND ON":"🔇 SOUND OFF"};async function leave(){if(!room)return;try{await db.ref("rooms/"+room+"/members/"+user.uid).remove();await db.ref("waiting/"+user.uid).remove()}catch(e){}memberOff?.();signalOff?.();for(let uid of [...peers.keys()])closePeer(uid);if(local){local.getTracks().forEach(t=>t.stop());local=null}room=null;session=null;roomMembers.clear();$("modal").classList.remove("show");render()}$("leave").onclick=leave;$("close").onclick=leave;window.addEventListener("beforeunload",()=>room&&user&&db.ref("rooms/"+room+"/members/"+user.uid).remove());function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}boot();
 </script>
 </body>
 </html>
