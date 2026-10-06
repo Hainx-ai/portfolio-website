@@ -38,7 +38,7 @@
 <div id="modal" class="modal"><div class="box">
 <div class="head"><div><h2 id="roomTitle">Junction</h2><div class="worldtag">Jack World 🌍 • Real human voice chat</div></div><button id="close" class="close">×</button></div>
 <div id="notice" class="notice">Preparing secure voice connection...</div>
-<div class="controls"><button id="mic" class="control mic">🎙️ TURN MIC ON</button><button id="sound" class="control">🔊 SOUND ON</button><button id="leave" class="control">🚪 LEAVE</button></div>
+<div class="controls"><button id="mic" class="control mic">🎙️ TURN MIC ON</button><button id="sound" class="control">🔊 ENABLE SOUND</button><button id="leave" class="control">🚪 LEAVE</button></div>
 <h3>🐿️ People in this Junction</h3><div id="members"></div><div id="memberDiag" class="status" style="margin-top:6px">Room sync: starting...</div><div class="conn-panel"><div class="conn-title"><span>🎧 Voice connection</span><span id="connText" class="warn">Preparing...</span></div><div class="conn-bar"><div id="connFill" class="conn-fill"></div></div><div class="audio-tip">🐱 Clear voice • Echo control • Noise suppression • TURN fallback</div></div>
 </div></div>
 
@@ -51,7 +51,7 @@ const METERED_DOMAIN="https://hainx.metered.live";
 const METERED_API_KEY="d5839f02e703cd05ffa0afdcb12138a0a613";
 const roomsInfo={shadow:{name:"Shadow Forest",icon:"🌲",desc:"Whispers, trees and mysterious night vibes."},lake:{name:"Midnight Lake",icon:"🌊",desc:"Calm water, moonlight and hidden voices."},house:{name:"Forgotten House",icon:"🏚️",desc:"An old house where every voice has a story."},valley:{name:"Silent Valley",icon:"🪨",desc:"Deep valley, quiet atmosphere, real people."},moon:{name:"Moon Chamber",icon:"🌙",desc:"A secret chamber under the HainX moon."}};
 const keys=Object.keys(roomsInfo),MAX=4,$=id=>document.getElementById(id);
-let auth,db,user,name="",room=null,session=null,local=null,micOn=false,soundOn=true;
+let auth,db,user,name="",room=null,session=null,local=null,micOn=false,soundOn=false;
 let ice=[{urls:"stun:stun.l.google.com:19302"}],peers=new Map(),queues=new Map(),roomMembers=new Map(),seen=new Set(),memberOff=null,signalOff=null,restartTimers=new Map();
 function status(t,c=""){$("fb").textContent="● "+t;$('fb').className="pill "+c}
 function msg(t,c=""){$("notice").innerHTML=t;$('notice').className="notice "+c}
@@ -74,7 +74,25 @@ function listenRoom(r){
 }
 async function processPendingSignals(){let s=await db.ref("signals/"+room+"/"+user.uid).once("value");let d=s.val()||{};for(let [id,m] of Object.entries(d)){if(!seen.has(id)&&m&&m.to===user.uid&&m.toSession===session){seen.add(id);try{await signal(m)}catch(e){console.error("PENDING SIGNAL",e)}db.ref("signals/"+room+"/"+user.uid+"/"+id).remove().catch(()=>{})}}}
 async function micStream(){if(local)return local;try{local=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1,sampleRate:48000},video:false});local.getAudioTracks().forEach(t=>t.enabled=micOn);return local}catch(e){console.error("MIC",e);msg("Microphone permission failed: "+e.message,"bad");return null}}
-async function ensurePeer(uid){if(peers.has(uid))return peers.get(uid);let pc;try{pc=new RTCPeerConnection({iceServers:ice,bundlePolicy:"max-bundle"})}catch(e){throw Error("WebRTC unavailable: "+e.message)}peers.set(uid,pc);queues.set(uid,[]);let tr=pc.addTransceiver("audio",{direction:"sendrecv"});let track=local?.getAudioTracks()?.[0];if(track)await tr.sender.replaceTrack(track);pc.ontrack=e=>{let stream=e.streams?.[0];if(!stream)return;let a=document.getElementById("a_"+uid);if(!a){a=document.createElement("audio");a.id="a_"+uid;a.autoplay=true;a.playsInline=true;a.dataset.remote="1";document.body.appendChild(a)}a.srcObject=stream;a.muted=!soundOn;a.play().catch(()=>msg("🔊 Tap SOUND ON once to allow remote audio.","warn"))};pc.onicecandidate=e=>{if(e.candidate)send(uid,{type:"candidate",candidate:e.candidate.toJSON()})};pc.onicecandidateerror=e=>{console.warn("ICE ERROR",e);msg("🧊 ICE/TURN checking...","warn")};pc.onconnectionstatechange=()=>{console.log("PC",uid,pc.connectionState,pc.iceConnectionState);drawMembers();conn();if(pc.connectionState==="failed")scheduleRestart(uid)};pc.oniceconnectionstatechange=()=>{console.log("ICE",uid,pc.iceConnectionState);if(pc.iceConnectionState==="failed")scheduleRestart(uid)};if(user.uid<uid)await offer(uid,pc);conn();return pc}
+async function ensurePeer(uid){if(peers.has(uid))return peers.get(uid);let pc;try{pc=new RTCPeerConnection({iceServers:ice,bundlePolicy:"max-bundle"})}catch(e){throw Error("WebRTC unavailable: "+e.message)}peers.set(uid,pc);queues.set(uid,[]);let tr=pc.addTransceiver("audio",{direction:"sendrecv"});let track=local?.getAudioTracks()?.[0];if(track)await tr.sender.replaceTrack(track);pc.ontrack=e=>{
+  let stream=e.streams?.[0]; if(!stream)return;
+  let a=document.getElementById("a_"+uid);
+  if(!a){
+    a=document.createElement("audio");
+    a.id="a_"+uid;
+    a.autoplay=false;
+    a.playsInline=true;
+    a.volume=1;
+    a.dataset.remote="1";
+    document.body.appendChild(a);
+  }
+  a.srcObject=stream;
+  a.muted=!soundOn;
+  const playRemote=()=>{if(soundOn)a.play().catch(err=>{console.warn("REMOTE AUDIO PLAY",err);msg("🔊 Tap ENABLE SOUND once to start voice audio.","warn")})};
+  a.onloadedmetadata=playRemote;
+  e.track.onunmute=playRemote;
+  playRemote();
+};pc.onicecandidate=e=>{if(e.candidate)send(uid,{type:"candidate",candidate:e.candidate.toJSON()})};pc.onicecandidateerror=e=>{console.warn("ICE ERROR",e);msg("🧊 ICE/TURN checking...","warn")};pc.onconnectionstatechange=()=>{console.log("PC",uid,pc.connectionState,pc.iceConnectionState);drawMembers();conn();if(pc.connectionState==="failed")scheduleRestart(uid)};pc.oniceconnectionstatechange=()=>{console.log("ICE",uid,pc.iceConnectionState);if(pc.iceConnectionState==="failed")scheduleRestart(uid)};if(user.uid<uid)await offer(uid,pc);conn();return pc}
 function packSdp(desc){return desc?{type:desc.type,sdp:desc.sdp}:null}
 async function offer(uid,pc){try{let o=await pc.createOffer({offerToReceiveAudio:true});await pc.setLocalDescription(o);let sdp=packSdp(pc.localDescription);if(!sdp?.type||!sdp?.sdp)throw Error("Local SDP was empty");await send(uid,{type:"offer",sdp})}catch(e){console.error("OFFER",e);throw e}}
 async function signal(m){
@@ -108,7 +126,37 @@ async function restart(uid){let old=peers.get(uid);if(old&&old.connectionState==
 function closePeer(uid){let t=restartTimers.get(uid);if(t){clearTimeout(t);restartTimers.delete(uid)}peers.get(uid)?.close();peers.delete(uid);queues.delete(uid);$("a_"+uid)?.remove();drawMembers();conn()}
 function drawMembers(){let arr=[...roomMembers.values()];$("memberDiag").textContent="Room sync: "+arr.length+" profile"+(arr.length===1?"":"s")+" loaded";$("members").innerHTML=arr.length?arr.map(m=>{let me=m.uid===user.uid,st=me?"local":(peers.get(m.uid)?.connectionState||"waiting"),good=st==="connected",dot=good?"live":st==="connecting"?"busy":"",label=good?"Voice connected":me?(micOn?"Mic ON":"Mic OFF"):(st==="waiting"?"Connecting...":st);return `<div class="member"><div class="ml"><div class="avatar">🐱</div><div><div class="mn">${esc(m.name)} ${me?"⚡ You":""}<span class="cat-badge">🐱 HainX</span></div><div class="ms"><span class="voice-dot ${dot}"></span>${label}</div></div></div><div class="${good?"good":st==="failed"?"bad":"warn"}">${good?"● LIVE":me?"LOCAL":st.toUpperCase()}</div></div>`}).join(""):"No one here yet. 🐱"}
 function conn(){let a=[...peers.values()],n=a.filter(p=>p.connectionState==="connected").length;let text=a.length?(n===a.length&&n>0?"Connected":n>0?"Partially connected":"Connecting..."):"Waiting for another person...";let pct=a.length?Math.round((n/a.length)*100):0;$("connText").textContent=text;$("connText").className=n===a.length&&n>0?"good":"warn";$("connFill").style.width=pct+"%";drawMembers()}
-$("mic").onclick=async()=>{if(!local)await micStream();if(!local)return;micOn=!micOn;local.getAudioTracks().forEach(t=>t.enabled=micOn);$("mic").textContent=micOn?"🎙️ MIC ON":"🔇 MIC OFF";msg(micOn?"Mic ON — speak normally 🎙️":"Mic OFF.");drawMembers();conn()};$("sound").onclick=()=>{soundOn=!soundOn;document.querySelectorAll('audio[data-remote]').forEach(a=>a.muted=!soundOn);$("sound").textContent=soundOn?"🔊 SOUND ON":"🔇 SOUND OFF"};async function leave(){if(!room)return;try{await db.ref("rooms/"+room+"/members/"+user.uid).remove();await db.ref("waiting/"+user.uid).remove()}catch(e){}memberOff?.();signalOff?.();for(let uid of [...peers.keys()])closePeer(uid);if(local){local.getTracks().forEach(t=>t.stop());local=null}room=null;session=null;roomMembers.clear();$("modal").classList.remove("show");render()}$("leave").onclick=leave;$("close").onclick=leave;window.addEventListener("beforeunload",()=>room&&user&&db.ref("rooms/"+room+"/members/"+user.uid).remove());function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}boot();
+async function playAllRemote(){
+  let list=[...document.querySelectorAll('audio[data-remote]')];
+  for(const a of list){
+    a.muted=false;
+    a.volume=1;
+    try{await a.play()}catch(e){console.warn("PLAY REMOTE",e)}
+  }
+}
+$("mic").onclick=async()=>{
+  if(!local)await micStream();
+  if(!local)return;
+  micOn=!micOn;
+  local.getAudioTracks().forEach(t=>t.enabled=micOn);
+  $("mic").textContent=micOn?"🎙️ MIC ON":"🔇 MIC OFF";
+  msg(micOn?"Mic ON — speak normally 🎙️":"Mic OFF.");
+  drawMembers();conn();
+  if(micOn)await playAllRemote();
+};
+$("sound").onclick=async()=>{
+  soundOn=!soundOn;
+  let list=[...document.querySelectorAll('audio[data-remote]')];
+  list.forEach(a=>{a.muted=!soundOn;a.volume=1});
+  if(soundOn){
+    await playAllRemote();
+    $("sound").textContent="🔊 SOUND ON";
+    msg("🔊 Voice audio enabled — speak normally.","");
+  }else{
+    $("sound").textContent="🔇 SOUND OFF";
+    msg("🔇 Voice audio muted.","warn");
+  }
+};async function leave(){if(!room)return;try{await db.ref("rooms/"+room+"/members/"+user.uid).remove();await db.ref("waiting/"+user.uid).remove()}catch(e){}memberOff?.();signalOff?.();for(let uid of [...peers.keys()])closePeer(uid);if(local){local.getTracks().forEach(t=>t.stop());local=null}room=null;session=null;roomMembers.clear();$("modal").classList.remove("show");render()}$("leave").onclick=leave;$("close").onclick=leave;window.addEventListener("beforeunload",()=>room&&user&&db.ref("rooms/"+room+"/members/"+user.uid).remove());function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}boot();
 </script>
 </body>
 </html>
