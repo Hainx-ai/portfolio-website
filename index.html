@@ -55,8 +55,50 @@ let auth,db,user,name="",room=null,session=null,local=null,micOn=false,soundOn=f
 let ice=[{urls:"stun:stun.l.google.com:19302"}],peers=new Map(),queues=new Map(),roomMembers=new Map(),seen=new Set(),memberOff=null,signalOff=null,restartTimers=new Map();
 function status(t,c=""){$("fb").textContent="● "+t;$('fb').className="pill "+c}
 function msg(t,c=""){$("notice").innerHTML=t;$('notice').className="notice "+c}
-function boot(){try{if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);auth=firebase.auth();db=firebase.database();db.ref(".info/connected").on("value",s=>status(s.val()?"Firebase connected":"Firebase connecting...",s.val()?"":"warn"));auth.onAuthStateChanged(async u=>{if(u){user=u;await getTurn();$("boot").textContent="HainX ready ⚡"}else auth.signInAnonymously().catch(e=>$("boot").textContent=e.message)})}catch(e){$("boot").textContent="Firebase error: "+e.message}}
-async function getTurn(){if(METERED_API_KEY.startsWith("PASTE_")){console.warn("Metered API key missing; using STUN only");return}try{let r=await fetch(METERED_DOMAIN+"/api/v1/turn/credentials?apiKey="+encodeURIComponent(METERED_API_KEY));if(!r.ok)throw Error("Metered HTTP "+r.status);let a=await r.json();if(!Array.isArray(a)||!a.length)throw Error("Metered returned no ICE servers");ice=a;console.log("TURN READY",ice.length,"ICE servers")}catch(e){console.error("TURN FAILED",e);msg("⚠️ TURN could not load. Using STUN fallback.","warn")}}
+let authRetryTimer=null;
+function boot(){
+ try{
+  if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
+  auth=firebase.auth();db=firebase.database();
+  db.ref(".info/connected").on("value",s=>status(s.val()?"Firebase connected":"Firebase connecting...",s.val()?"":"warn"));
+  auth.onAuthStateChanged(u=>{
+   if(u){
+    user=u;
+    $("boot").textContent="HainX ready ⚡";
+    $("boot").className="status ok";
+    if(authRetryTimer){clearTimeout(authRetryTimer);authRetryTimer=null}
+    getTurn().catch(()=>{});
+   }
+  });
+  authRetryTimer=setTimeout(()=>{
+   if(!user){
+    $("boot").textContent="Reconnecting to HainX…";
+    auth.signInAnonymously().catch(e=>{
+      console.error("AUTH RETRY",e);
+      $("boot").textContent="HainX connection failed — try again";
+      $("boot").className="status bad";
+    });
+   }
+  },5000);
+  auth.signInAnonymously().catch(e=>console.warn("AUTH START",e));
+ }catch(e){
+  console.error("BOOT",e);
+  $("boot").textContent="Firebase error: "+e.message;
+  $("boot").className="status bad";
+ }
+}
+async function getTurn(){
+ if(METERED_API_KEY.startsWith("PASTE_")){console.warn("Metered API key missing; using STUN only");return}
+ const ctl=new AbortController();const timer=setTimeout(()=>ctl.abort(),7000);
+ try{
+  let r=await fetch(METERED_DOMAIN+"/api/v1/turn/credentials?apiKey="+encodeURIComponent(METERED_API_KEY),{signal:ctl.signal});
+  if(!r.ok)throw Error("Metered HTTP "+r.status);
+  let a=await r.json();
+  if(!Array.isArray(a)||!a.length)throw Error("Metered returned no ICE servers");
+  ice=a;console.log("TURN READY",ice.length,"ICE servers");
+ }catch(e){console.warn("TURN FAILED — STUN fallback",e)}
+ finally{clearTimeout(timer)}
+}
 let roomCountListenersReady=false;
 function render(){$("rooms").innerHTML=keys.map(k=>{let n=roomMembers.get("__"+k)||0,i=roomsInfo[k];return `<div class="room"><div class="sq">🐿️</div><div class="sq2">🐿️</div><h4>${i.icon} ${i.name}</h4><p>${i.desc}</p><div class="count">SEATS <b>${n}/${MAX}</b></div><button class="enter" data-r="${k}">${n>=MAX?"JOIN WAITING ROOM":"ENTER JUNCTION"}</button></div>`}).join("");document.querySelectorAll(".enter").forEach(b=>b.onclick=()=>join(b.dataset.r))}
 function watchRoomCounts(){if(roomCountListenersReady)return;roomCountListenersReady=true;keys.forEach(k=>db.ref("rooms/"+k+"/members").on("value",s=>{roomMembers.set("__"+k,Object.keys(s.val()||{}).length);render()}))}
