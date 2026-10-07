@@ -145,9 +145,10 @@
 <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
 <script>
-const firebaseConfig={apiKey:"AIzaSyAFjfk27HrCPqDxfDFTYuP9KyG8knbnUi8",authDomain:"hainx-b7dfa.firebaseapp.com",databaseURL:"https://hainx-b7dfa-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"hainx-b7dfa",storageBucket:"hainx-b7dfa.firebasestorage.app",messagingSenderId:"1077891362069",appId:"1:1077891362069:web:8ffab71bfcf4e4c8cd0d1c",measurementId:"G-Y01RM0068"};;
-const METERED_DOMAIN="https://hainx.metered.live";;
-const METERED_API_KEY="d5839f02e703cd05ffa0afdcb12138a0a613";;
+const firebaseConfig={apiKey:"AIzaSyAFjfk27HrCPqDxfDFTYuP9KyG8knbnUi8",authDomain:"hainx-b7dfa.firebaseapp.com",databaseURL:"https://hainx-b7dfa-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"hainx-b7dfa",storageBucket:"hainx-b7dfa.firebasestorage.app",messagingSenderId:"1077891362069",appId:"1:1077891362069:web:8ffab71bfcf4e4c8cd0d1c",measurementId:"G-Y01RM0068"};
+
+// METERED: paste your credential-scoped API key ONLY on this one line.
+const METERED={domain:"https://hainx.metered.live",apiKey:"d5839f02e703cd05ffa0afdcb12138a0a613"};
 
 const roomsInfo={
 shadow:{name:"Shadow Forest",icon:"🌲",desc:"Whispers, trees and mysterious night vibes."},
@@ -158,31 +159,32 @@ moon:{name:"Moon Chamber",icon:"🌙",desc:"A secret chamber under the HainX moo
 
 const keys=Object.keys(roomsInfo),MAX=4,$=id=>document.getElementById(id);
 let auth,db,user,name="",room=null,session=null,local=null,micOn=false,soundOn=true;
-let ice=[{urls:"stun:stun.l.google.com:19302"}],iceReady=false;
+let ice=[{urls:"stun:stun.l.google.com:19302"}],turnReady=false,turnPromise=null;
 let peers=new Map(),transceivers=new Map(),queues=new Map(),roomMembers=new Map(),roomCounts=new Map();
-let seen=new Set(),memberOff=null,signalOff=null,chatOff=null,chatCount=0;
+let pairOff=new Map(),candidateOff=new Map(),memberOff=null,chatOff=null,chatCount=0;
+let negotiation=new Map();
 
 function status(t,c=""){ $("fb").textContent="● "+t;$("fb").className="pill "+c}
 function msg(t,c=""){ $("notice").innerHTML=t;$("notice").className="notice "+c}
+function pairKey(a,b){return [a,b].sort().join("__")}
+function pairRef(uid){return db.ref("calls/"+room+"/"+pairKey(user.uid,uid))}
 
 async function getTurn(){
-  if(METERED_API_KEY.startsWith("PASTE_")){
-    $("iceText").textContent="🛰️ STUN only — TURN key not configured";
+  if(METERED.apiKey.startsWith("PASTE_")){
+    $("iceText").textContent="🛰️ STUN active • add your Metered key for TURN";
     return;
   }
   try{
-    let r=await fetch(METERED_DOMAIN+"/api/v1/turn/credentials?apiKey="+encodeURIComponent(METERED_API_KEY));
+    const url=METERED.domain+"/api/v1/turn/credentials?apiKey="+encodeURIComponent(METERED.apiKey);
+    const r=await fetch(url,{cache:"no-store"});
     if(!r.ok)throw Error("Metered HTTP "+r.status);
-    let a=await r.json();
-    if(Array.isArray(a)&&a.length){
-      ice=a;iceReady=true;
-      $("iceText").textContent="🛰️ TURN ready • cross-network voice enabled";
-    }else{
-      throw Error("No ICE servers returned");
-    }
+    const a=await r.json();
+    if(!Array.isArray(a)||!a.length)throw Error("Metered returned no ICE servers");
+    ice=a;turnReady=true;
+    $("iceText").textContent="🛰️ TURN ready • cross-network voice enabled";
   }catch(e){
-    console.warn("TURN:",e);
-    $("iceText").textContent="🛰️ TURN unavailable — using STUN fallback";
+    console.warn("TURN setup failed:",e);
+    $("iceText").textContent="🛰️ TURN failed • STUN fallback active";
   }
 }
 
@@ -194,7 +196,8 @@ function boot(){
    auth.onAuthStateChanged(async u=>{
      if(u){
        user=u;
-       await getTurn();
+       turnPromise=getTurn();
+       await turnPromise;
        $("boot").textContent="HainX ready ⚡";
      }else{
        auth.signInAnonymously().catch(e=>$("boot").textContent=e.message);
@@ -213,450 +216,153 @@ function render(){
 
 let roomCountListenersReady=false;
 function watchRoomCounts(){
- if(roomCountListenersReady)return;
- roomCountListenersReady=true;
- keys.forEach(k=>{
-   db.ref("rooms/"+k+"/members").on("value",s=>{
-     roomCounts.set(k,Object.keys(s.val()||{}).length);
-     render();
-   });
- });
+ if(roomCountListenersReady)return;roomCountListenersReady=true;
+ keys.forEach(k=>db.ref("rooms/"+k+"/members").on("value",s=>{roomCounts.set(k,Object.keys(s.val()||{}).length);render()}));
 }
 function waiting(){
- db.ref("waiting").on("value",s=>{
-   let n=Object.keys(s.val()||{}).length;
-   $("waiting").textContent=n?`${n} person${n>1?"s":""} waiting 🐿️`:"Nobody is waiting right now.";
- });
+ db.ref("waiting").on("value",s=>{let n=Object.keys(s.val()||{}).length;$("waiting").textContent=n?`${n} person${n>1?"s":""} waiting 🐿️`:"Nobody is waiting right now."});
 }
 
 async function enter(){
- name=$("name").value.trim();
- if(!name)return $("name").focus();
- localStorage.setItem("hainxName",name);
- $("hello").textContent=name;
- $("entry").classList.remove("active");
- $("home").classList.add("active");
- render();watchRoomCounts();waiting();
+ name=$("name").value.trim();if(!name)return $("name").focus();
+ localStorage.setItem("hainxName",name);$("hello").textContent=name;$("entry").classList.remove("active");$("home").classList.add("active");render();watchRoomCounts();waiting();
 }
-$("start").onclick=enter;
-$("name").addEventListener("keydown",e=>e.key==="Enter"&&enter());
-$("name").value=localStorage.getItem("hainxName")||"";
+$("start").onclick=enter;$("name").addEventListener("keydown",e=>e.key==="Enter"&&enter());$("name").value=localStorage.getItem("hainxName")||"";
 
 async function join(r){
- if(!user)return msg("Firebase is still connecting. Please wait.","warn");
- room=r;
- session=user.uid+"_"+Date.now()+"_"+Math.random().toString(36).slice(2,8);
- $("roomTitle").textContent=roomsInfo[r].icon+" "+roomsInfo[r].name;
- $("modal").classList.add("show");
- msg("Checking seat and preparing voice…");
-
- let ref=db.ref("rooms/"+r+"/members");
+ if(!user)return alert("HainX is still connecting. Please wait 2 seconds and try again.");
+ room=r;session=user.uid+"_"+Date.now()+"_"+Math.random().toString(36).slice(2,8);
+ $("roomTitle").textContent=roomsInfo[r].icon+" "+roomsInfo[r].name;$("modal").classList.add("show");msg("Checking seat and preparing voice…");
  try{
-   let tx=await ref.transaction(d=>{
-     d=d||{};
-     if(d[user.uid])return d;
-     if(Object.keys(d).length>=MAX)return;
-     d[user.uid]={uid:user.uid,name,session,joinedAt:firebase.database.ServerValue.TIMESTAMP};
-     return d;
-   });
-
-   if(!tx.committed){
-     await db.ref("waiting/"+user.uid).set({
-       uid:user.uid,name,requestedRoom:r,
-       createdAt:firebase.database.ServerValue.TIMESTAMP
-     });
-     msg("Junction full. 🐿️ You are in the Waiting Room.");
-     return;
-   }
-
+   if(turnPromise)await turnPromise;
+   const ref=db.ref("rooms/"+r+"/members");
+   const tx=await ref.transaction(d=>{d=d||{};if(d[user.uid])return d;if(Object.keys(d).length>=MAX)return;d[user.uid]={uid:user.uid,name,session,joinedAt:firebase.database.ServerValue.TIMESTAMP};return d});
+   if(!tx.committed){await db.ref("waiting/"+user.uid).set({uid:user.uid,name,requestedRoom:r,createdAt:firebase.database.ServerValue.TIMESTAMP});msg("Junction full. 🐿️ You are in the Waiting Room.");return}
    await db.ref("waiting/"+user.uid).remove();
    await db.ref("rooms/"+r+"/members/"+user.uid).onDisconnect().remove();
-
-   // IMPORTANT: prepare the audio track BEFORE creating WebRTC offers.
-   // The track starts muted. User must press MIC LIVE to speak.
    await micStream();
-
-   listenRoom(r);
-   listenChat(r);
-   msg(local
-     ? "Voice ready. Mic is OFF until you press MIC LIVE."
-     : "Joined, but microphone is unavailable.","warn");
+   listenRoom(r);listenChat(r);
+   msg(local?"Voice ready. Mic is OFF until you press MIC LIVE.":"Joined, but microphone is unavailable.",local?"":"warn");
    drawMembers();conn();
- }catch(e){
-   console.error(e);
-   msg("Join failed: "+e.message,"bad");
- }
-}
-const pairOff=new Map();
-
-function pairKey(a,b){
- return [a,b].sort().join("__");
-}
-
-function listenPair(uid){
- if(!room||!user)return;
- const key=pairKey(user.uid,uid);
- if(pairOff.has(key))return;
- const sr=db.ref("signals/"+room+"/"+key);
- const handle=async snap=>{
-   const m=snap.val();
-   if(!m||m.to!==user.uid)return;
-   if(m.toSession&&m.toSession!==session)return;
-   const sender=roomMembers.get(m.from);
-   if(!sender)return;
-   if(m.fromSession&&sender.session!==m.fromSession)return;
-   const seenKey=key+"__"+snap.key;
-   if(seen.has(seenKey))return;
-   seen.add(seenKey);
-   try{
-     await signal(m);
-   }finally{
-     snap.ref.remove().catch(()=>{});
-   }
- };
- sr.on("child_added",handle);
- pairOff.set(key,()=>sr.off("child_added",handle));
+ }catch(e){console.error(e);msg("Join failed: "+e.message,"bad")}
 }
 
 function listenRoom(r){
  const mr=db.ref("rooms/"+r+"/members");
-
  const mc=async s=>{
-   roomMembers.clear();
-   const d=s.val()||{};
-   Object.values(d).forEach(x=>roomMembers.set(x.uid,x));
-
-   drawMembers();conn();
-
+   roomMembers.clear();const d=s.val()||{};Object.values(d).forEach(x=>roomMembers.set(x.uid,x));drawMembers();conn();
    for(const uid of Object.keys(d)){
      if(uid===user.uid)continue;
      listenPair(uid);
-     const pc=await ensurePeer(uid);
-     // Explicit hello makes negotiation self-healing if an offer was missed.
-     await send(uid,{type:"hello"});
-     if(user.uid<uid && pc.signalingState==="stable"){
-       await offer(uid,pc);
-     }
+     await ensurePeer(uid);
+     if(user.uid<uid)await createOffer(uid);
    }
-
-   for(const [uid] of peers){
-     if(!d[uid])closePeer(uid);
-   }
+   for(const [uid] of peers)if(!d[uid])closePeer(uid);
  };
+ mr.on("value",mc);memberOff=()=>mr.off("value",mc);
+}
 
- mr.on("value",mc);
- memberOff=()=>mr.off("value",mc);
+function listenPair(uid){
+ const key=pairKey(user.uid,uid);
+ if(!pairOff.has(key)){
+   const ref=pairRef(uid);
+   const handler=s=>processCall(uid,s.val()||{});
+   ref.on("value",handler);pairOff.set(key,()=>ref.off("value",handler));
+ }
+ if(!candidateOff.has(key)){
+   const ref=pairRef(uid).child("candidates").child(uid);
+   const handler=s=>processCandidate(uid,s.val());
+   ref.on("child_added",handler);candidateOff.set(key,()=>ref.off("child_added",handler));
+ }
+}
+
+async function processCall(uid,d){
+ if(!d||!user)return;
+ const remote=roomMembers.get(uid);if(!remote)return;
+ try{
+   const pc=await ensurePeer(uid);
+   if(user.uid>uid && d.offer && d.offer.toSession===session && d.offer.fromSession===remote.session){
+     const sig=d.offer.sdp;if(!sig?.type||!sig?.sdp)return;
+     if(pc.signalingState!=="stable")return;
+     await pc.setRemoteDescription({type:sig.type,sdp:sig.sdp});await flush(uid,pc);
+     const ans=await pc.createAnswer();await pc.setLocalDescription(ans);
+     await pairRef(uid).update({answer:{sdp:{type:ans.type,sdp:ans.sdp},from:user.uid,fromSession:session,to:uid,toSession:remote.session}});
+     return;
+   }
+   if(user.uid<uid && d.answer && d.answer.toSession===session && d.answer.fromSession===remote.session){
+     const sig=d.answer.sdp;if(!sig?.type||!sig?.sdp)return;
+     if(pc.signalingState!=="have-local-offer")return;
+     await pc.setRemoteDescription({type:sig.type,sdp:sig.sdp});await flush(uid,pc);
+   }
+ }catch(e){console.warn("CALL:",e);msg("Voice negotiation retrying…","warn")}
+}
+
+async function processCandidate(uid,c){
+ if(!c)return;
+ const remote=roomMembers.get(uid);if(!remote)return;
+ if(c.to!==user.uid||c.from!==uid||c.toSession!==session||c.fromSession!==remote.session)return;
+ const pc=peers.get(uid);if(!pc)return;
+ try{if(pc.remoteDescription)await pc.addIceCandidate(c.candidate);else{const q=queues.get(uid)||[];q.push(c.candidate);queues.set(uid,q)}}catch(e){console.warn("ICE candidate:",e)}
 }
 
 function listenChat(r){
  const cr=db.ref("chats/"+r).limitToLast(60);
- const cc=s=>{
-   let all=s.val()||{};
-   let arr=Object.entries(all).sort((a,b)=>(a[1].createdAt||0)-(b[1].createdAt||0));
-   chatCount=arr.length;
-   $("chatCount").textContent=chatCount;
-   $("chatMessages").innerHTML=arr.map(([id,m])=>chatHtml(m)).join("")||'<div class="chat-empty">🐱 Say hello to the Junction.</div>';
-   $("chatMessages").scrollTop=$("chatMessages").scrollHeight;
- };
- cr.on("value",cc);
- chatOff=()=>cr.off("value",cc);
+ const cc=s=>{let all=s.val()||{};let arr=Object.entries(all).sort((a,b)=>(a[1].createdAt||0)-(b[1].createdAt||0));chatCount=arr.length;$("chatCount").textContent=chatCount;$("chatMessages").innerHTML=arr.map(([id,m])=>chatHtml(m)).join("")||'<div class="chat-empty">🐱 Say hello to the Junction.</div>';$("chatMessages").scrollTop=$("chatMessages").scrollHeight};
+ cr.on("value",cc);chatOff=()=>cr.off("value",cc);
 }
-
-function chatHtml(m){
- const mine=m.uid===user?.uid;
- const tm=m.createdAt?new Date(m.createdAt).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}):"";
- return `<div class="chat-msg"><div class="chat-avatar">🐱</div><div class="chat-bubble"><div class="chat-name">${esc(m.name||"HainX")} ${mine?"⚡ You":""}</div><div class="chat-text">${esc(m.text)}</div><div class="chat-time">${tm}</div></div></div>`;
-}
-
-$("chatForm").addEventListener("submit",async e=>{
- e.preventDefault();
- if(!room||!user)return;
- let input=$("chatInput"),text=input.value.trim();
- if(!text)return;
- input.value="";
- try{
-   await db.ref("chats/"+room).push({
-     uid:user.uid,name,text:text.slice(0,300),
-     createdAt:firebase.database.ServerValue.TIMESTAMP
-   });
- }catch(err){msg("Chat send failed: "+err.message,"bad")}
-});
+function chatHtml(m){const mine=m.uid===user?.uid,tm=m.createdAt?new Date(m.createdAt).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}):"";return `<div class="chat-msg"><div class="chat-avatar">🐱</div><div class="chat-bubble"><div class="chat-name">${esc(m.name||"HainX")} ${mine?"⚡ You":""}</div><div class="chat-text">${esc(m.text)}</div><div class="chat-time">${tm}</div></div></div>`}
+$("chatForm").addEventListener("submit",async e=>{e.preventDefault();if(!room||!user)return;let input=$("chatInput"),text=input.value.trim();if(!text)return;input.value="";try{await db.ref("chats/"+room).push({uid:user.uid,name,text:text.slice(0,300),createdAt:firebase.database.ServerValue.TIMESTAMP})}catch(err){msg("Chat send failed: "+err.message,"bad")}});
 
 async function micStream(){
- if(local)return local;
- if(!navigator.mediaDevices?.getUserMedia){
-   msg("This browser cannot access the microphone.","bad");return null;
- }
+ if(local)return local;if(!navigator.mediaDevices?.getUserMedia){msg("This browser cannot access the microphone.","bad");return null}
  try{
-   local=await navigator.mediaDevices.getUserMedia({
-     audio:{
-       echoCancellation:true,
-       noiseSuppression:true,
-       autoGainControl:true,
-       channelCount:1,
-       latency:0.01
-     },
-     video:false
-   });
-   const track=local.getAudioTracks()[0];
-   track.enabled=false;
-   for(let [uid,tr] of transceivers){
-     try{await tr.sender.replaceTrack(track)}catch(e){console.warn("replaceTrack",e)}
-   }
+   local=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1},video:false});
+   const track=local.getAudioTracks()[0];track.enabled=false;
+   for(const tr of transceivers.values())try{await tr.sender.replaceTrack(track)}catch(e){}
    return local;
- }catch(e){
-   console.error("MIC:",e);
-   msg("🎙️ Mic permission/device error: "+(e.message||e.name),"bad");
-   return null;
- }
+ }catch(e){console.error("MIC:",e);msg("🎙️ Mic permission/device error: "+(e.message||e.name),"bad");return null}
 }
 
-function preferOpus(tr){
- try{
-   const caps=RTCRtpSender.getCapabilities?.("audio");
-   if(!caps?.codecs||!tr.setCodecPreferences)return;
-   const opus=caps.codecs.filter(c=>(c.mimeType||"").toLowerCase()==="audio/opus");
-   const rest=caps.codecs.filter(c=>(c.mimeType||"").toLowerCase()!=="audio/opus");
-   tr.setCodecPreferences([...opus,...rest]);
- }catch(e){console.warn("Codec preference:",e)}
-}
+function preferOpus(tr){try{const caps=RTCRtpSender.getCapabilities?.("audio");if(!caps?.codecs||!tr.setCodecPreferences)return;const opus=caps.codecs.filter(c=>(c.mimeType||"").toLowerCase()==="audio/opus");const rest=caps.codecs.filter(c=>(c.mimeType||"").toLowerCase()!=="audio/opus");tr.setCodecPreferences([...opus,...rest])}catch(e){}}
 
 async function ensurePeer(uid){
  if(peers.has(uid))return peers.get(uid);
- let pc=new RTCPeerConnection({
-   iceServers:ice,
-   bundlePolicy:"max-bundle",
-   rtcpMuxPolicy:"require"
- });
+ const pc=new RTCPeerConnection({iceServers:ice,bundlePolicy:"max-bundle",rtcpMuxPolicy:"require"});
  peers.set(uid,pc);queues.set(uid,[]);
-
- const tr=pc.addTransceiver("audio",{direction:"sendrecv"});
- transceivers.set(uid,tr);
- preferOpus(tr);
- if(local){
-   try{await tr.sender.replaceTrack(local.getAudioTracks()[0])}catch(e){}
- }
-
- pc.ontrack=e=>{
-   if(!e.streams[0])return;
-   let a=document.getElementById("a_"+uid);
-   if(!a){
-     a=document.createElement("audio");
-     a.id="a_"+uid;
-     a.autoplay=true;a.playsInline=true;a.preload="auto";
-     a.volume=1;a.dataset.remote="1";
-     document.body.appendChild(a);
-   }
-   a.srcObject=e.streams[0];
-   a.muted=!soundOn;
-   a.play().then(()=>{
-     msg("🟢 Voice connected — two-way audio is ready.");
-   }).catch(()=>{
-     msg("🔊 Voice connected. Tap SOUND ON once to start speaker audio.","warn");
-   });
- };
-
- pc.onicecandidate=e=>{
-   if(e.candidate)send(uid,{type:"candidate",candidate:e.candidate.toJSON()});
- };
- pc.onicecandidateerror=e=>{
-   console.warn("ICE candidate error",e);
- };
- pc.onconnectionstatechange=()=>{
-   drawMembers();conn();
-   if(pc.connectionState==="failed")setTimeout(()=>restart(uid),1200);
- };
- pc.oniceconnectionstatechange=()=>{
-   if(pc.iceConnectionState==="failed")setTimeout(()=>restart(uid),1200);
- };
-
- if(user.uid<uid)await offer(uid,pc);
- drawMembers();conn();
- return pc;
+ const tr=pc.addTransceiver("audio",{direction:"sendrecv"});transceivers.set(uid,tr);preferOpus(tr);
+ if(local)try{await tr.sender.replaceTrack(local.getAudioTracks()[0])}catch(e){}
+ pc.ontrack=e=>{if(!e.streams?.[0])return;let a=document.getElementById("a_"+uid);if(!a){a=document.createElement("audio");a.id="a_"+uid;a.autoplay=true;a.playsInline=true;a.volume=1;a.dataset.remote="1";document.body.appendChild(a)}a.srcObject=e.streams[0];a.muted=!soundOn;a.play().then(()=>msg("🟢 Voice connected — two-way audio is ready.")).catch(()=>msg("🔊 Voice connected. Tap SOUND ON once.","warn"))};
+ pc.onicecandidate=e=>{if(e.candidate)sendCandidate(uid,e.candidate.toJSON())};
+ pc.onconnectionstatechange=()=>{drawMembers();conn();if(pc.connectionState==="failed")setTimeout(()=>restart(uid),1200)};
+ pc.oniceconnectionstatechange=()=>{drawMembers();conn();if(pc.iceConnectionState==="failed")setTimeout(()=>restart(uid),1200)};
+ pc.onicecandidateerror=e=>console.warn("ICE candidate error",e);
+ drawMembers();conn();return pc;
 }
 
-async function offer(uid,pc){
- try{
-   if(pc.signalingState!=="stable")return;
-   let o=await pc.createOffer({offerToReceiveAudio:true});
-   await pc.setLocalDescription(o);
-   await send(uid,{type:"offer",sdp:pc.localDescription});
- }catch(e){console.warn("OFFER:",e)}
+async function createOffer(uid){
+ const pc=await ensurePeer(uid);if(user.uid>uid||pc.signalingState!=="stable")return;
+ const state=negotiation.get(uid)||{busy:false};if(state.busy)return;state.busy=true;negotiation.set(uid,state);
+ try{const o=await pc.createOffer({offerToReceiveAudio:true});await pc.setLocalDescription(o);const remote=roomMembers.get(uid);if(!remote)return;await pairRef(uid).update({offer:{sdp:{type:o.type,sdp:o.sdp},from:user.uid,fromSession:session,to:uid,toSession:remote.session}})}catch(e){console.warn("OFFER:",e)}finally{state.busy=false}
 }
 
-async function signal(m){
- const pc=await ensurePeer(m.from);
- try{
-   if(m.type==="hello"){
-     if(user.uid<m.from && pc.signalingState==="stable"){
-       await offer(m.from,pc);
-     }
-     return;
-   }
-   if(m.type==="offer"){
-     const sdp=m.sdp||{};
-     if(!sdp.type||!sdp.sdp)throw Error("Invalid offer SDP");
-     if(pc.signalingState!=="stable")return;
-     await pc.setRemoteDescription({type:String(sdp.type),sdp:String(sdp.sdp)});
-     await flush(m.from,pc);
-     const answer=await pc.createAnswer();
-     await pc.setLocalDescription(answer);
-     await send(m.from,{type:"answer",sdp:{type:pc.localDescription.type,sdp:pc.localDescription.sdp}});
-     return;
-   }
-   if(m.type==="answer"){
-     const sdp=m.sdp||{};
-     if(!sdp.type||!sdp.sdp)throw Error("Invalid answer SDP");
-     if(pc.signalingState!=="have-local-offer")return;
-     await pc.setRemoteDescription({type:String(sdp.type),sdp:String(sdp.sdp)});
-     await flush(m.from,pc);
-     return;
-   }
-   if(m.type==="candidate"){
-     if(!m.candidate)return;
-     if(pc.remoteDescription)await pc.addIceCandidate(m.candidate);
-     else{
-       const q=queues.get(m.from)||[];
-       q.push(m.candidate);
-       queues.set(m.from,q);
-     }
-   }
- }catch(e){
-   console.warn("VOICE SIGNAL:",e,m);
-   msg("Voice negotiation retrying…","warn");
- }
+function sendCandidate(to,candidate){
+ const remote=roomMembers.get(to);if(!remote)return;
+ return pairRef(to).child("candidates").child(user.uid).push({candidate,to,from:user.uid,toSession:remote.session,fromSession:session,createdAt:firebase.database.ServerValue.TIMESTAMP});
 }
+async function flush(uid,pc){let q=queues.get(uid)||[];while(q.length){try{await pc.addIceCandidate(q.shift())}catch(e){}}}
 
-async function flush(uid,pc){
- let q=queues.get(uid)||[];
- while(q.length){
-   try{await pc.addIceCandidate(q.shift())}catch(e){}
- }
-}
+async function restart(uid){const old=peers.get(uid);if(!old||old.connectionState==="connected")return;closePeer(uid);await new Promise(r=>setTimeout(r,250));await ensurePeer(uid);listenPair(uid);if(user.uid<uid)await createOffer(uid)}
+function closePeer(uid){peers.get(uid)?.close();peers.delete(uid);transceivers.delete(uid);queues.delete(uid);negotiation.delete(uid);document.getElementById("a_"+uid)?.remove();drawMembers();conn()}
 
-function send(to,p){
- const key=pairKey(user.uid,to);
- const target=roomMembers.get(to);
- if(!target)return Promise.resolve();
+function drawMembers(){let arr=[...roomMembers.values()];$("members").innerHTML=arr.length?arr.map(m=>{let me=m.uid===user.uid,st=me?"local":(peers.get(m.uid)?.connectionState||"waiting"),good=st==="connected",connecting=["new","connecting"].includes(st),dot=good?"live":connecting?"busy":"off",label=good?"Voice connected":me?(micOn?"Mic is LIVE":"Mic is OFF"):(st==="waiting"?"Joining voice…":st),right=good?"● LIVE":me?"YOU":connecting?"CONNECTING":"RETRY";return `<div class="member"><div class="ml"><div class="avatar">🐱</div><div><div class="mn">${esc(m.name)} ${me?"⚡ You":""}<span class="cat-badge">🐱 HainX</span></div><div class="ms"><span class="voice-dot ${dot}"></span>${esc(label)}</div></div></div><div class="${good?"good":connecting?"warn":"bad"}">${right}</div></div>`}).join(""):"No one here yet. 🐱"}
+function conn(){let a=[...peers.values()],n=a.filter(p=>p.connectionState==="connected").length,text=a.length?(n===a.length&&n>0?"Connected":n>0?"Partially connected":"Connecting…"):"Waiting for another person…",pct=a.length?Math.round(n/a.length*100):0;$("connText").textContent=text;$("connText").className=n===a.length&&n>0?"good":"warn";$("connFill").style.width=pct+"%"}
 
- return db.ref("signals/"+room+"/"+key).push({
-   ...p,
-   to,
-   from:user.uid,
-   toSession:target.session||"",
-   fromSession:session,
-   createdAt:firebase.database.ServerValue.TIMESTAMP
- });
-}
+$("mic").onclick=async()=>{if(!local){$("mic").textContent="🎙️ REQUESTING MIC…";let got=await micStream();if(!got){$("mic").textContent="🎙️ MIC OFF";return}}micOn=!micOn;local.getAudioTracks().forEach(t=>t.enabled=micOn);$("mic").className=micOn?"control micOn":"control micOff";$("mic").textContent=micOn?"🟢 MIC LIVE":"🎙️ MIC OFF";msg(micOn?"🟢 Mic LIVE — your voice is being sent to the Junction.":"🔴 Mic muted — you are not sending voice.");drawMembers()};
+$("sound").onclick=async()=>{soundOn=!soundOn;$("sound").textContent=soundOn?"🔊 SOUND ON":"🔇 SOUND OFF";document.querySelectorAll("audio[data-remote]").forEach(a=>{a.muted=!soundOn;if(soundOn)a.play().catch(()=>{})});if(soundOn)msg("🔊 Speaker audio enabled.")};
 
-async function restart(uid){
- let old=peers.get(uid);
- if(!old||old.connectionState==="connected")return;
-
- try{
-   old.close();
-   peers.delete(uid);
-   transceivers.delete(uid);
-   queues.delete(uid);
-   document.getElementById("a_"+uid)?.remove();
-
-   // Give the pair listener a clean peer to negotiate again.
-   await ensurePeer(uid);
- }catch(e){
-   console.warn("restart",e);
- }
-}
-function closePeer(uid){
- peers.get(uid)?.close();
- peers.delete(uid);transceivers.delete(uid);queues.delete(uid);
- document.getElementById("a_"+uid)?.remove();
- drawMembers();conn();
-}
-
-function drawMembers(){
- let arr=[...roomMembers.values()];
- $("members").innerHTML=arr.length?arr.map(m=>{
-   let me=m.uid===user.uid;
-   let st=me?"local":(peers.get(m.uid)?.connectionState||"waiting");
-   let good=st==="connected";
-   let connecting=["new","connecting"].includes(st);
-   let dot=good?"live":connecting?"busy":"off";
-   let label=good?"Voice connected":me?(micOn?"Mic is LIVE":"Mic is OFF"):(st==="waiting"?"Joining voice…":st);
-   let right=good?"● LIVE":me?"YOU":connecting?"CONNECTING":"RETRY";
-   return `<div class="member">
-     <div class="ml">
-       <div class="avatar">🐱</div>
-       <div>
-         <div class="mn">${esc(m.name)} ${me?"⚡ You":""}<span class="cat-badge">🐱 HainX</span></div>
-         <div class="ms"><span class="voice-dot ${dot}"></span>${esc(label)}</div>
-       </div>
-     </div>
-     <div class="${good?"good":connecting?"warn":"bad"}">${right}</div>
-   </div>`;
- }).join(""):"No one here yet. 🐱";
-}
-
-function conn(){
- let a=[...peers.values()],n=a.filter(p=>p.connectionState==="connected").length;
- let text=a.length?(n===a.length&&n>0?"Connected":n>0?"Partially connected":"Connecting…"):"Waiting for another person…";
- let pct=a.length?Math.round((n/a.length)*100):0;
- $("connText").textContent=text;
- $("connText").className=n===a.length&&n>0?"good":"warn";
- $("connFill").style.width=pct+"%";
-}
-
-$("mic").onclick=async()=>{
- if(!local){
-   $("mic").textContent="🎙️ REQUESTING MIC…";
-   let got=await micStream();
-   if(!got){$("mic").textContent="🎙️ MIC OFF";return}
- }
- micOn=!micOn;
- local.getAudioTracks().forEach(t=>t.enabled=micOn);
- $("mic").className=micOn?"control micOn":"control micOff";
- $("mic").textContent=micOn?"🟢 MIC LIVE":"🎙️ MIC OFF";
- msg(micOn?"🟢 Mic LIVE — your voice is being sent to the Junction.":"🔴 Mic muted — you are not sending voice.");
- drawMembers();
-};
-
-$("sound").onclick=async()=>{
- soundOn=!soundOn;
- $("sound").textContent=soundOn?"🔊 SOUND ON":"🔇 SOUND OFF";
- document.querySelectorAll("audio[data-remote]").forEach(a=>{
-   a.muted=!soundOn;
-   if(soundOn)a.play().catch(()=>{});
- });
- if(soundOn)msg("🔊 Speaker audio enabled.");
-};
-
-async function leave(){
- if(!room)return;
- try{
-   await db.ref("rooms/"+room+"/members/"+user.uid).remove();
-   await db.ref("waiting/"+user.uid).remove();
- }catch(e){}
- memberOff?.();signalOff?.();chatOff?.();
- for(const off of pairOff.values())off();
- pairOff.clear();
- for(let uid of [...peers.keys()])closePeer(uid);
- document.querySelectorAll("audio[data-remote]").forEach(a=>a.remove());
- if(local){local.getTracks().forEach(t=>t.stop());local=null}
- room=null;session=null;roomMembers.clear();seen.clear();chatCount=0;
- $("chatMessages").innerHTML='<div class="chat-empty">🐱 Say hello to the Junction.</div>';
- $("modal").classList.remove("show");
- render();
-}
-
-$("leave").onclick=leave;
-$("close").onclick=leave;
-window.addEventListener("beforeunload",()=>{
- if(room&&user&&db)db.ref("rooms/"+room+"/members/"+user.uid).remove();
-});
-
-function esc(s){
- return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
-}
-
+async function leave(){if(!room)return;try{await db.ref("rooms/"+room+"/members/"+user.uid).remove();await db.ref("waiting/"+user.uid).remove()}catch(e){}memberOff?.();chatOff?.();for(const off of pairOff.values())off();for(const off of candidateOff.values())off();pairOff.clear();candidateOff.clear();for(const uid of [...peers.keys()])closePeer(uid);document.querySelectorAll("audio[data-remote]").forEach(a=>a.remove());if(local){local.getTracks().forEach(t=>t.stop());local=null}room=null;session=null;roomMembers.clear();negotiation.clear();chatCount=0;$("chatMessages").innerHTML='<div class="chat-empty">🐱 Say hello to the Junction.</div>';$('modal').classList.remove('show');render()}
+$("leave").onclick=leave;$("close").onclick=leave;window.addEventListener("beforeunload",()=>{if(room&&user&&db)db.ref("rooms/"+room+"/members/"+user.uid).remove()});
+function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 boot();
 </script>
 </body>
