@@ -249,6 +249,7 @@ async function join(r){
  $("roomTitle").textContent=roomsInfo[r].icon+" "+roomsInfo[r].name;
  $("modal").classList.add("show");
  msg("Checking seat and preparing voice…");
+
  let ref=db.ref("rooms/"+r+"/members");
  try{
    let tx=await ref.transaction(d=>{
@@ -258,71 +259,169 @@ async function join(r){
      d[user.uid]={uid:user.uid,name,session,joinedAt:firebase.database.ServerValue.TIMESTAMP};
      return d;
    });
+
    if(!tx.committed){
-     await db.ref("waiting/"+user.uid).set({uid:user.uid,name,requestedRoom:r,createdAt:firebase.database.ServerValue.TIMESTAMP});
+     await db.ref("waiting/"+user.uid).set({
+       uid:user.uid,name,requestedRoom:r,
+       createdAt:firebase.database.ServerValue.TIMESTAMP
+     });
      msg("Junction full. 🐿️ You are in the Waiting Room.");
      return;
    }
+
    await db.ref("waiting/"+user.uid).remove();
    await db.ref("rooms/"+r+"/members/"+user.uid).onDisconnect().remove();
 
-   // IMPORTANT: get the local audio track BEFORE WebRTC peers are created.
-   // The track starts muted, so the user is not heard until MIC LIVE is pressed.
+   // IMPORTANT: prepare the audio track BEFORE creating WebRTC offers.
+   // The track starts muted. User must press MIC LIVE to speak.
    await micStream();
 
    listenRoom(r);
    listenChat(r);
    msg(local
-     ? "Joined "+roomsInfo[r].name+". Mic is ready and muted — tap MIC OFF → MIC LIVE to speak."
-     : "Joined "+roomsInfo[r].name+". Microphone is not available yet.");
+     ? "Voice ready. Mic is OFF until you press MIC LIVE."
+     : "Joined, but microphone is unavailable.","warn");
    drawMembers();conn();
  }catch(e){
-   console.error(e);msg("Join failed: "+e.message,"bad");
+   console.error(e);
+   msg("Join failed: "+e.message,"bad");
  }
+}
+const pairOff=new Map();
+
+function pairKey(a,b){
+ return [a,b].sort().join("__");
+}
+
+function listenPair(uid){
+ if(!room||!user)return;
+ const key=pairKey(user.uid,uid);
+ if(pairOff.has(key))return;
+
+ const sr=db.ref("signals/"+room+"/"+key);
+
+ const handle=async(id,m)=>{
+   if(!m||m.to!==user.uid)return;
+   if(m.toSession!==session)return;
+
+   const sender=roomMembers.get(m.from);
+   if(!sender || sender.session!==m.fromSession)return;
+
+   const seenKey=key+"__"+id;
+   if(seen.has(seenKey))return;
+   seen.add(seenKey);
+
+   await signal(m);
+
+   // Clean processed signal. Both clients use the same pair path.
+   sr.child(id).remove().catch(()=>{});
+ };
+
+ const sc=s=>{
+   const d=s.val()||{};
+   Object.entries(d).forEach(([id,m])=>handle(id,m));
+ };
+
+ sr.on("value",sc);
+ pairOff.set(key,()=>sr.off("value",sc));
+
+ // Also check the current snapshot after the member list is ready.
+ sr.once("value").then(s=>sc(s)).catch(()=>{});
 }
 
 function listenRoom(r){
  const mr=db.ref("rooms/"+r+"/members");
+
  const mc=async s=>{
    roomMembers.clear();
-   let d=s.val()||{};
+   const d=s.val()||{};
    Object.values(d).forEach(x=>roomMembers.set(x.uid,x));
-   drawMembers();conn();
-   Object.keys(d).forEach(async uid=>{if(uid!==user.uid)await ensurePeer(uid)});
-   for(let [uid] of peers)if(!d[uid])closePeer(uid);
-   processPendingSignals();
- };
- mr.on("value",mc);memberOff=()=>mr.off("value",mc);
 
- const sr=db.ref("signals/"+r+"/"+user.uid);
- const sc=async s=>{
-   let d=s.val()||{};
-   for(let [id,m] of Object.entries(d)){
-     if(seen.has(id)||m.to!==user.uid||m.toSession!==session)continue;
-     let sender=roomMembers.get(m.from);
-     if(sender && m.fromSession!==sender.session)continue;
-     seen.add(id);
-     await signal(m);
-     db.ref("signals/"+r+"/"+user.uid+"/"+id).remove().catch(()=>{});
+   drawMembers();conn();
+
+   for(const uid of Object.keys(d)){
+     if(uid===user.uid)continue;
+     listenPair(uid);
+     await ensurePeer(uid);
+   }
+
+   for(const [uid] of peers){
+     if(!d[uid])closePeer(uid);
    }
  };
- sr.on("value",sc);signalOff=()=>sr.off("value",sc);
+
+ mr.on("value",mc);
+ memberOff=()=>mr.off("value",mc);
 }
 
-async function processPendingSignals(){
- if(!room||!user)return;
- const s=await db.ref("signals/"+room+"/"+user.uid).once("value");
- let d=s.val()||{};
- for(let [id,m] of Object.entries(d)){
-   if(seen.has(id)||m.to!==user.uid||m.toSession!==session)continue;
-   let sender=roomMembers.get(m.from);
-   if(sender && m.fromSession!==sender.session)continue;
-   seen.add(id);
-   await signal(m);
-   db.ref("signals/"+room+"/"+user.uid+"/"+id).remove().catch(()=>{});
+async function signal(m){
+ const pc=await ensurePeer(m.from);
+
+ try{
+   if(m.type==="offer"){
+     if(pc.signalingState!=="stable"){
+       // A stale offer should not replace an active negotiation.
+       return;
+     }
+
+     const sdp=m.sdp||{};
+     if(!sdp.type || !sdp.sdp)throw Error("Invalid offer SDP");
+
+     await pc.setRemoteDescription({
+       type:String(sdp.type),
+       sdp:String(sdp.sdp)
+     });
+
+     await flush(m.from,pc);
+
+     const answer=await pc.createAnswer();
+     await pc.setLocalDescription(answer);
+
+     await send(m.from,{
+       type:"answer",
+       sdp:{
+         type:pc.localDescription.type,
+         sdp:pc.localDescription.sdp
+       }
+     });
+
+   }else if(m.type==="answer"){
+     const sdp=m.sdp||{};
+     if(!sdp.type || !sdp.sdp)throw Error("Invalid answer SDP");
+
+     if(pc.signalingState!=="have-local-offer")return;
+
+     await pc.setRemoteDescription({
+       type:String(sdp.type),
+       sdp:String(sdp.sdp)
+     });
+
+     await flush(m.from,pc);
+
+   }else if(m.type==="candidate"){
+     if(!m.candidate)return;
+
+     if(pc.remoteDescription){
+       await pc.addIceCandidate(m.candidate);
+     }else{
+       const q=queues.get(m.from)||[];
+       q.push(m.candidate);
+       queues.set(m.from,q);
+     }
+   }
+ }catch(e){
+   console.warn("VOICE SIGNAL:",e,m);
+   msg("Voice negotiation retrying…","warn");
  }
 }
 
+async function flush(uid,pc){
+ const q=queues.get(uid)||[];
+ queues.set(uid,[]);
+ for(const c of q){
+   try{await pc.addIceCandidate(c)}catch(e){}
+ }
+}
 function listenChat(r){
  const cr=db.ref("chats/"+r).limitToLast(60);
  const cc=s=>{
@@ -487,10 +586,15 @@ async function flush(uid,pc){
 }
 
 function send(to,p){
+ const key=pairKey(user.uid,to);
  const target=roomMembers.get(to);
- return db.ref("signals/"+room+"/"+to).push({
-   ...p,to,from:user.uid,
-   toSession:target?.session||"",
+ if(!target)return Promise.resolve();
+
+ return db.ref("signals/"+room+"/"+key).push({
+   ...p,
+   to,
+   from:user.uid,
+   toSession:target.session||"",
    fromSession:session,
    createdAt:firebase.database.ServerValue.TIMESTAMP
  });
@@ -499,14 +603,20 @@ function send(to,p){
 async function restart(uid){
  let old=peers.get(uid);
  if(!old||old.connectionState==="connected")return;
+
  try{
    old.close();
-   peers.delete(uid);transceivers.delete(uid);queues.delete(uid);
+   peers.delete(uid);
+   transceivers.delete(uid);
+   queues.delete(uid);
    document.getElementById("a_"+uid)?.remove();
-   await ensurePeer(uid);
- }catch(e){console.warn("restart",e)}
-}
 
+   // Give the pair listener a clean peer to negotiate again.
+   await ensurePeer(uid);
+ }catch(e){
+   console.warn("restart",e);
+ }
+}
 function closePeer(uid){
  peers.get(uid)?.close();
  peers.delete(uid);transceivers.delete(uid);queues.delete(uid);
@@ -550,17 +660,13 @@ $("mic").onclick=async()=>{
  if(!local){
    $("mic").textContent="🎙️ REQUESTING MIC…";
    let got=await micStream();
-   if(!got){
-     $("mic").textContent="🔴 MIC UNAVAILABLE";
-     msg("🎙️ Microphone permission/device access failed. Check browser microphone permission.","bad");
-     return;
-   }
+   if(!got){$("mic").textContent="🎙️ MIC OFF";return}
  }
  micOn=!micOn;
  local.getAudioTracks().forEach(t=>t.enabled=micOn);
  $("mic").className=micOn?"control micOn":"control micOff";
- $("mic").textContent=micOn?"🟢 MIC LIVE":"🔴 MIC OFF";
- msg(micOn?"🟢 MIC LIVE — your voice is being sent to everyone in this Junction.":"🔴 MIC OFF — your voice is muted.");
+ $("mic").textContent=micOn?"🟢 MIC LIVE":"🎙️ MIC OFF";
+ msg(micOn?"🟢 Mic LIVE — your voice is being sent to the Junction.":"🔴 Mic muted — you are not sending voice.");
  drawMembers();
 };
 
@@ -581,6 +687,8 @@ async function leave(){
    await db.ref("waiting/"+user.uid).remove();
  }catch(e){}
  memberOff?.();signalOff?.();chatOff?.();
+ for(const off of pairOff.values())off();
+ pairOff.clear();
  for(let uid of [...peers.keys()])closePeer(uid);
  document.querySelectorAll("audio[data-remote]").forEach(a=>a.remove());
  if(local){local.getTracks().forEach(t=>t.stop());local=null}
