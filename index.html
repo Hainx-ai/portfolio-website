@@ -297,36 +297,25 @@ function listenPair(uid){
  if(!room||!user)return;
  const key=pairKey(user.uid,uid);
  if(pairOff.has(key))return;
-
  const sr=db.ref("signals/"+room+"/"+key);
-
- const handle=async(id,m)=>{
+ const handle=async snap=>{
+   const m=snap.val();
    if(!m||m.to!==user.uid)return;
-   if(m.toSession!==session)return;
-
+   if(m.toSession&&m.toSession!==session)return;
    const sender=roomMembers.get(m.from);
-   if(!sender || sender.session!==m.fromSession)return;
-
-   const seenKey=key+"__"+id;
+   if(!sender)return;
+   if(m.fromSession&&sender.session!==m.fromSession)return;
+   const seenKey=key+"__"+snap.key;
    if(seen.has(seenKey))return;
    seen.add(seenKey);
-
-   await signal(m);
-
-   // Clean processed signal. Both clients use the same pair path.
-   sr.child(id).remove().catch(()=>{});
+   try{
+     await signal(m);
+   }finally{
+     snap.ref.remove().catch(()=>{});
+   }
  };
-
- const sc=s=>{
-   const d=s.val()||{};
-   Object.entries(d).forEach(([id,m])=>handle(id,m));
- };
-
- sr.on("value",sc);
- pairOff.set(key,()=>sr.off("value",sc));
-
- // Also check the current snapshot after the member list is ready.
- sr.once("value").then(s=>sc(s)).catch(()=>{});
+ sr.on("child_added",handle);
+ pairOff.set(key,()=>sr.off("child_added",handle));
 }
 
 function listenRoom(r){
@@ -342,7 +331,12 @@ function listenRoom(r){
    for(const uid of Object.keys(d)){
      if(uid===user.uid)continue;
      listenPair(uid);
-     await ensurePeer(uid);
+     const pc=await ensurePeer(uid);
+     // Explicit hello makes negotiation self-healing if an offer was missed.
+     await send(uid,{type:"hello"});
+     if(user.uid<uid && pc.signalingState==="stable"){
+       await offer(uid,pc);
+     }
    }
 
    for(const [uid] of peers){
@@ -354,74 +348,6 @@ function listenRoom(r){
  memberOff=()=>mr.off("value",mc);
 }
 
-async function signal(m){
- const pc=await ensurePeer(m.from);
-
- try{
-   if(m.type==="offer"){
-     if(pc.signalingState!=="stable"){
-       // A stale offer should not replace an active negotiation.
-       return;
-     }
-
-     const sdp=m.sdp||{};
-     if(!sdp.type || !sdp.sdp)throw Error("Invalid offer SDP");
-
-     await pc.setRemoteDescription({
-       type:String(sdp.type),
-       sdp:String(sdp.sdp)
-     });
-
-     await flush(m.from,pc);
-
-     const answer=await pc.createAnswer();
-     await pc.setLocalDescription(answer);
-
-     await send(m.from,{
-       type:"answer",
-       sdp:{
-         type:pc.localDescription.type,
-         sdp:pc.localDescription.sdp
-       }
-     });
-
-   }else if(m.type==="answer"){
-     const sdp=m.sdp||{};
-     if(!sdp.type || !sdp.sdp)throw Error("Invalid answer SDP");
-
-     if(pc.signalingState!=="have-local-offer")return;
-
-     await pc.setRemoteDescription({
-       type:String(sdp.type),
-       sdp:String(sdp.sdp)
-     });
-
-     await flush(m.from,pc);
-
-   }else if(m.type==="candidate"){
-     if(!m.candidate)return;
-
-     if(pc.remoteDescription){
-       await pc.addIceCandidate(m.candidate);
-     }else{
-       const q=queues.get(m.from)||[];
-       q.push(m.candidate);
-       queues.set(m.from,q);
-     }
-   }
- }catch(e){
-   console.warn("VOICE SIGNAL:",e,m);
-   msg("Voice negotiation retrying…","warn");
- }
-}
-
-async function flush(uid,pc){
- const q=queues.get(uid)||[];
- queues.set(uid,[]);
- for(const c of q){
-   try{await pc.addIceCandidate(c)}catch(e){}
- }
-}
 function listenChat(r){
  const cr=db.ref("chats/"+r).limitToLast(60);
  const cc=s=>{
@@ -533,6 +459,9 @@ async function ensurePeer(uid){
  pc.onicecandidate=e=>{
    if(e.candidate)send(uid,{type:"candidate",candidate:e.candidate.toJSON()});
  };
+ pc.onicecandidateerror=e=>{
+   console.warn("ICE candidate error",e);
+ };
  pc.onconnectionstatechange=()=>{
    drawMembers();conn();
    if(pc.connectionState==="failed")setTimeout(()=>restart(uid),1200);
@@ -556,25 +485,45 @@ async function offer(uid,pc){
 }
 
 async function signal(m){
- let pc=await ensurePeer(m.from);
+ const pc=await ensurePeer(m.from);
  try{
+   if(m.type==="hello"){
+     if(user.uid<m.from && pc.signalingState==="stable"){
+       await offer(m.from,pc);
+     }
+     return;
+   }
    if(m.type==="offer"){
+     const sdp=m.sdp||{};
+     if(!sdp.type||!sdp.sdp)throw Error("Invalid offer SDP");
      if(pc.signalingState!=="stable")return;
-     await pc.setRemoteDescription(m.sdp);
+     await pc.setRemoteDescription({type:String(sdp.type),sdp:String(sdp.sdp)});
      await flush(m.from,pc);
-     let a=await pc.createAnswer();
-     await pc.setLocalDescription(a);
-     await send(m.from,{type:"answer",sdp:pc.localDescription});
-   }else if(m.type==="answer"){
-     await pc.setRemoteDescription(m.sdp);
+     const answer=await pc.createAnswer();
+     await pc.setLocalDescription(answer);
+     await send(m.from,{type:"answer",sdp:{type:pc.localDescription.type,sdp:pc.localDescription.sdp}});
+     return;
+   }
+   if(m.type==="answer"){
+     const sdp=m.sdp||{};
+     if(!sdp.type||!sdp.sdp)throw Error("Invalid answer SDP");
+     if(pc.signalingState!=="have-local-offer")return;
+     await pc.setRemoteDescription({type:String(sdp.type),sdp:String(sdp.sdp)});
      await flush(m.from,pc);
-   }else if(m.type==="candidate"){
+     return;
+   }
+   if(m.type==="candidate"){
+     if(!m.candidate)return;
      if(pc.remoteDescription)await pc.addIceCandidate(m.candidate);
-     else queues.get(m.from).push(m.candidate);
+     else{
+       const q=queues.get(m.from)||[];
+       q.push(m.candidate);
+       queues.set(m.from,q);
+     }
    }
  }catch(e){
-   console.warn("VOICE SIGNAL:",e);
-   msg("Voice signal retrying…","warn");
+   console.warn("VOICE SIGNAL:",e,m);
+   msg("Voice negotiation retrying…","warn");
  }
 }
 
