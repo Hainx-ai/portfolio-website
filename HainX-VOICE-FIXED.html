@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>HainX ⚡ World — Jack World 🌍</title>
+<style>
+:root{--sky:#8ed8ff;--ink:#071018;--card:#0a1118;--blue:#58caff;--muted:#b9cbd7;--green:#6df0b2;--red:#ff7180}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;background:linear-gradient(155deg,#8ed8ff,#d9f4ff 48%,#78ceff);color:var(--ink);min-height:100vh}button,input{font:inherit}button{cursor:pointer}.screen{min-height:100vh;display:none;padding:22px 14px}.screen.active{display:block}.wrap{max-width:1120px;margin:auto}
+.brand{text-align:center;padding-top:7vh}.logo{font-size:clamp(36px,8vw,72px);font-weight:950;letter-spacing:-2px;text-shadow:0 5px 0 #00000012}.sub{font-weight:800;color:#173747}.squirrels{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:22px auto;font-size:29px}.squirrels span{display:grid;place-items:center;width:52px;height:52px;background:#ffffff88;border:2px solid #fff;border-radius:18px;box-shadow:0 8px 22px #1682b333}
+.entry{max-width:470px;margin:24px auto;background:#ffffffd9;backdrop-filter:blur(14px);padding:27px;border-radius:28px;box-shadow:0 22px 55px #187fa833}.entry h2{margin:0 0 7px;font-size:28px}.entry p{color:#45616f;margin:0 0 18px}.entry input{width:100%;padding:15px;border:2px solid #b8dbea;border-radius:15px;outline:none}.primary{width:100%;margin-top:12px;border:0;border-radius:15px;padding:15px;background:#07131d;color:#fff;font-weight:950}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}.title{font-size:clamp(29px,6vw,48px);font-weight:950}.tag{font-weight:850;color:#193747}.pill{background:#07131de8;color:#fff;padding:9px 13px;border-radius:999px;font-size:12px;font-weight:900}
+.jack{background:linear-gradient(135deg,#07131d,#172735);color:#fff;border:1px solid #69d3ff66;border-radius:25px;padding:20px;margin:17px 0;box-shadow:0 16px 36px #0877a844}.jack h2{margin:0;font-size:24px}.jack p{margin:6px 0 0;color:#bfeeff}
+.section{display:flex;justify-content:space-between;align-items:end;margin:24px 0 12px}.section h3{margin:0}.section small{color:#315568;font-weight:800}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.room{position:relative;min-height:235px;background:linear-gradient(155deg,#070c12,#111d27);border:1px solid #54caff99;border-radius:25px;padding:19px;color:#fff;box-shadow:0 18px 36px #075c8733;transition:.2s;overflow:hidden}.room:hover{transform:translateY(-5px);border-color:#a6e9ff}.room .sq{position:absolute;right:10px;top:5px;font-size:43px}.room .sq2{position:absolute;right:60px;top:43px;font-size:24px;opacity:.6}.room h4{font-size:22px;margin:42px 0 5px}.room p{color:#aac1cf;min-height:38px}.count{font-size:12px;font-weight:900;color:#cdeeff}.enter{border:0;border-radius:12px;padding:11px;background:#59caff;color:#06121a;font-weight:950;width:100%;margin-top:10px}.wait{margin-top:18px;background:#07131ddd;color:#fff;border:1px solid #69d3ff66;border-radius:22px;padding:17px}.status{margin-top:16px;color:#315568;font-size:12px;font-weight:800}.footer{text-align:center;padding:28px;color:#315568;font-size:12px;font-weight:750}
+.modal{display:none;position:fixed;inset:0;background:#02080dcc;backdrop-filter:blur(8px);z-index:50;padding:14px;align-items:center;justify-content:center}.modal.show{display:flex}.box{width:min(680px,100%);max-height:92vh;overflow:auto;background:linear-gradient(160deg,#071018,#111d28);color:#fff;border:1px solid #63d2ff99;border-radius:28px;padding:19px;box-shadow:0 30px 90px #000}.head{display:flex;justify-content:space-between}.head h2{margin:0;font-size:27px}.close{border:0;background:#fff1;color:#fff;font-size:25px;border-radius:10px;width:42px;height:42px}.worldtag{color:#8fddff;font-weight:850;margin:5px 0 17px}.notice{background:#58caff12;border:1px solid #58caff55;border-radius:16px;padding:12px;color:#ccefff;font-size:13px}.controls{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}.control{border:1px solid #5acbff77;background:#0e1a25;color:#fff;border-radius:13px;padding:12px 15px;font-weight:900}.mic{background:#58caff;color:#06121a}.member{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#ffffff10,#58caff08);border:1px solid #70d9ff35;padding:13px;border-radius:18px;margin:9px 0;box-shadow:inset 0 1px #ffffff12,0 8px 20px #00000018}.member:hover{transform:translateY(-2px);border-color:#70d9ff77}.ml{display:flex;align-items:center;gap:11px}.avatar{width:48px;height:48px;border-radius:16px;background:radial-gradient(circle at 35% 30%,#fff,#bcecff 42%,#5acbff);color:#071018;display:grid;place-items:center;font-size:27px;border:2px solid #ffffffaa;box-shadow:0 6px 18px #38b9f555}.cat-badge{font-size:11px;display:inline-block;margin-left:5px;padding:3px 7px;border-radius:999px;background:#ffffff12;color:#bfeeff;border:1px solid #ffffff16}.voice-dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:5px;background:#687782}.voice-dot.live{background:#6df0b2;box-shadow:0 0 0 4px #6df0b222,0 0 12px #6df0b2}.voice-dot.busy{background:#ffd66b}.mn{font-weight:950}.ms{font-size:11px;color:#9fb4c3;margin-top:3px}.good{color:var(--green)}.bad{color:var(--red)}.warn{color:#ffd66b}.conn-panel{margin-top:14px;padding:13px 14px;border-radius:17px;background:linear-gradient(135deg,#58caff0d,#ffffff08);border:1px solid #58caff2d}.conn-title{display:flex;justify-content:space-between;align-items:center;font-weight:900}.conn-bar{height:7px;background:#ffffff0d;border-radius:99px;overflow:hidden;margin-top:9px}.conn-fill{height:100%;width:0;background:linear-gradient(90deg,#58caff,#6df0b2);border-radius:99px;transition:.35s}.audio-tip{margin-top:9px;font-size:11px;color:#9fb4c3}
+@media(max-width:600px){.screen{padding:17px 11px}.top{flex-direction:column;align-items:flex-start}.room{min-height:210px}}
+</style>
+</head>
+<body>
+
+<section id="entry" class="screen active">
+<div class="wrap">
+<div class="brand"><div class="logo">HainX ⚡ World</div><div class="sub">Real people. Real voices. One mysterious world.</div>
+<div class="squirrels"><span>🐿️</span><span>🐿️</span><span>🐿️</span><span>🐿️</span><span>🐿️</span><span>🐿️</span></div></div>
+<div class="entry"><h2>Enter your name 🌙</h2><p>Your name will appear like <b>Name ⚡ HainX</b>.</p><input id="name" maxlength="24" placeholder="Your name..." autocomplete="nickname"><button id="start" class="primary">ENTER HAINX ⚡</button><div id="boot" class="status">Connecting to HainX...</div></div>
+</div>
+</section>
+
+<section id="home" class="screen"><div class="wrap">
+<div class="top"><div><div class="title">Jack World 🌍</div><div class="tag">Welcome, <span id="hello"></span> ⚡ HainX</div></div><div id="fb" class="pill">● Connecting...</div></div>
+<div class="jack"><h2>BADNAAM JACK 🃏</h2><p>Naam to suna hoga 😂 — choose a Junction and meet real people.</p></div>
+<div class="section"><h3>🌌 Junction World</h3><small>Maximum 4 people per Junction</small></div><div id="rooms" class="grid"></div>
+<div class="wait">🐿️ <b>Waiting Room</b> — Full Junction se aane wale people yahan queue mein rahenge.<div id="waiting" style="margin-top:8px;color:#bcd0dc">Checking...</div></div>
+<div class="status">🎙️ Voice: WebRTC + Metered TURN + Firebase signaling.</div><div class="footer">HainX ⚡ World • Jack World 🌍 • Real humans only</div>
+</div></section>
+
+<div id="modal" class="modal"><div class="box">
+<div class="head"><div><h2 id="roomTitle">Junction</h2><div class="worldtag">Jack World 🌍 • Real human voice chat</div></div><button id="close" class="close">×</button></div>
+<div id="notice" class="notice">Preparing secure voice connection...</div>
+<div class="controls"><button id="mic" class="control mic">🎙️ TURN MIC ON</button><button id="sound" class="control">🔊 SOUND ON</button><button id="leave" class="control">🚪 LEAVE</button></div>
+<h3>🐿️ People in this Junction</h3><div id="members"></div><div class="conn-panel"><div class="conn-title"><span>🎧 Voice connection</span><span id="connText" class="warn">Preparing...</span></div><div class="conn-bar"><div id="connFill" class="conn-fill"></div></div><div class="audio-tip">🐱 Clear voice • Echo control • Noise suppression • TURN fallback</div></div>
+</div></div>
+
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
+<script>
+const firebaseConfig={apiKey:"AIzaSyAFjfk27HrCPqDxfDFTYuP9KyG8knbnUi8",authDomain:"hainx-b7dfa.firebaseapp.com",databaseURL:"https://hainx-b7dfa-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"hainx-b7dfa",storageBucket:"hainx-b7dfa.firebasestorage.app",messagingSenderId:"1077891362069",appId:"1:1077891362069:web:8ffab71bfcf4e4c8cd0d1c",measurementId:"G-Y01RM0068"};
+const METERED_DOMAIN="https://hainx.metered.live";
+/* Paste ONLY your credential-scoped Metered API key here. Never paste the Developers Secret Key. */
+const METERED_API_KEY="d5839f02e703cd05ffa0afdcb12138a0a613";
+
+const roomsInfo={
+shadow:{name:"Shadow Forest",icon:"🌲",desc:"Whispers, trees and mysterious night vibes."},
+lake:{name:"Midnight Lake",icon:"🌊",desc:"Calm water, moonlight and hidden voices."},
+house:{name:"Forgotten House",icon:"🏚️",desc:"An old house where every voice has a story."},
+valley:{name:"Silent Valley",icon:"🪨",desc:"Deep valley, quiet atmosphere, real people."},
+moon:{name:"Moon Chamber",icon:"🌙",desc:"A secret chamber under the HainX moon."}};
+const keys=Object.keys(roomsInfo),MAX=4,$=id=>document.getElementById(id);
+let auth,db,user,name="",room=null,session=null,local=null,micOn=false,soundOn=true;
+let ice=[{urls:"stun:stun.l.google.com:19302"}],peers=new Map(),queues=new Map(),members=new Map(),seen=new Set(),memberOff=null,signalOff=null;
+
+function status(t,c=""){ $("fb").textContent="● "+t;$("fb").className="pill "+c}
+function msg(t,c=""){ $("notice").innerHTML=t;$("notice").className="notice "+c}
+function boot(){
+ try{if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);auth=firebase.auth();db=firebase.database();
+ db.ref(".info/connected").on("value",s=>status(s.val()?"Firebase connected":"Firebase connecting...",s.val()?"":"warn"));
+ auth.onAuthStateChanged(async u=>{if(u){user=u;await getTurn();$("boot").textContent="HainX ready ⚡"}else auth.signInAnonymously().catch(e=>$("boot").textContent=e.message)});
+ }catch(e){$("boot").textContent="Firebase error: "+e.message}
+}
+async function getTurn(){
+ if(METERED_API_KEY.startsWith("PASTE_"))return;
+ try{let r=await fetch(METERED_DOMAIN+"/api/v1/turn/credentials?apiKey="+encodeURIComponent(METERED_API_KEY)+"&region=global");if(!r.ok)throw Error("Metered HTTP "+r.status);let a=await r.json();if(Array.isArray(a)&&a.length)ice=a}catch(e){console.warn("TURN:",e)}
+}
+let roomCountListenersReady=false;
+function render(){
+ $("rooms").innerHTML=keys.map(k=>{let n=members.get("__"+k)||0,i=roomsInfo[k];return `<div class="room"><div class="sq">🐿️</div><div class="sq2">🐿️</div><h4>${i.icon} ${i.name}</h4><p>${i.desc}</p><div class="count">SEATS <b>${n}/${MAX}</b></div><button class="enter" data-r="${k}">${n>=MAX?"JOIN WAITING ROOM":"ENTER JUNCTION"}</button></div>`}).join("");
+ document.querySelectorAll(".enter").forEach(b=>b.onclick=()=>join(b.dataset.r));
+}
+function watchRoomCounts(){
+ if(roomCountListenersReady)return;
+ roomCountListenersReady=true;
+ keys.forEach(k=>{
+   db.ref("rooms/"+k+"/members").on("value",s=>{
+     members.set("__"+k,Object.keys(s.val()||{}).length);
+     render();
+   });
+ });
+}
+function waiting(){db.ref("waiting").on("value",s=>{let n=Object.keys(s.val()||{}).length;$("waiting").textContent=n?`${n} person${n>1?"s":""} waiting 🐿️`:"Nobody is waiting right now."})}
+async function enter(){name=$("name").value.trim();if(!name)return $("name").focus();localStorage.setItem("hainxName",name);$("hello").textContent=name;$("entry").classList.remove("active");$("home").classList.add("active");render();watchRoomCounts();waiting()}
+$("start").onclick=enter;$("name").addEventListener("keydown",e=>e.key==="Enter"&&enter());$("name").value=localStorage.getItem("hainxName")||"";
+
+async function join(r){
+ if(!user)return msg("Firebase is still connecting. Please wait.");
+ if(room===r)return;
+ const newSession=user.uid+"_"+Date.now()+"_"+Math.random().toString(36).slice(2,7);
+ $("roomTitle").textContent=roomsInfo[r].icon+" "+roomsInfo[r].name;$("modal").classList.add("show");msg("Checking seat and preparing voice...");
+ let ref=db.ref("rooms/"+r+"/members");
+ try{
+  let tx=await ref.transaction(d=>{d=d||{};if(!d[user.uid]&&Object.keys(d).length>=MAX)return;d[user.uid]={uid:user.uid,name,session:newSession,joinedAt:firebase.database.ServerValue.TIMESTAMP};return d});
+  if(!tx.committed){await db.ref("waiting/"+user.uid).set({uid:user.uid,name,requestedRoom:r,createdAt:firebase.database.ServerValue.TIMESTAMP});msg("Junction full. 🐿️ You are in the Waiting Room.");return}
+  room=r;session=newSession;seen.clear();peers.forEach(pc=>pc.close());peers.clear();queues.clear();members.clear();
+  await db.ref("waiting/"+user.uid).remove();await db.ref("rooms/"+r+"/members/"+user.uid).onDisconnect().remove();
+  await micStream();
+  listenRoom(r);msg("Joined "+roomsInfo[r].name+". Tap TURN MIC ON and speak.");
+ }catch(e){console.error(e);msg("Join failed: "+e.message,"bad")}
+}
+function listenRoom(r){
+ let mr=db.ref("rooms/"+r+"/members"),mc=s=>{members.clear();let d=s.val()||{};Object.values(d).forEach(x=>members.set(x.uid,x));drawMembers();Object.keys(d).forEach(async uid=>uid!==user.uid&&ensurePeer(uid));for(let [uid] of peers)if(!d[uid])closePeer(uid)};mr.on("value",mc);memberOff=()=>mr.off("value",mc);
+ let sr=db.ref("signals/"+r+"/"+user.uid),sc=async s=>{let d=s.val()||{};for(let [id,m] of Object.entries(d)){if(seen.has(id)||m.to!==user.uid||m.session===session)continue;const sender=members.get(m.from);if(sender && sender.session && m.session!==sender.session){seen.add(id);db.ref("signals/"+r+"/"+user.uid+"/"+id).remove().catch(()=>{});continue}seen.add(id);await signal(m);db.ref("signals/"+r+"/"+user.uid+"/"+id).remove().catch(()=>{})}};sr.on("value",sc);signalOff=()=>sr.off("value",sc)
+}
+async function micStream(){
+ if(local)return local;try{local=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1,sampleRate:48000},video:false});local.getAudioTracks().forEach(t=>t.enabled=micOn);return local}catch(e){msg("Microphone permission not granted. You can still stay in the Junction.","bad");return null}
+}
+async function ensurePeer(uid){
+ if(peers.has(uid))return peers.get(uid);
+ let pc=new RTCPeerConnection({iceServers:ice,bundlePolicy:"max-bundle"});peers.set(uid,pc);queues.set(uid,[]);
+ attachLocalTracks(uid,pc);
+ pc.ontrack=e=>{let stream=e.streams&&e.streams[0];if(!stream){stream=new MediaStream([e.track])}let a=document.getElementById("a_"+uid);if(!a){a=document.createElement("audio");a.id="a_"+uid;a.autoplay=true;a.playsInline=true;a.dataset.remote="1";document.body.appendChild(a)}a.srcObject=stream;a.muted=!soundOn;a.play().catch(()=>msg("🔊 Tap SOUND ON once to allow remote audio.","warn"))};
+ pc.onicecandidate=e=>e.candidate&&send(uid,{type:"candidate",candidate:e.candidate.toJSON()});
+ pc.onconnectionstatechange=()=>{drawMembers();conn();if(pc.connectionState==="failed")setTimeout(()=>restart(uid),1200)};
+ pc.oniceconnectionstatechange=()=>{if(pc.iceConnectionState==="failed")restart(uid)};
+ if(user.uid<uid)await offer(uid,pc);return pc
+}
+function attachLocalTracks(uid,pc){
+ if(!local||!pc)return false;let added=false;
+ for(const track of local.getTracks()){
+  const exists=pc.getSenders().some(sender=>sender.track&&sender.track.id===track.id);
+  if(!exists){pc.addTrack(track,local);added=true}
+ }
+ return added
+}
+async function offer(uid,pc){try{let o=await pc.createOffer({offerToReceiveAudio:true});await pc.setLocalDescription(o);await send(uid,{type:"offer",sdp:pc.localDescription})}catch(e){console.warn(e)}}
+async function signal(m){
+ let pc=await ensurePeer(m.from);try{
+  if(m.type==="offer"){
+   if(pc.signalingState!=="stable")return;
+   await pc.setRemoteDescription(new RTCSessionDescription(m.sdp));await flush(m.from,pc);
+   let a=await pc.createAnswer();await pc.setLocalDescription(a);await send(m.from,{type:"answer",sdp:pc.localDescription});
+  }else if(m.type==="answer"){
+   if(pc.signalingState!=="have-local-offer")return;
+   await pc.setRemoteDescription(new RTCSessionDescription(m.sdp));await flush(m.from,pc);
+  }else if(m.type==="candidate"){
+   if(pc.remoteDescription)await pc.addIceCandidate(new RTCIceCandidate(m.candidate));
+   else{let q=queues.get(m.from);if(q)q.push(m.candidate)}
+  }else if(m.type==="renegotiate"){
+   if(user.uid<m.from&&pc.signalingState==="stable")await offer(m.from,pc);
+  }
+ }catch(e){console.warn("Signaling error:",e)}
+}
+async function flush(uid,pc){let q=queues.get(uid)||[];while(q.length){const c=q.shift();try{await pc.addIceCandidate(new RTCIceCandidate(c))}catch(e){console.warn("ICE candidate:",e)}}}
+function send(to,p){if(!room||!user)return Promise.resolve();return db.ref("signals/"+room+"/"+to).push({...p,to,from:user.uid,session,createdAt:firebase.database.ServerValue.TIMESTAMP})}
+async function restart(uid){let pc=peers.get(uid);if(!pc||!room)return;try{if(pc.restartIce)pc.restartIce();if(user.uid<uid&&pc.signalingState==="stable")await offer(uid,pc)}catch(e){console.warn("ICE restart:",e)}}
+function closePeer(uid){peers.get(uid)?.close();peers.delete(uid);queues.delete(uid);document.getElementById("a_"+uid)?.remove();drawMembers();conn()}
+function drawMembers(){
+ let arr=[...members.values()];
+ $("members").innerHTML=arr.length?arr.map(m=>{
+   let me=m.uid===user.uid,st=me?"local":(peers.get(m.uid)?.connectionState||"waiting"),good=st==="connected";
+   let dot=good?"live":st==="connecting"?"busy":"";
+   let label=good?"Voice connected":me?(micOn?"Mic ON":"Mic OFF"):(st==="waiting"?"Connecting...":st);
+   return `<div class="member"><div class="ml"><div class="avatar">🐱</div><div><div class="mn">${esc(m.name)} ${me?"⚡ You":""}<span class="cat-badge">🐱 HainX</span></div><div class="ms"><span class="voice-dot ${dot}"></span>${label}</div></div></div><div class="${good?"good":st==="failed"?"bad":"warn"}">${good?"● LIVE":me?"LOCAL":st.toUpperCase()}</div></div>`;
+ }).join(""):"No one here yet. 🐱"}
+function conn(){
+ let a=[...peers.values()],n=a.filter(p=>p.connectionState==="connected").length;
+ let text=a.length?(n===a.length&&n>0?"Connected":n>0?"Partially connected":"Connecting..."):"Waiting for another person...";
+ let pct=a.length?Math.round((n/a.length)*100):0;
+ $("connText").textContent=text;$("connText").className=n===a.length&&n>0?"good":"warn";$("connFill").style.width=pct+"%";drawMembers();
+}
+$("mic").onclick=async()=>{if(!local)await micStream();if(!local)return;micOn=!micOn;local.getAudioTracks().forEach(t=>t.enabled=micOn);for(const [uid,pc] of peers){if(attachLocalTracks(uid,pc)){if(user.uid<uid)await offer(uid,pc);else await send(uid,{type:"renegotiate"})}}$("mic").textContent=micOn?"🎙️ MIC ON":"🔇 MIC OFF";msg(micOn?"Mic ON — speak normally 🎙️":"Mic OFF.");drawMembers();conn()};
+$("sound").onclick=()=>{soundOn=!soundOn;document.querySelectorAll('audio[data-remote]').forEach(a=>a.muted=!soundOn);$("sound").textContent=soundOn?"🔊 SOUND ON":"🔇 SOUND OFF"};
+async function leave(){if(!room)return;const oldRoom=room;try{await db.ref("rooms/"+oldRoom+"/members/"+user.uid).remove();await db.ref("waiting/"+user.uid).remove()}catch(e){}memberOff?.();signalOff?.();memberOff=null;signalOff=null;for(let uid of [...peers.keys()])closePeer(uid);if(local){local.getTracks().forEach(t=>t.stop());local=null}room=null;session=null;micOn=false;$("mic").textContent="🎙️ TURN MIC ON";$("connText").textContent="Waiting for another person...";$("connFill").style.width="0%";$("modal").classList.remove("show");render()}
+$("leave").onclick=leave;$("close").onclick=leave;window.addEventListener("beforeunload",()=>room&&user&&db.ref("rooms/"+room+"/members/"+user.uid).remove());
+function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+boot();
+</script>
+</body>
+</html>
