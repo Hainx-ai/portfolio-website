@@ -11,6 +11,7 @@ import { Mic, MicOff, Radio, Users, Volume2, VolumeX, Wifi, WifiOff } from "luci
 export default function App() {
   const [roomName, setRoomName] = useState("");
   const [userName, setUserName] = useState("");
+  const [ghostMode, setGhostMode] = useState(true);
   const [serverUrl, setServerUrl] = useState("wss://your-livekit-server.com");
   const [token, setToken] = useState("");
   const [isConnected, setIsConnected] = useState(false);
@@ -81,7 +82,7 @@ export default function App() {
             <Card className="bg-white shadow-md">
               <CardHeader>
                 <CardTitle className="text-xl font-bold">Join a Room</CardTitle>
-                <CardDescription>Enter your details to connect to a station</CardDescription>
+                <CardDescription>Join with Ghost Mode enabled to hide your name in this interface</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
@@ -94,10 +95,10 @@ export default function App() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="user-name">Your Name</Label>
+                  <Label htmlFor="user-name">Private name (not shown in Ghost Mode)</Label>
                   <Input
                     id="user-name"
-                    placeholder="Enter your name"
+                    placeholder="Optional private name"
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
                   />
@@ -121,10 +122,28 @@ export default function App() {
                     className="min-h-[100px]"
                   />
                 </div>
+                <div className="flex items-center justify-between rounded-lg border p-3">
+                  <div>
+                    <p className="font-semibold">Ghost Mode</p>
+                    <p className="text-sm text-slate-500">
+                      {ghostMode ? "Your name is hidden in this app's member list." : "Your entered name may be shown in this app."}
+                    </p>
+                  </div>
+                  <Button
+                    type="button"
+                    variant={ghostMode ? "default" : "outline"}
+                    onClick={() => setGhostMode((enabled) => !enabled)}
+                  >
+                    {ghostMode ? "On 👻" : "Off"}
+                  </Button>
+                </div>
+                <p className="text-xs text-amber-700">
+                  Demo only: this switch changes the display in this interface. It does not hide your identity from a real server or other website.
+                </p>
                 <Button
                   className="w-full bg-emerald-600 hover:bg-emerald-700"
                   onClick={handleConnect}
-                  disabled={!roomName || !userName || !token}
+                  disabled={!roomName || (!ghostMode && !userName.trim()) || !token}
                 >
                   Connect to Station
                 </Button>
@@ -134,7 +153,7 @@ export default function App() {
             <Card className="bg-white shadow-md">
               <CardHeader>
                 <CardTitle className="text-xl font-bold">How it Works</CardTitle>
-                <CardDescription>Random audio chat with groups</CardDescription>
+                <CardDescription>Random audio chat UI demo — not connected to a live audio server yet</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-start gap-3">
@@ -178,7 +197,7 @@ export default function App() {
             <Card className="bg-white shadow-md">
               <CardHeader>
                 <CardTitle className="text-xl font-bold">Active Groups</CardTitle>
-                <CardDescription>Select a group to talk with</CardDescription>
+                <CardDescription>{ghostMode ? "Ghost Mode is on — your name is hidden in this demo member list." : "Select a group to talk with"}</CardDescription>
               </CardHeader>
               <CardContent>
                 <RadioGroup
@@ -277,7 +296,7 @@ export default function App() {
                       </div>
                       <div>
                         <p className="font-semibold text-sm">
-                          {i === 0 ? `${userName} (You)` : `Member ${i + 1}`}
+                          {i === 0 ? (ghostMode ? "👻 Ghost (You)" : `${userName} (You)`) : `Member ${i + 1}`}
                         </p>
                         <p className="text-xs text-slate-500">
                           {i === 0 ? "Speaking" : "Listening"}
