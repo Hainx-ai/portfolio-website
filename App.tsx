@@ -1,0 +1,296 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Mic, MicOff, Radio, Users, Volume2, VolumeX, Wifi, WifiOff } from "lucide-react";
+
+export default function App() {
+  const [roomName, setRoomName] = useState("");
+  const [userName, setUserName] = useState("");
+  const [serverUrl, setServerUrl] = useState("wss://your-livekit-server.com");
+  const [token, setToken] = useState("");
+  const [isConnected, setIsConnected] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isDeafened, setIsDeafened] = useState(false);
+  const [activeGroup, setActiveGroup] = useState("group-a");
+  const [groups, setGroups] = useState([
+    { id: "group-a", name: "Group A", members: 3, isActive: true },
+    { id: "group-b", name: "Group B", members: 2, isActive: false },
+    { id: "group-c", name: "Group C", members: 4, isActive: false },
+  ]);
+
+  const handleConnect = () => {
+    setIsConnected(true);
+  };
+
+  const handleDisconnect = () => {
+    setIsConnected(false);
+    setIsMuted(false);
+    setIsDeafened(false);
+  };
+
+  const handleGroupChange = (groupId: string) => {
+    setActiveGroup(groupId);
+    setGroups((prevGroups) =>
+      prevGroups.map((group) => ({
+        ...group,
+        isActive: group.id === groupId,
+      }))
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-100">
+      <header className="bg-slate-900 text-white p-6 shadow-lg">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Radio className="h-8 w-8 text-emerald-400" />
+            <div>
+              <h1 className="text-2xl font-bold font-serif">StationTalk</h1>
+              <p className="text-sm text-slate-400">Random Audio Chat Platform</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            {isConnected ? (
+              <>
+                <span className="flex items-center gap-2 text-emerald-400">
+                  <Wifi className="h-4 w-4" />
+                  Connected
+                </span>
+                <Button variant="destructive" onClick={handleDisconnect}>
+                  Disconnect
+                </Button>
+              </>
+            ) : (
+              <span className="flex items-center gap-2 text-slate-400">
+                <WifiOff className="h-4 w-4" />
+                Disconnected
+              </span>
+            )}
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-6xl mx-auto p-6">
+        {!isConnected ? (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card className="bg-white shadow-md">
+              <CardHeader>
+                <CardTitle className="text-xl font-bold">Join a Room</CardTitle>
+                <CardDescription>Enter your details to connect to a station</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="room-name">Room Name</Label>
+                  <Input
+                    id="room-name"
+                    placeholder="Enter room name"
+                    value={roomName}
+                    onChange={(e) => setRoomName(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="user-name">Your Name</Label>
+                  <Input
+                    id="user-name"
+                    placeholder="Enter your name"
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="server-url">Server URL</Label>
+                  <Input
+                    id="server-url"
+                    placeholder="wss://your-livekit-server.com"
+                    value={serverUrl}
+                    onChange={(e) => setServerUrl(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="token">Access Token</Label>
+                  <Textarea
+                    id="token"
+                    placeholder="Paste your LiveKit access token"
+                    value={token}
+                    onChange={(e) => setToken(e.target.value)}
+                    className="min-h-[100px]"
+                  />
+                </div>
+                <Button
+                  className="w-full bg-emerald-600 hover:bg-emerald-700"
+                  onClick={handleConnect}
+                  disabled={!roomName || !userName || !token}
+                >
+                  Connect to Station
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white shadow-md">
+              <CardHeader>
+                <CardTitle className="text-xl font-bold">How it Works</CardTitle>
+                <CardDescription>Random audio chat with groups</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="bg-emerald-100 p-2 rounded-lg">
+                    <Users className="h-5 w-5 text-emerald-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">Join a Group</h3>
+                    <p className="text-sm text-slate-600">
+                      You'll be randomly placed in a group with other participants
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="bg-emerald-100 p-2 rounded-lg">
+                    <Mic className="h-5 w-5 text-emerald-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">Talk & Listen</h3>
+                    <p className="text-sm text-slate-600">
+                      Use your microphone to talk with your group members
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="bg-emerald-100 p-2 rounded-lg">
+                    <Radio className="h-5 w-5 text-emerald-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">Switch Groups</h3>
+                    <p className="text-sm text-slate-600">
+                      Move between different groups to meet new people
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            <Card className="bg-white shadow-md">
+              <CardHeader>
+                <CardTitle className="text-xl font-bold">Active Groups</CardTitle>
+                <CardDescription>Select a group to talk with</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <RadioGroup
+                  value={activeGroup}
+                  onValueChange={handleGroupChange}
+                  className="grid grid-cols-1 md:grid-cols-3 gap-4"
+                >
+                  {groups.map((group) => (
+                    <div key={group.id}>
+                      <RadioGroupItem
+                        value={group.id}
+                        id={group.id}
+                        className="peer sr-only"
+                      />
+                      <Label
+                        htmlFor={group.id}
+                        className="flex flex-col items-center gap-2 p-4 border-2 rounded-xl cursor-pointer transition-all peer-data-[state=checked]:border-emerald-500 peer-data-[state=checked]:bg-emerald-50 hover:bg-slate-50"
+                      >
+                        <span className="text-lg font-bold">{group.name}</span>
+                        <span className="text-sm text-slate-600">
+                          {group.members} members
+                        </span>
+                        {group.isActive && (
+                          <span className="text-xs text-emerald-600 font-semibold">
+                            Currently Active
+                          </span>
+                        )}
+                      </Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white shadow-md">
+              <CardHeader>
+                <CardTitle className="text-xl font-bold">Voice Controls</CardTitle>
+                <CardDescription>Manage your audio settings</CardDescription>
+              </CardHeader>
+              <CardContent className="flex items-center justify-center gap-4">
+                <Button
+                  variant={isMuted ? "destructive" : "default"}
+                  size="lg"
+                  className="w-32"
+                  onClick={() => setIsMuted(!isMuted)}
+                >
+                  {isMuted ? (
+                    <>
+                      <MicOff className="h-5 w-5 mr-2" />
+                      Unmute
+                    </>
+                  ) : (
+                    <>
+                      <Mic className="h-5 w-5 mr-2" />
+                      Mute
+                    </>
+                  )}
+                </Button>
+                <Button
+                  variant={isDeafened ? "destructive" : "default"}
+                  size="lg"
+                  className="w-32"
+                  onClick={() => setIsDeafened(!isDeafened)}
+                >
+                  {isDeafened ? (
+                    <>
+                      <VolumeX className="h-5 w-5 mr-2" />
+                      Undeafen
+                    </>
+                  ) : (
+                    <>
+                      <Volume2 className="h-5 w-5 mr-2" />
+                      Deafen
+                    </>
+                  )}
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white shadow-md">
+              <CardHeader>
+                <CardTitle className="text-xl font-bold">Group Members</CardTitle>
+                <CardDescription>
+                  People in {groups.find((g) => g.id === activeGroup)?.name}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {Array.from({ length: groups.find((g) => g.id === activeGroup)?.members || 0 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg"
+                    >
+                      <div className="bg-emerald-100 p-2 rounded-full">
+                        <Users className="h-4 w-4 text-emerald-600" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-sm">
+                          {i === 0 ? `${userName} (You)` : `Member ${i + 1}`}
+                        </p>
+                        <p className="text-xs text-slate-500">
+                          {i === 0 ? "Speaking" : "Listening"}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}
