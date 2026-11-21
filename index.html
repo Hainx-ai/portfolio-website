@@ -1,424 +1,637 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HainX ⚡ | Badnaam Jack</title>
+<meta name="theme-color" content="#071326">
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#070b19;color:#fff;font-family:Arial,sans-serif}
-header{text-align:center;padding:25px 12px;background:#101a35;border-bottom:1px solid #263b68}
-h1{margin:0;color:#62d8ff;font-size:32px}
-header p{color:#aab8d8;margin:8px 0}
-main{max-width:950px;margin:auto;padding:20px}
-.status{text-align:center;color:#75e7b0;margin:12px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:14px}
-.room{background:#111d39;border:1px solid #28436f;border-radius:15px;padding:22px 10px;text-align:center;cursor:pointer}
-.room:hover{border-color:#5edcff;transform:translateY(-2px)}
-.room b{display:block;margin-top:10px}
-.panel{background:#111d39;border:1px solid #28436f;border-radius:15px;padding:20px;margin-top:20px}
-button{border:0;border-radius:9px;padding:12px 18px;margin:5px;background:#16a8d2;color:white;font-weight:bold;cursor:pointer}
-button:disabled{opacity:.5;cursor:not-allowed}
-.leave{background:#d83e59}
-.muted{background:#59647c}
-#roomPanel{display:none}
-#members{line-height:2;color:#c9d8f7}
-#message{color:#75e7b0;min-height:25px}
-audio{width:100%;margin:5px 0}
-footer{text-align:center;padding:25px;color:#7e8ba9}
+:root {
+  --bg:#071326;
+  --panel:#101f3b;
+  --panel2:#172b4d;
+  --blue:#55d8ff;
+  --cyan:#16c9ed;
+  --text:#f3f7ff;
+  --muted:#9eb1cc;
+  --green:#4de0a1;
+  --red:#ff7185;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  min-height:100vh;
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  background:
+    radial-gradient(ellipse at 50% -20%,#173b68 0%,transparent 55%),
+    linear-gradient(145deg,#050d1c,#0a1930 55%,#071326);
+}
+header {
+  text-align:center;
+  padding:28px 15px 24px;
+  background:linear-gradient(120deg,#10284b,#0b1930);
+  border-bottom:1px solid #24466d;
+  box-shadow:0 8px 30px #0005;
+}
+.cat-logo {
+  width:76px;
+  height:76px;
+  margin:0 auto 8px;
+  filter:drop-shadow(0 0 15px #35d7ff66);
+}
+.cat-logo svg { width:100%;height:100%; }
+.brand {
+  margin:0;
+  color:var(--blue);
+  font-size:35px;
+  letter-spacing:1px;
+  text-shadow:0 0 20px #32cfff55;
+}
+.tagline {
+  color:#d1e4ff;
+  font-size:13px;
+  margin:8px 0 0;
+  letter-spacing:.5px;
+}
+main {
+  width:min(100% - 28px,950px);
+  margin:32px auto;
+}
+.status {
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  min-height:24px;
+  margin-bottom:22px;
+}
+.status.ok { color:var(--green); }
+.status.bad { color:var(--red); }
+.panel {
+  background:linear-gradient(145deg,#122543,#0d1c34);
+  border:1px solid #294568;
+  border-radius:20px;
+  padding:22px;
+  box-shadow:0 15px 45px #0004;
+  margin-bottom:22px;
+}
+h2 { margin:0 0 8px;font-size:24px; }
+.subtitle { color:var(--muted);margin:0 0 20px;line-height:1.5; }
+.name-row {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+input {
+  flex:1;
+  min-width:180px;
+  background:#07172c;
+  border:1px solid #345578;
+  color:white;
+  padding:14px 15px;
+  border-radius:11px;
+  font-size:15px;
+  outline:none;
+}
+input:focus { border-color:var(--blue); }
+button {
+  cursor:pointer;
+  border:0;
+  border-radius:11px;
+  padding:13px 18px;
+  font-weight:700;
+  color:#061326;
+  background:linear-gradient(110deg,#61e0ff,#22bce8);
+  transition:.2s;
+}
+button:hover { transform:translateY(-2px);filter:brightness(1.08); }
+button:disabled { opacity:.45;cursor:not-allowed;transform:none; }
+.secondary {
+  color:#d8eaff;
+  background:#1b3558;
+  border:1px solid #345578;
+}
+.junction-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(155px,1fr));
+  gap:13px;
+  margin-top:20px;
+}
+.junction-card {
+  min-height:125px;
+  color:white;
+  background:linear-gradient(145deg,#1c3c66,#142947);
+  border:1px solid #31577f;
+  border-radius:16px;
+  padding:18px 10px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+}
+.junction-card:hover {
+  border-color:var(--blue);
+  box-shadow:0 0 22px #2ccfff30;
+}
+.junction-card .emoji { font-size:28px; }
+.junction-card .jname { font-size:15px; }
+.junction-card .count { font-size:12px;color:#b5cce8;font-weight:400; }
+.room-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.pill {
+  border:1px solid #356187;
+  border-radius:30px;
+  padding:7px 12px;
+  color:var(--blue);
+  font-size:12px;
+}
+.people-list {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:10px;
+  margin:16px 0;
+}
+.person {
+  background:#0a1a30;
+  border:1px solid #294568;
+  padding:13px;
+  border-radius:12px;
+  color:#eaf4ff;
+}
+.person small { color:var(--muted);display:block;margin-top:5px; }
+.waiting-title { color:#ffd78a;margin:18px 0 10px; }
+.notice {
+  background:#102a43;
+  border:1px solid #2c6481;
+  padding:13px;
+  border-radius:12px;
+  color:#c8efff;
+  line-height:1.5;
+  margin-top:15px;
+}
+.hidden { display:none!important; }
+footer {
+  text-align:center;
+  padding:25px 12px 35px;
+  color:#7890ad;
+  font-size:13px;
+}
+footer strong { color:var(--blue); }
+@media(max-width:520px) {
+  header { padding:22px 12px; }
+  .brand { font-size:30px; }
+  main { margin:22px auto; }
+  .panel { padding:17px; }
+  .junction-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
 </style>
 </head>
-<body>
 
+<body>
 <header>
-  <h1>HainX ⚡</h1>
-  <p>BADNAAM JACK 🃏 | Real People. Real Connections.</p>
+  <div class="cat-logo" aria-label="HainX cat logo">
+    <svg viewBox="0 0 100 100" role="img">
+      <path d="M17 42 L12 12 L37 29 Q50 23 63 29 L88 12 L83 43 Q94 60 82 77 Q68 94 50 91 Q32 94 18 77 Q6 60 17 42Z" fill="#63d9ff"/>
+      <path d="M21 42 L19 21 L36 34 M79 42 L81 21 L64 34" fill="#a8efff"/>
+      <ellipse cx="36" cy="55" rx="5" ry="7" fill="#071326"/>
+      <ellipse cx="64" cy="55" rx="5" ry="7" fill="#071326"/>
+      <path d="M44 67 L50 72 L56 67 L50 63Z" fill="#071326"/>
+      <path d="M50 72 Q47 80 41 77 M50 72 Q53 80 59 77" fill="none" stroke="#071326" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M17 66 L37 68 M17 73 L37 71 M83 66 L63 68 M83 73 L63 71" stroke="#071326" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <h1 class="brand">HainX ⚡</h1>
+  <p class="tagline">BADNAAM JACK 🃏 | Real People. Real Connections.</p>
 </header>
 
 <main>
-  <div class="status" id="status">Connecting to HainX...</div>
+  <div id="connectionStatus" class="status">Connecting to HainX...</div>
 
-  <section id="home">
+  <section id="profilePanel" class="panel hidden">
+    <h2>Welcome to HainX 🃏</h2>
+    <p class="subtitle">Choose your identity. Meet real people. Make new connections.</p>
+    <form id="nameForm" class="name-row">
+      <input id="displayName" maxlength="24" placeholder="Enter your name..." autocomplete="nickname" required>
+      <button type="submit">Enter HainX ⚡</button>
+    </form>
+  </section>
+
+  <section id="homePanel" class="panel hidden">
     <h2>Choose Your Junction</h2>
-    <p>Choose a room and meet new people.</p>
-    <div class="grid" id="rooms">
-      <div class="room" data-id="shadow-forest"><span>🌲</span><b>Shadow Forest</b></div>
-      <div class="room" data-id="midnight-lake"><span>🌊</span><b>Midnight Lake</b></div>
-      <div class="room" data-id="forgotten-house"><span>🏚️</span><b>Forgotten House</b></div>
-      <div class="room" data-id="silent-valley"><span>🪨</span><b>Silent Valley</b></div>
-      <div class="room" data-id="moon-chamber"><span>🌙</span><b>Moon Chamber</b></div>
+    <p class="subtitle">
+      Welcome, <strong id="welcomeName"></strong>!
+      Choose a room and meet new people.
+    </p>
+    <div id="junctionGrid" class="junction-grid"></div>
+    <div style="margin-top:18px">
+      <button id="changeNameBtn" class="secondary">Change Name</button>
     </div>
   </section>
 
-  <section class="panel" id="roomPanel">
-    <h2 id="roomTitle">Junction</h2>
-    <p id="message">Joining...</p>
-    <h3>People in this Junction</h3>
-    <div id="members">Waiting for members...</div>
-    <h3>Voice Chat 🎙️</h3>
-    <div id="audioArea"></div>
-    <button id="micBtn" disabled>🎙️ Mic On</button>
-    <button id="leaveBtn" class="leave">Leave Junction</button>
-  </section>
+  <section id="roomPanel" class="panel hidden">
+    <div class="room-head">
+      <div>
+        <h2 id="roomTitle">Junction</h2>
+        <p class="subtitle" style="margin:5px 0">Your HainX meeting place</p>
+      </div>
+      <span id="roomCount" class="pill">0 / 4 seats</span>
+    </div>
 
-  <section class="panel" id="waitingPanel" style="display:none">
-    <h2>⏳ Waiting Room</h2>
-    <p>Junction is full. A seat will be available when someone leaves.</p>
-    <button id="cancelWait" class="leave">Cancel Waiting</button>
+    <div id="roomNotice" class="notice">
+      Connecting to your Junction...
+    </div>
+
+    <h3>People in this Junction</h3>
+    <div id="memberList" class="people-list"></div>
+
+    <h3 class="waiting-title">⏳ Waiting Room</h3>
+    <div id="waitingList" class="people-list"></div>
+
+    <button id="leaveBtn" class="secondary">Leave Junction</button>
   </section>
 </main>
 
-<footer>Created with ⚡ by Badnaam Jack 🃏</footer>
+<footer>
+  Created with <strong>⚡</strong> by <strong>Badnaam Jack 🃏</strong><br>
+  <span>HainX — Real People. Real Connections.</span>
+</footer>
 
 <script>
-const SUPABASE_URL = "https://jnpafzpaclaxgbrclky.supabase.co";
-const SUPABASE_KEY = "sb_publishable_bSuEPigP_xjEvMYR6oNW5A_INy9R-o5";
+(() => {
+  "use strict";
 
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const SUPABASE_URL = "https://jnpafzpaclaxgbrclkxy.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_bSuEPigP_xjEvMYR6oNW5A_INy9R-o5";
 
-const $ = id => document.getElementById(id);
+  const $ = (id) => document.getElementById(id);
 
-let user = null;
-let activeRoom = null;
-let roomChannel = null;
-let localStream = null;
-let muted = false;
-let waiting = false;
+  const statusBox = $("connectionStatus");
+  const profilePanel = $("profilePanel");
+  const homePanel = $("homePanel");
+  const roomPanel = $("roomPanel");
 
-const peers = new Map();
-const pendingICE = new Map();
+  const junctionIcons = {
+    "shadow-forest": "🌲",
+    "midnight-lake": "🌊",
+    "forgotten-house": "🏚️",
+    "silent-valley": "🪨",
+    "moon-chamber": "🌙"
+  };
 
-const roomNames = {
-  "shadow-forest":"🌲 Shadow Forest",
-  "midnight-lake":"🌊 Midnight Lake",
-  "forgotten-house":"🏚️ Forgotten House",
-  "silent-valley":"🪨 Silent Valley",
-  "moon-chamber":"🌙 Moon Chamber"
-};
+  let supabaseClient = null;
+  let currentUser = null;
+  let currentName = "";
+  let currentRoom = null;
+  let refreshTimer = null;
+  let busy = false;
 
-const rtcConfig = {
-  iceServers: [
-    {urls:"stun:stun.l.google.com:19302"},
-    {urls:"stun:stun1.l.google.com:19302"}
-  ]
-};
+  function setStatus(message, type = "") {
+    statusBox.textContent = message;
+    statusBox.className = "status " + type;
+  }
 
-function showMessage(message) {
-  $("message").textContent = message;
-}
+  function showOnly(panel) {
+    [profilePanel, homePanel, roomPanel].forEach(p => p.classList.add("hidden"));
+    if (panel) panel.classList.remove("hidden");
+  }
 
-function setStatus(message) {
-  $("status").textContent = message;
-}
+  function safeText(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+    })[char]);
+  }
 
-async function startApp() {
-  try {
-    const {data:{session},error} = await db.auth.getSession();
-    if(error) throw error;
+  function showError(prefix, error) {
+    console.error(prefix, error);
+    const detail = error?.message || error?.details || String(error);
+    setStatus(prefix + ": " + detail, "bad");
+  }
 
-    if(session) {
-      user = session.user;
-    } else {
-      const {data,error:authError} = await db.auth.signInAnonymously();
-      if(authError) throw authError;
-      user = data.user;
+  async function connect() {
+    if (!window.supabase || !window.supabase.createClient) {
+      throw new Error("Supabase library load nahi hui. Internet/CDN check karo.");
     }
 
-    setStatus("Connected to HainX ⚡");
-  } catch(error) {
-    setStatus("Connection error: " + error.message);
-    console.error(error);
+    supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY,
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true
+        }
+      }
+    );
+
+    setStatus("Checking HainX connection...");
+
+    let { data, error } = await supabaseClient.auth.getSession();
+    if (error) throw error;
+
+    if (data.session?.user) {
+      currentUser = data.session.user;
+    } else {
+      const result = await supabaseClient.auth.signInAnonymously();
+      if (result.error) throw result.error;
+      currentUser = result.data.user;
+    }
+
+    if (!currentUser) {
+      throw new Error("User session nahi mili.");
+    }
+
+    setStatus("Connected to HainX ⚡", "ok");
+
+    const savedName = localStorage.getItem("hainx_display_name") || "";
+    if (savedName) {
+      currentName = savedName;
+      await saveProfile(savedName);
+      await openHome();
+    } else {
+      showOnly(profilePanel);
+    }
   }
-}
 
-async function joinJunction(roomId) {
-  if(!user) {
-    showMessage("Please wait for connection...");
-    return;
+  async function saveProfile(name) {
+    const cleanName = name.trim().slice(0, 24);
+    if (!cleanName) throw new Error("Please enter a name.");
+
+    const { error } = await supabaseClient
+      .from("profiles")
+      .upsert({
+        user_id: currentUser.id,
+        display_name: cleanName
+      }, { onConflict: "user_id" });
+
+    if (error) throw error;
+
+    currentName = cleanName;
+    localStorage.setItem("hainx_display_name", cleanName);
   }
-  if(activeRoom) await leaveJunction();
 
-  activeRoom = roomId;
-  waiting = false;
-  $("home").style.display = "none";
-  $("roomPanel").style.display = "block";
-  $("waitingPanel").style.display = "none";
-  $("roomTitle").textContent = roomNames[roomId];
-  showMessage("Joining Junction...");
+  async function openHome() {
+    $("welcomeName").textContent = currentName;
+    showOnly(homePanel);
+    await loadJunctions();
+  }
 
-  try {
-    const {data,error} = await db.rpc("join_junction", {
-      p_junction_id: roomId
-    });
+  async function loadJunctions() {
+    const grid = $("junctionGrid");
+    grid.innerHTML = "<p>Loading Junctions...</p>";
 
-    if(error) throw error;
+    const { data, error } = await supabaseClient
+      .from("junctions")
+      .select("id,name,icon")
+      .order("name");
 
-    if(String(data).toLowerCase().includes("waiting")) {
-      waiting = true;
-      $("roomPanel").style.display = "none";
-      $("waitingPanel").style.display = "block";
-      showMessage("Junction is full.");
+    if (error) {
+      showError("Junction list load nahi hui", error);
+      grid.innerHTML = "<p>Junctions load nahi ho paaye. SQL setup check karo.</p>";
       return;
     }
 
-    showMessage("You joined successfully!");
-    await connectRoom();
-  } catch(error) {
-    showMessage("Join error: " + error.message);
-    console.error(error);
+    if (!data || !data.length) {
+      grid.innerHTML = "<p>Abhi koi Junction available nahi hai.</p>";
+      return;
+    }
+
+    grid.innerHTML = "";
+
+    for (const junction of data) {
+      const button = document.createElement("button");
+      button.className = "junction-card";
+      button.type = "button";
+
+      const icon = junction.icon || junctionIcons[junction.id] || "⚡";
+
+      button.innerHTML = `
+        <span class="emoji">${safeText(icon)}</span>
+        <span class="jname">${safeText(junction.name)}</span>
+        <span class="count">Enter Junction →</span>
+      `;
+
+      button.addEventListener("click", () => joinJunction(junction));
+      grid.appendChild(button);
+    }
   }
-}
 
-async function connectRoom() {
-  try {
-    localStream = await navigator.mediaDevices.getUserMedia({
-      audio:{
-        echoCancellation:true,
-        noiseSuppression:true,
-        autoGainControl:true
-      },
-      video:false
-    });
+  async function joinJunction(junction) {
+    if (busy) return;
+    busy = true;
+    setStatus("Entering " + junction.name + "...");
 
-    $("micBtn").disabled = false;
+    try {
+      const { data, error } = await supabaseClient.rpc(
+        "join_junction",
+        { p_junction_id: junction.id }
+      );
 
-    roomChannel = db.channel("hainx-" + activeRoom, {
-      config:{
-        presence:{key:user.id},
-        broadcast:{self:false}
-      }
-    });
+      if (error) throw error;
 
-    roomChannel
-      .on("presence", {event:"sync"}, handlePresence)
-      .on("broadcast", {event:"signal"}, handleSignal)
-      .subscribe(async status => {
-        if(status === "SUBSCRIBED") {
-          await roomChannel.track({
-            name:"HainX member",
-            joinedAt:Date.now()
-          });
-          showMessage("Voice room connected 🎙️");
-        }
-      });
+      currentRoom = junction;
+      $("roomTitle").textContent =
+        (junction.icon || junctionIcons[junction.id] || "⚡") +
+        " " + junction.name;
 
-  } catch(error) {
-    showMessage("Microphone/voice error: " + error.message);
-    console.error(error);
-  }
-}
+      showOnly(roomPanel);
 
-function handlePresence() {
-  if(!roomChannel) return;
+      const result = String(data || "").toLowerCase();
 
-  const state = roomChannel.presenceState();
-  const ids = Object.keys(state).filter(id => id !== user.id);
-
-  $("members").innerHTML =
-    "<div>🟢 You — " + user.id.slice(0,7) + "</div>" +
-    ids.map(id => "<div>🟢 Member — " + id.slice(0,7) + "</div>").join("");
-
-  ids.forEach(id => {
-    if(user.id < id) createOffer(id);
-  });
-}
-
-function createPeer(peerId) {
-  if(peers.has(peerId)) return peers.get(peerId);
-
-  const pc = new RTCPeerConnection(rtcConfig);
-
-  localStream.getTracks().forEach(track => {
-    pc.addTrack(track,localStream);
-  });
-
-  pc.onicecandidate = event => {
-    if(event.candidate) {
-      sendSignal(peerId,{
-        type:"ice",
-        candidate:event.candidate
-      });
-    }
-  };
-
-  pc.ontrack = event => {
-    let audio = document.getElementById("audio-" + peerId);
-
-    if(!audio) {
-      audio = document.createElement("audio");
-      audio.id = "audio-" + peerId;
-      audio.autoplay = true;
-      audio.playsInline = true;
-      $("audioArea").appendChild(audio);
-    }
-
-    audio.srcObject = event.streams[0];
-    audio.play().catch(()=>{});
-  };
-
-  pc.onconnectionstatechange = () => {
-    if(["failed","closed"].includes(pc.connectionState)) {
-      closePeer(peerId);
-    }
-  };
-
-  peers.set(peerId,pc);
-  return pc;
-}
-
-async function createOffer(peerId) {
-  try {
-    const pc = createPeer(peerId);
-    if(pc.signalingState !== "stable") return;
-
-    const offer = await pc.createOffer();
-    await pc.setLocalDescription(offer);
-
-    await sendSignal(peerId,{
-      type:"offer",
-      description:pc.localDescription
-    });
-  } catch(error) {
-    console.error("Offer error:",error);
-  }
-}
-
-async function handleSignal({payload}) {
-  if(!payload || payload.to !== user.id || !payload.from) return;
-
-  const peerId = payload.from;
-  const signal = payload.data;
-
-  try {
-    const pc = createPeer(peerId);
-
-    if(signal.type === "offer") {
-      await pc.setRemoteDescription(signal.description);
-
-      const answer = await pc.createAnswer();
-      await pc.setLocalDescription(answer);
-
-      await sendSignal(peerId,{
-        type:"answer",
-        description:pc.localDescription
-      });
-
-      await applyPendingICE(peerId,pc);
-    }
-
-    if(signal.type === "answer") {
-      await pc.setRemoteDescription(signal.description);
-      await applyPendingICE(peerId,pc);
-    }
-
-    if(signal.type === "ice") {
-      if(pc.remoteDescription) {
-        await pc.addIceCandidate(signal.candidate);
+      if (result.includes("waiting")) {
+        $("roomNotice").textContent =
+          "⏳ Junction full hai. Tum Waiting Room mein ho. Seat khali hote hi tumhari entry hogi.";
       } else {
-        if(!pendingICE.has(peerId)) pendingICE.set(peerId,[]);
-        pendingICE.get(peerId).push(signal.candidate);
+        $("roomNotice").textContent =
+          "Welcome! Tum Junction mein enter ho chuke ho. Maximum 4 active members.";
       }
-    }
-  } catch(error) {
-    console.error("Signal error:",error);
-  }
-}
 
-async function applyPendingICE(peerId,pc) {
-  const list = pendingICE.get(peerId) || [];
-  for(const candidate of list) {
+      setStatus("Junction connected ⚡", "ok");
+      await refreshRoom();
+      startRefresh();
+
+    } catch (error) {
+      showError("Junction join nahi hua", error);
+    } finally {
+      busy = false;
+    }
+  }
+
+  async function getNames(userIds) {
+    if (!userIds.length) return {};
+
+    const { data, error } = await supabaseClient
+      .from("profiles")
+      .select("user_id,display_name")
+      .in("user_id", userIds);
+
+    if (error) throw error;
+
+    const names = {};
+    (data || []).forEach(profile => {
+      names[profile.user_id] = profile.display_name;
+    });
+    return names;
+  }
+
+  async function refreshRoom() {
+    if (!currentRoom) return;
+
+    const roomId = currentRoom.id;
+
+    const [membersResult, waitingResult] = await Promise.all([
+      supabaseClient
+        .from("junction_members")
+        .select("user_id,joined_at")
+        .eq("junction_id", roomId)
+        .order("joined_at"),
+
+      supabaseClient
+        .from("junction_waiting")
+        .select("user_id,joined_at")
+        .eq("junction_id", roomId)
+        .order("joined_at")
+    ]);
+
+    if (membersResult.error) throw membersResult.error;
+    if (waitingResult.error) throw waitingResult.error;
+
+    const members = membersResult.data || [];
+    const waiting = waitingResult.data || [];
+
+    const allIds = [
+      ...members.map(x => x.user_id),
+      ...waiting.map(x => x.user_id)
+    ];
+
+    const names = await getNames([...new Set(allIds)]);
+
+    $("roomCount").textContent = members.length + " / 4 seats";
+
+    $("memberList").innerHTML = members.length
+      ? members.map((member, index) => `
+          <div class="person">
+            ${index === 0 ? "⭐ " : "👤 "}
+            ${safeText(names[member.user_id] || "HainX Member")}
+            <small>${member.user_id === currentUser.id ? "You" : "Junction Member"}</small>
+          </div>
+        `).join("")
+      : '<div class="person">No active members yet.</div>';
+
+    $("waitingList").innerHTML = waiting.length
+      ? waiting.map((person, index) => `
+          <div class="person">
+            ⏳ ${index + 1}. ${safeText(names[person.user_id] || "HainX Member")}
+            <small>${person.user_id === currentUser.id ? "You are waiting" : "Waiting for a seat"}</small>
+          </div>
+        `).join("")
+      : '<div class="person">Waiting Room is empty.</div>';
+
+    const isMember = members.some(x => x.user_id === currentUser.id);
+    const isWaiting = waiting.some(x => x.user_id === currentUser.id);
+
+    if (isMember) {
+      $("roomNotice").textContent =
+        "✅ You are inside this Junction. " +
+        members.length + " of 4 seats are occupied.";
+    } else if (isWaiting) {
+      $("roomNotice").textContent =
+        "⏳ You are in the Waiting Room. A seat will be assigned when someone leaves.";
+    } else {
+      $("roomNotice").textContent =
+        "You are not currently listed in this Junction.";
+    }
+  }
+
+  function startRefresh() {
+    stopRefresh();
+    refreshTimer = setInterval(async () => {
+      if (!currentRoom) return;
+      try {
+        await refreshRoom();
+      } catch (error) {
+        showError("Room update error", error);
+      }
+    }, 5000);
+  }
+
+  function stopRefresh() {
+    if (refreshTimer) clearInterval(refreshTimer);
+    refreshTimer = null;
+  }
+
+  async function leaveJunction() {
+    if (!currentRoom || busy) return;
+    busy = true;
+
     try {
-      await pc.addIceCandidate(candidate);
-    } catch(error) {
-      console.error(error);
+      const roomId = currentRoom.id;
+      const { error } = await supabaseClient.rpc(
+        "leave_junction",
+        { p_junction_id: roomId }
+      );
+
+      if (error) throw error;
+
+      stopRefresh();
+      currentRoom = null;
+      showOnly(homePanel);
+      setStatus("You left the Junction.", "ok");
+      await loadJunctions();
+
+    } catch (error) {
+      showError("Leave error", error);
+    } finally {
+      busy = false;
     }
   }
-  pendingICE.delete(peerId);
-}
 
-async function sendSignal(to,data) {
-  if(!roomChannel) return;
+  $("nameForm").addEventListener("submit", async event => {
+    event.preventDefault();
+    const name = $("displayName").value.trim();
 
-  await roomChannel.send({
-    type:"broadcast",
-    event:"signal",
-    payload:{from:user.id,to,data}
+    if (!name) return;
+
+    try {
+      await saveProfile(name);
+      await openHome();
+      setStatus("Welcome to HainX, " + currentName + " ⚡", "ok");
+    } catch (error) {
+      showError("Profile save error", error);
+    }
   });
-}
 
-function closePeer(peerId) {
-  const pc = peers.get(peerId);
-  if(pc) pc.close();
-  peers.delete(peerId);
-  pendingICE.delete(peerId);
-
-  const audio = document.getElementById("audio-" + peerId);
-  if(audio) audio.remove();
-}
-
-async function leaveJunction() {
-  if(roomChannel) {
-    try {
-      await roomChannel.untrack();
-      await db.removeChannel(roomChannel);
-    } catch(error) {
-      console.error(error);
-    }
-    roomChannel = null;
-  }
-
-  peers.forEach(pc => pc.close());
-  peers.clear();
-  pendingICE.clear();
-
-  if(localStream) {
-    localStream.getTracks().forEach(track => track.stop());
-    localStream = null;
-  }
-
-  if(activeRoom && user) {
-    try {
-      await db.rpc("leave_junction", {
-        p_junction_id:activeRoom
-      });
-    } catch(error) {
-      console.error("Leave error:",error);
-    }
-  }
-
-  activeRoom = null;
-  waiting = false;
-  $("roomPanel").style.display = "none";
-  $("waitingPanel").style.display = "none";
-  $("home").style.display = "block";
-  $("audioArea").innerHTML = "";
-  $("members").innerHTML = "";
-  $("micBtn").disabled = true;
-  $("micBtn").textContent = "🎙️ Mic On";
-  showMessage("");
-}
-
-$("micBtn").addEventListener("click",() => {
-  if(!localStream) return;
-
-  muted = !muted;
-  localStream.getAudioTracks().forEach(track => {
-    track.enabled = !muted;
+  $("changeNameBtn").addEventListener("click", () => {
+    $("displayName").value = currentName;
+    showOnly(profilePanel);
   });
 
-  $("micBtn").textContent = muted ? "🔇 Mic Off" : "🎙️ Mic On";
-  $("micBtn").classList.toggle("muted",muted);
-});
+  $("leaveBtn").addEventListener("click", leaveJunction);
 
-$("leaveBtn").addEventListener("click",leaveJunction);
-$("cancelWait").addEventListener("click",leaveJunction);
+  window.addEventListener("beforeunload", () => {
+    stopRefresh();
+  });
 
-document.querySelectorAll(".room").forEach(room => {
-  room.addEventListener("click",() => joinJunction(room.dataset.id));
-});
+  connect().catch(error => {
+    showError("Connection error", error);
+    showOnly(profilePanel);
+  });
 
-startApp();
+})();
 </script>
 </body>
 </html>
