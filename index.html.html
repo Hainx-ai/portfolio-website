@@ -1,0 +1,1408 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07172e">
+<title>HainX ⚡ | Badnaam Jack World</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{color-scheme:dark;--bg:#07172e;--panel:#102542;--panel2:#0b1d35;--line:#315477;--cyan:#65eaff;--text:#eef8ff;--muted:#a9bfd6;--pink:#ffb5d8;--green:#70f0b0;--red:#ff9da9}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 12%,#17385e 0,#0b1d36 42%,var(--bg) 100%);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+header{padding:19px 14px 16px;text-align:center;background:linear-gradient(110deg,#102e53,#153b65);border-bottom:1px solid #315779;box-shadow:0 7px 24px #0003}
+.cat{display:block;width:51px;height:51px;margin:0 auto 2px;filter:drop-shadow(0 0 9px #65eaff88)}
+h1{margin:0;color:var(--cyan);font-size:27px;letter-spacing:.4px}
+header p{margin:3px 0 0;font-size:11px;font-weight:800;letter-spacing:.45px}
+main{width:min(980px,94%);margin:0 auto;padding:24px 0 38px;min-height:72vh}
+.banner{margin:8px auto 20px;padding:20px 15px;text-align:center;border:1px solid #47709a;border-radius:16px;background:linear-gradient(110deg,#16365a,#142b4b);box-shadow:0 0 24px #65eaff14}
+.banner h2{margin:0;color:#ffe0ef;font-size:clamp(20px,4vw,29px);text-shadow:0 0 14px #ff8bc955}
+.banner p{margin:8px 0 0;color:#c6d9eb;font-size:13px}
+.heartline{color:var(--pink);letter-spacing:5px;font-size:19px;margin-top:7px}
+.panel{padding:clamp(17px,3vw,25px);border:1px solid #315477;border-radius:16px;background:linear-gradient(145deg,#122b4b,#0c1e37);box-shadow:0 15px 40px #0003;margin-bottom:18px}
+h2,h3{margin-top:0}
+h2{font-size:22px}h3{font-size:16px;margin-bottom:10px}
+.muted{color:var(--muted);font-size:13px}
+label{display:block;margin:0 0 7px;font-weight:700;font-size:13px}
+input{width:100%;padding:13px 14px;border:1px solid #527da5;border-radius:10px;background:#081b32;color:#fff;font:inherit;outline:none}
+input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #65eaff22}
+button{border:0;border-radius:10px;padding:11px 15px;background:linear-gradient(110deg,#65eaff,#8bdcff);color:#08213a;font-weight:800;cursor:pointer;font-size:13px}
+button:disabled{opacity:.5;cursor:not-allowed}
+button.secondary{background:#193858;color:#eaf8ff;border:1px solid #42698e}
+button.danger{background:#5c2939;color:#ffe8ed;border:1px solid #a44b64}
+button.active{background:#70f0b0;color:#082d20}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+.status{min-height:21px;margin:10px 0 0;color:var(--green);font-size:13px;font-weight:700}
+.status.error{color:var(--red)}
+.admin-panel{margin-top:16px;border:1px solid #d6a84b;background:linear-gradient(145deg,#2b2740,#172b49);border-radius:14px;padding:14px;box-shadow:0 0 20px #f2c66b12}
+.admin-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.admin-user{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px;margin-top:8px;border:1px solid #405878;border-radius:10px;background:#0b1d35}
+.admin-user small{display:block;color:var(--muted);margin-top:3px}
+.admin-actions{display:flex;gap:6px;flex-wrap:wrap}
+.admin-actions button{padding:7px 9px;font-size:11px}
+.admin-tag{color:#ffe0a3;font-size:11px;font-weight:800}
+
+.junction[data-junction="kriti-world"]{background:linear-gradient(135deg,#4a244f,#25234e 65%,#142b4b);border-color:#d98abf;box-shadow:0 0 18px #e58acb22}
+.junction[data-junction="kriti-world"] strong{color:#ffd6ef}
+.hidden{display:none!important}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.junction{padding:18px;text-align:left;border:1px solid #42698e;border-radius:14px;background:linear-gradient(145deg,#18385e,#102744);color:var(--text);min-height:112px;transition:transform .15s,border-color .15s}
+.junction:hover{transform:translateY(-2px);border-color:var(--cyan)}
+.junction strong{display:block;font-size:18px;margin-bottom:5px}
+.junction small{color:#b4cce2;font-weight:500}
+.pill{display:inline-block;padding:4px 8px;border-radius:30px;border:1px solid #42698e;color:#aeefff;font-size:11px;margin-top:8px}
+.roomtop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.notice{padding:11px 12px;border:1px solid #315477;border-radius:10px;background:#102b47;font-size:13px;margin:12px 0}
+.people{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.person{padding:11px;border:1px solid #294967;border-radius:10px;background:#0a1d34;font-size:13px;overflow-wrap:anywhere}
+.person b{display:block;margin-bottom:3px}
+.waiting{color:#ffe0a3}
+.chatlog{height:170px;overflow:auto;padding:10px;border:1px solid #294967;border-radius:10px;background:#081a30;margin:9px 0}
+.msg{font-size:13px;margin:0 0 8px;overflow-wrap:anywhere}
+.msg b{color:#8feaff}
+.chatrow{display:flex;gap:8px}.chatrow input{flex:1;min-width:0}
+footer{text-align:center;padding:15px 10px 24px;color:#8ea7c3;font-size:11px;font-weight:700}
+
+/* HainX voice lounge refresh */
+:root{--violet:#a78bfa;--deep:#080817;--surface:#111126;--surface2:#17172f;--edge:#343052}
+body{background:radial-gradient(ellipse at 50% 0%,#20204a 0,#0c1028 42%,#070d20 100%)}
+header{background:linear-gradient(110deg,#100f27,#1b1940 55%,#102d4a);border-bottom-color:#51447b}
+.panel{background:linear-gradient(145deg,#151932,#0d1830);border-color:#35466b}
+.junction{background:linear-gradient(145deg,#1b2041,#111b35);border-color:#3b4770}
+button{background:linear-gradient(110deg,#67e8f9,#a78bfa);box-shadow:0 5px 18px #67e8f922}
+.voice-layout{display:grid;grid-template-columns:205px minmax(0,1fr);gap:14px;margin-top:14px}
+.voice-sidebar{padding:14px;border:1px solid #343052;border-radius:16px;background:#0b0b1c}
+.voice-sidebar h3{font-size:12px;letter-spacing:1.2px;color:#9b9ab8;margin:5px 0 12px}
+.voice-junction{display:flex;align-items:center;gap:9px;padding:10px;border-radius:10px;background:#17172e;margin:7px 0;color:#e9e8ff;font-size:13px}
+.voice-junction.current{border:1px solid #6d5bb1;background:#252044}
+.voice-junction .dot{width:8px;height:8px;border-radius:50%;background:#65e6b2;box-shadow:0 0 10px #65e6b2}
+.voice-main{min-width:0;padding:16px;border:1px solid #343052;border-radius:16px;background:linear-gradient(160deg,#111126,#0a1228)}
+.voice-main-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px solid #292844;padding-bottom:13px}
+.voice-main-head h2{margin:0;font-size:20px}
+.live-tag{font-size:11px;color:#8ff5c4;border:1px solid #356b60;background:#102b2b;border-radius:30px;padding:6px 10px}
+.voice-stage{min-height:260px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-content:center;padding:26px 4px}
+.person{min-height:126px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;padding:12px;border:1px solid #373452;border-radius:15px;background:linear-gradient(150deg,#1a1932,#11162c);font-size:12px}
+.person b{display:block;margin:0;max-width:100%;overflow-wrap:anywhere}
+.avatar{width:54px;height:54px;display:grid;place-items:center;border-radius:50%;font-size:20px;font-weight:900;color:#11152b;background:linear-gradient(135deg,#67e8f9,#a78bfa);box-shadow:0 0 0 4px #a78bfa22}
+.person.is-you .avatar{background:linear-gradient(135deg,#f9d76e,#fb9aaf)}
+.person .member-state{font-size:10px;color:#8e91b5}
+.waiting-wrap{padding:12px;border:1px dashed #655b88;border-radius:12px;background:#17142a}
+.waiting-wrap h3{margin:0 0 8px;color:#f4d59a}
+.waiting-wrap .people{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.waiting-wrap .person{min-height:70px;flex-direction:row;justify-content:flex-start}
+.control-dock{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;padding:14px;margin:16px auto 8px;border:1px solid #373452;border-radius:16px;background:#0a0b1b;max-width:560px}
+.control-dock button{min-width:48px;min-height:44px}
+.control-dock .leave-control{background:linear-gradient(110deg,#fb7185,#e34b69);color:white}
+.reaction-bar{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:12px 0}
+.reaction-btn{background:#24213e;color:#fff;border:1px solid #4a426e;font-size:19px;padding:8px 12px;box-shadow:none}
+.reaction-btn:hover{border-color:#a78bfa;transform:translateY(-2px)}
+.reaction-pop{position:fixed;z-index:50;left:50%;top:42%;transform:translate(-50%,-50%);font-size:54px;pointer-events:none;animation:popFloat 1.5s ease-out forwards;filter:drop-shadow(0 5px 18px #a78bfa66)}
+@keyframes popFloat{0%{opacity:0;transform:translate(-50%,15px) scale(.5)}20%{opacity:1;transform:translate(-50%,0) scale(1.15)}100%{opacity:0;transform:translate(-50%,-110px) scale(1.3)}}
+.room-chat{margin-top:14px;padding:14px;border:1px solid #343052;border-radius:15px;background:#101026}
+.room-chat summary{cursor:pointer;font-weight:800;color:#dcd9ff}
+.mic-gate{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:20px;background:#050713ed;backdrop-filter:blur(12px)}
+.mic-card{width:min(440px,100%);padding:26px;border:1px solid #62558f;border-radius:22px;text-align:center;background:linear-gradient(145deg,#1b1a39,#0d1730);box-shadow:0 25px 80px #0009}
+.mic-orb{width:74px;height:74px;display:grid;place-items:center;margin:0 auto 14px;border-radius:50%;font-size:30px;background:linear-gradient(135deg,#67e8f9,#a78bfa);box-shadow:0 0 35px #a78bfa55}
+.mic-card h2{margin:0 0 8px}
+.mic-card p{color:#b8bad5;font-size:13px;line-height:1.55}
+.mic-card .actions{justify-content:center}
+.mic-small{font-size:11px!important;color:#8e91b5!important}
+#speakerBtn{background:#25213e;color:#e8e4ff;border:1px solid #514775}
+#speakerBtn.active{background:#16483f;color:#a5ffdc;border-color:#3b987d}
+
+.live-overview{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}.live-overview>div{padding:13px;border:1px solid #51447b;border-radius:12px;background:#11152d;text-align:center}.live-overview strong{display:block;font-size:24px;color:#8eeaff}.live-overview span{font-size:11px;color:#b8bad5}.owner-badge{display:inline-block;margin-top:7px;padding:4px 9px;border-radius:20px;background:linear-gradient(100deg,#f6d77b,#c59b42);color:#241a08;font-size:10px;font-weight:900;letter-spacing:.7px}.admin-panel>summary{cursor:pointer;color:#ffe0a3;font-weight:900;list-style:none}.admin-panel>summary::-webkit-details-marker{display:none}.admin-inner{padding-top:12px}#adminSearch{margin:10px 0}.now-playing{margin-top:12px;padding:12px;border-radius:12px;background:#17172f;border:1px solid #51447b}.np-label,.story-kicker{font-size:10px;letter-spacing:1.5px;color:#a78bfa;font-weight:900;display:block}.now-playing strong{display:block;font-size:16px;color:#fff;margin-top:4px}.lobby-playlist{display:grid;gap:6px;margin-top:8px}.track-row{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px 10px;border-radius:9px;background:#11152d;border:1px solid #343052;font-size:12px}.track-row.active{border-color:#a78bfa;background:#252044}.track-row button{padding:5px 8px;font-size:10px}
+
+@media(max-width:700px){
+ .voice-layout{grid-template-columns:1fr}.live-overview{gap:6px}.live-overview strong{font-size:19px}.live-overview span{font-size:10px}
+ .voice-sidebar{display:none}
+ .voice-stage{grid-template-columns:repeat(2,minmax(0,1fr));min-height:220px;padding:16px 0}
+ .person{min-height:112px}
+ .voice-main{padding:12px}
+ .voice-main-head h2{font-size:18px}
+ .control-dock{gap:7px}
+}
+@media(max-width:380px){.voice-stage{gap:8px}.avatar{width:46px;height:46px}}
+
+@media(max-width:600px){.grid,.people{grid-template-columns:1fr}.junction{min-height:92px}.chatrow{flex-direction:column}.chatrow button{width:100%}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* HainX original midnight-blue + electric-violet palette, with the current clean layout */
+:root{
+  color-scheme:dark;
+  --bg:#07172e;--panel:#102542;--panel2:#0b1d35;--line:#315477;
+  --cyan:#65eaff;--text:#eef8ff;--muted:#a9bfd6;--pink:#ffb5d8;
+  --green:#70f0b0;--red:#ff9da9;--violet:#a78bfa;
+}
+body{background:radial-gradient(ellipse at 50% 0%,#203d68 0,#0c1b36 46%,#070d20 100%);color:var(--text)}
+header{background:linear-gradient(110deg,#10132f,#173b68 55%,#111a3e);border-bottom:1px solid #514b91;box-shadow:0 8px 28px #0005}
+.cat{filter:drop-shadow(0 0 10px #65eaff99)}
+h1{color:var(--cyan)}
+.banner{background:linear-gradient(110deg,#163b63,#182e55);border-color:#5278b0;box-shadow:0 0 25px #65eaff18}
+.banner h2{color:#ffe0ef;text-shadow:0 0 14px #ff8bc955}
+.banner p{color:#c6d9eb}
+.heartline{color:var(--pink)}
+.panel{background:linear-gradient(145deg,#122b4b,#0c1e37);border-color:#315477;box-shadow:0 14px 34px #0004}
+input{background:#081b32;border-color:#527da5}
+input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #65eaff22}
+button{background:linear-gradient(110deg,#65eaff,#a78bfa);color:#08213a;box-shadow:0 5px 18px #65eaff22}
+button.secondary{background:#193858;color:#eaf8ff;border:1px solid #42698e;box-shadow:none}
+button.danger{background:#5c2939;color:#ffe8ed;border:1px solid #a44b64}
+button.active{background:#16483f;color:#c8ffe4}
+.admin-panel{background:linear-gradient(145deg,#22264b,#102b4b);border-color:#d6a84b;box-shadow:0 0 20px #f2c66b12}
+.admin-user{background:#0b1d35;border-color:#405878}
+.admin-tag{color:#ffe0a3}
+.junction{background:linear-gradient(145deg,#18385e,#102744);border-color:#42698e;color:var(--text)}
+.junction:hover{border-color:var(--cyan);box-shadow:0 8px 22px #65eaff18}
+.junction strong{color:#f3f8ff}
+.junction[data-junction="kriti-world"]{position:relative;isolation:isolate;overflow:hidden;background:linear-gradient(135deg,#49245a,#29265b 68%,#142b4b);border-color:#e58acb;box-shadow:0 0 22px #e58acb2b}
+.junction[data-junction="kriti-world"] strong{color:#ffd6ef}
+.pill{border-color:#42698e;color:#aeefff}
+.notice{background:#102b47;border-color:#315477}
+.voice-sidebar{background:#0b1d35;border-color:#343b70}
+.voice-sidebar h3{color:#a9bfd6}
+.voice-junction{background:#171b3d;color:#e9e8ff}
+.voice-junction.current{border-color:#7567c5;background:#252044}
+.voice-main{background:linear-gradient(160deg,#111b38,#0a1228);border-color:#35466b}
+.live-tag{color:#8ff5c4;border-color:#356b60;background:#102b2b}
+.voice-stage .person,.person{background:linear-gradient(150deg,#1a2547,#111b35);border-color:#373f70}
+.avatar{background:linear-gradient(135deg,#67e8f9,#a78bfa);color:#11152b;box-shadow:0 0 0 4px #a78bfa22}
+.person.is-you .avatar{background:linear-gradient(135deg,#f9d76e,#fb9aaf)}
+.waiting-wrap{background:#17142a;border-color:#655b88}
+.waiting-wrap h3{color:#f4d59a}
+.control-dock,.room-chat{background:#0a0b1b;border-color:#373452}
+.reaction-btn{background:#24213e;color:#fff;border:1px solid #4a426e}
+.reaction-btn:hover{border-color:#a78bfa}
+.mic-card{background:linear-gradient(145deg,#1b1a39,#0d1730);border-color:#62558f}
+.mic-orb{background:linear-gradient(135deg,#67e8f9,#a78bfa);box-shadow:0 0 28px #a78bfa55}
+#speakerBtn{background:#25213e;color:#e8e4ff;border:1px solid #514775}
+#speakerBtn.active{background:#16483f;color:#a5ffdc;border-color:#3b987d}
+footer{color:#9caaba}
+.lobby-music-card{border-color:#52709a;background:linear-gradient(120deg,#17385e,#102744);box-shadow:0 8px 22px #0003}
+.music-disc{background:linear-gradient(135deg,#65eaff,#a78bfa);color:#10213a;box-shadow:0 0 0 5px #a78bfa22}
+.music-upload-label{background:#193858;border-color:#42698e;color:#f2eee6}
+/* tiny friendly cat/paw details: subtle, not distracting */
+.banner:after{content:"🐾  🐱";display:block;margin-top:8px;font-size:14px;letter-spacing:9px;opacity:.68}
+.panel:not(#entryPanel):not(#roomPanel) h2:after{content:"  🐾";font-size:.7em;opacity:.55}
+.voice-sidebar:after{content:"🐈‍⬛  ♡  🐾";display:block;text-align:center;margin-top:28px;font-size:20px;opacity:.75}
+.kriti-rain{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.kriti-rain span{position:absolute;top:-28px;color:#ffc2e6;text-shadow:0 0 8px #ff75ca;font-size:17px;opacity:.9;animation:loveFall linear infinite}
+.kriti-rain span:nth-child(1){left:8%;animation-duration:5s;animation-delay:-1s}
+.kriti-rain span:nth-child(2){left:22%;animation-duration:6.2s;animation-delay:-3s}
+.kriti-rain span:nth-child(3){left:38%;animation-duration:4.8s;animation-delay:-2s}
+.kriti-rain span:nth-child(4){left:54%;animation-duration:6.5s;animation-delay:-4s}
+.kriti-rain span:nth-child(5){left:70%;animation-duration:5.4s;animation-delay:-1.8s}
+.kriti-rain span:nth-child(6){left:86%;animation-duration:6s;animation-delay:-3.5s}
+@keyframes loveFall{0%{transform:translateY(-25px) rotate(0deg);opacity:0}15%{opacity:.9}100%{transform:translateY(150px) rotate(35deg);opacity:0}}
+.kriti-love-line{display:block;margin:7px 0 2px;color:#ffc7e9;font-family:Georgia,serif;font-style:italic;font-size:clamp(16px,2.5vw,21px);text-shadow:0 0 12px #ff7bc9}
+@media(prefers-reduced-motion:reduce){.kriti-rain span{animation:none;display:none}}
+
+/* HainX World update: Love Tree, music floor, story and member photos */
+.love-tree-card{position:relative;overflow:hidden;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:10px;margin:18px 0;padding:20px;border:1px solid #b96da7;border-radius:18px;background:radial-gradient(circle at 72% 40%,#57305f 0,#251e4b 48%,#102744 100%);box-shadow:0 0 28px #e58acb20}
+.love-tree-card h2{color:#ffd6ef;margin:7px 0}.love-tree-card p{color:#e2d5ef;font-size:13px;line-height:1.6}
+.tree-stars{position:absolute;inset:8px 0 auto;text-align:center;color:#ffe4a8;opacity:.45;letter-spacing:7px;animation:twinkle 3s ease-in-out infinite alternate}
+.love-tree-art{position:relative;min-height:210px;display:flex;align-items:flex-end;justify-content:center}
+.tree-crown{position:relative;z-index:2;width:190px;height:150px;display:grid;place-content:center;text-align:center;line-height:1.8;font-size:21px;color:#ffd2ec;border-radius:48% 52% 45% 55%;background:radial-gradient(circle at 35% 25%,#a65caa,#673d83 55%,#3a315e);box-shadow:0 0 30px #f7a4e955, inset 0 0 22px #ffc8ec55;animation:treeGlow 3.2s ease-in-out infinite alternate}
+.tree-trunk{position:absolute;bottom:0;width:24px;height:74px;border-radius:10px 10px 3px 3px;background:linear-gradient(90deg,#68432f,#b27a52,#563723)}
+.love-rain{position:absolute;inset:0;overflow:hidden;pointer-events:none}.love-rain i{position:absolute;top:-20px;color:#ffc2e6;font-style:normal;text-shadow:0 0 10px #ff8bd8;animation:loveRain 5s linear infinite}.love-rain i:nth-child(1){left:8%;animation-delay:-1s}.love-rain i:nth-child(2){left:20%;animation-delay:-3s}.love-rain i:nth-child(3){left:34%;animation-delay:-2s}.love-rain i:nth-child(4){left:49%;animation-delay:-4s}.love-rain i:nth-child(5){left:65%;animation-delay:-1.5s}.love-rain i:nth-child(6){left:78%;animation-delay:-2.7s}.love-rain i:nth-child(7){left:90%;animation-delay:-.5s}.love-rain i:nth-child(8){left:57%;animation-delay:-3.5s}
+@keyframes loveRain{to{transform:translateY(230px) rotate(45deg);opacity:0}}@keyframes treeGlow{to{filter:brightness(1.25);box-shadow:0 0 45px #f7a4e988,inset 0 0 26px #ffc8ec88}}@keyframes twinkle{to{opacity:.9}}
+.music-marquee{overflow:hidden;white-space:nowrap;border-block:1px solid #51447b;margin:8px 0;padding:6px 0;color:#ffe0f3;font-weight:900}
+.music-marquee span{display:inline-block;min-width:100%;animation:musicScroll 12s linear infinite}
+@keyframes musicScroll{0%{transform:translateX(100%)}100%{transform:translateX(-110%)}}
+.music-visualizer{height:42px;display:flex;align-items:center;justify-content:center;gap:4px;margin:8px auto;max-width:360px}
+.music-visualizer i{width:5px;height:10px;border-radius:5px;background:linear-gradient(#65eaff,#d28bff);animation:equalize .75s ease-in-out infinite alternate}
+.music-visualizer i:nth-child(3n){animation-delay:-.5s}.music-visualizer i:nth-child(3n+1){animation-delay:-.2s}.music-visualizer i:nth-child(4n){animation-duration:.55s}
+@keyframes equalize{to{height:38px;filter:brightness(1.5)}}
+.profile-photo-tools{display:flex;align-items:center;gap:13px;margin-top:14px;padding:12px;border:1px solid #315477;border-radius:12px;background:#0b1d35}
+.profile-photo-tools>div{min-width:0;flex:1}.profile-preview{width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid #a78bfa;background:#182b49}.profile-photo-tools input{padding:8px;font-size:12px}
+.avatar.avatar-photo{overflow:hidden;padding:0;background:#10152b}.avatar.avatar-photo img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+@media(max-width:600px){.love-tree-card{grid-template-columns:1fr;text-align:center}.love-tree-art{min-height:190px}.profile-photo-tools{align-items:flex-start}.profile-preview{width:62px;height:62px}}
+@media(prefers-reduced-motion:reduce){.tree-stars,.tree-crown,.love-rain i,.music-marquee span,.music-visualizer i{animation:none!important}}
+
+
+/* HainX Moonlit Blue-Cyan theme */
+:root{color-scheme:dark;--bg:#041a3c;--panel:#062b58;--panel2:#073d78;--line:#16b9e8;--cyan:#28e5ff;--text:#f2fbff;--muted:#b9e4f6;--pink:#8df8ff;--green:#73ffd8;--red:#ff9da9;--violet:#36d8ff}
+body{background:radial-gradient(ellipse at 72% 8%,#0d6fc0 0,#064783 30%,#031b42 72%,#020d27 100%);color:var(--text)}
+header.moonlit-header{position:relative;isolation:isolate;overflow:hidden;padding:24px 14px 20px;background:linear-gradient(110deg,#064a9a,#087cc0 48%,#08a9a7);border-bottom:1px solid #36e9ff;box-shadow:0 8px 32px #00152e99}
+header.moonlit-header h1{position:relative;z-index:2;color:#fff;text-shadow:0 0 18px #54eaff}
+header.moonlit-header p{position:relative;z-index:2;color:#e0fbff}
+.animated-moon{position:absolute;right:7%;top:9px;width:76px;height:76px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff 0,#e3faff 30%,#8edfff 62%,#4aa5e9 100%);box-shadow:0 0 24px #e8fbff,0 0 70px #36d8ffcc,0 0 0 12px #02081755;animation:moonFloat 5s ease-in-out infinite}
+.animated-moon:before,.banner-moon:before{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 28% 38%,#7ebde5 0 5%,transparent 6%),radial-gradient(circle at 66% 26%,#8cc5e8 0 8%,transparent 9%),radial-gradient(circle at 58% 68%,#83b9df 0 11%,transparent 12%);opacity:.38}
+@keyframes moonFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(9px)}}
+.cat{filter:drop-shadow(0 0 12px #8cf5ff)}
+.banner.moon-banner{position:relative;overflow:hidden;min-height:185px;padding:28px 18px;background:linear-gradient(115deg,#03438d,#087dc2 55%,#08a7a1);border:1px solid #41e9ff;box-shadow:0 0 30px #00cfff35}
+.banner.moon-banner h2{position:relative;color:#fff;font-size:clamp(27px,5vw,42px);text-shadow:0 0 18px #68edff}
+.banner.moon-banner p{position:relative;color:#e9fbff;font-size:14px}
+.banner.moon-banner .heartline{position:relative;color:#9cffff;letter-spacing:1px;font-size:14px}
+.banner-moon{position:absolute;right:8%;top:18px;width:112px;height:112px;border-radius:50%;background:radial-gradient(circle at 35% 28%,#fff 0,#e8fbff 30%,#9be6ff 65%,#4aadeb 100%);box-shadow:0 0 24px #b6f5ff,0 0 72px #1acfff99;animation:moonFloat 6s ease-in-out infinite}
+.panel,.voice-main,.voice-sidebar,.room-chat{background:linear-gradient(145deg,#064078eF,#031c42f5);border-color:#138ac5;box-shadow:0 14px 38px #00142d77}
+.junction{background:linear-gradient(135deg,#0565ad,#078caa);border-color:#2bdcff;color:#fff;box-shadow:0 8px 25px #001b3d66}
+.junction strong{color:#fff}.junction:hover{border-color:#a4ffff;box-shadow:0 0 22px #27dfff66}
+input{background:#031d40;border-color:#1a9fce;color:#fff}input:focus{border-color:#63f5ff;box-shadow:0 0 0 3px #39e7ff30}
+button{background:linear-gradient(110deg,#13bfff,#27e5ce);color:#00244b;box-shadow:0 5px 18px #00cfff33}
+button.secondary{background:linear-gradient(110deg,#07569c,#087d9c);color:#effcff;border:1px solid #24c9ec;box-shadow:none}
+button.danger{background:#69314a;color:#fff;border:1px solid #e27b9b}
+.voice-junction,.person,.track-row{background:linear-gradient(145deg,#064477,#05264d);border-color:#137db4;color:#effaff}
+.voice-junction.current{border-color:#3ceaff;background:linear-gradient(110deg,#0866a8,#078c9b)}
+.avatar{background:linear-gradient(135deg,#1bcaff,#55e7c8);color:#002b51;box-shadow:0 0 0 4px #48ddff25}
+.admin-panel{background:linear-gradient(145deg,#073d70,#04264c);border-color:#e4c66e}
+.admin-user{background:#052b53;border-color:#1887ba}
+.live-overview>div,.now-playing,.lobby-music-card{background:linear-gradient(120deg,#064b83,#05345f);border-color:#159bc8}
+.music-disc{background:linear-gradient(135deg,#1acbff,#5af2d0);color:#00365b;box-shadow:0 0 0 5px #2bdfff22}
+.music-marquee{border-color:#24cbe8;color:#a9ffff}
+.music-marquee span{animation:musicScroll 11s linear infinite,musicBlink 1.35s ease-in-out infinite}
+@keyframes musicBlink{0%,100%{opacity:1;text-shadow:0 0 12px #39eaff}50%{opacity:.42;text-shadow:0 0 2px #39eaff}}
+.music-visualizer i{background:linear-gradient(#2ceaff,#6dffd7)}
+.profile-photo-tools{background:#052d56;border-color:#159bc8}
+.profile-preview{border-color:#3deaff}
+.admin-social{color:#8ffaff;text-decoration:none;font-weight:900}
+.admin-social:hover{text-decoration:underline}
+.reports-panel{margin-top:18px;padding:12px;border:1px solid #1889ba;border-radius:12px;background:#04264b}
+.report-card{padding:12px;margin:8px 0;border:1px solid #187cac;border-radius:10px;background:#06365f}
+.report-btn{padding:5px 9px;margin-top:6px;font-size:10px;background:linear-gradient(110deg,#0b659e,#087f91);color:#eaffff;border:1px solid #20bddd;box-shadow:none}
+.track-row{align-items:center}.track-row small{display:block;color:#a8d8ee;font-size:10px;margin-top:3px}.track-actions{display:flex;gap:6px;flex-wrap:wrap}.track-actions button{padding:6px 9px;font-size:10px}
+.music-player-actions{justify-content:center}
+.room-love-rain{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.voice-main{position:relative;overflow:hidden}.voice-main>*:not(.room-love-rain){position:relative;z-index:1}
+.room-love-rain span{position:absolute;top:-35px;color:#7ffaff;text-shadow:0 0 12px #00cfff;font-size:22px;animation:roomLoveFall 5s linear infinite}
+.room-love-rain span:nth-child(1){left:6%;animation-delay:-1s}.room-love-rain span:nth-child(2){left:18%;animation-delay:-3s}.room-love-rain span:nth-child(3){left:31%;animation-delay:-2s}.room-love-rain span:nth-child(4){left:44%;animation-delay:-4s}.room-love-rain span:nth-child(5){left:58%;animation-delay:-1.5s}.room-love-rain span:nth-child(6){left:70%;animation-delay:-3.5s}.room-love-rain span:nth-child(7){left:83%;animation-delay:-2.4s}.room-love-rain span:nth-child(8){left:94%;animation-delay:-.5s}
+@keyframes roomLoveFall{0%{transform:translateY(-20px) rotate(0);opacity:0}15%{opacity:.9}100%{transform:translateY(580px) rotate(35deg);opacity:0}}
+footer{color:#a6d9ef}
+@media(max-width:600px){.animated-moon{width:52px;height:52px;right:5%;top:8px}.banner-moon{width:78px;height:78px;right:5%;top:15px}.banner.moon-banner{padding:23px 12px}.track-row{align-items:flex-start;flex-direction:column}.track-actions{width:100%}.track-actions button{flex:1}}
+@media(prefers-reduced-motion:reduce){.animated-moon,.banner-moon,.music-marquee span,.room-love-rain span{animation:none!important}}
+
+
+/* Reference-layout shell: left navigation + moonlit content canvas */
+header.moonlit-header{position:fixed;left:0;top:0;bottom:0;width:258px;height:100vh;z-index:100;display:flex;flex-direction:column;align-items:stretch;text-align:left;padding:22px 17px 18px;border-right:1px solid #36e9ff;border-bottom:0;border-radius:0 22px 22px 0;overflow-y:auto}
+header.moonlit-header .cat{width:42px;height:42px;margin:0 0 2px}
+header.moonlit-header h1{font-size:29px}
+header.moonlit-header p{font-size:10px;line-height:1.5;margin:4px 0 20px}
+header.moonlit-header .animated-moon{width:52px;height:52px;right:13px;top:15px}
+.sidebar-nav{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.sidebar-nav a{display:block;padding:12px 13px;border-radius:12px;border:1px solid transparent;color:#effcff;text-decoration:none;font-size:14px;font-weight:800;transition:.18s}
+.sidebar-nav a:hover,.sidebar-nav a:focus{outline:none;border-color:#66f4ff;background:linear-gradient(110deg,#0876c6,#08a9a7);box-shadow:0 0 17px #26dfff55}
+.sidebar-admin{position:relative;margin-top:auto;padding:14px 12px 12px;border:1px solid #43eaff;border-radius:17px;background:linear-gradient(120deg,#0754a0,#08a69e);box-shadow:0 0 18px #00cfff33;display:grid;grid-template-columns:24px 1fr;column-gap:6px;align-items:center}
+.sidebar-admin .sidebar-crown{grid-row:span 2;color:#ffe18a;font-size:22px}
+.sidebar-admin b{font-size:13px}.sidebar-admin small{font-size:10px;color:#d6faff}
+.sidebar-admin a{grid-column:2;color:#9dffff;font-size:11px;font-weight:900;text-decoration:none;margin-top:5px}
+main{width:min(1180px,calc(100% - 306px));margin:0 24px 0 282px;padding:24px 0 38px;min-height:100vh}
+@media(max-width:760px){
+  header.moonlit-header{position:relative;left:auto;top:auto;bottom:auto;width:auto;height:auto;min-height:0;border-radius:0 0 18px 18px;border-right:0;border-bottom:1px solid #36e9ff;padding:16px 15px}
+  header.moonlit-header .cat{width:36px;height:36px}
+  header.moonlit-header h1{font-size:25px}
+  header.moonlit-header p{margin:2px 0 10px}
+  header.moonlit-header .animated-moon{width:48px;height:48px}
+  .sidebar-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:8px}
+  .sidebar-nav a{padding:9px 10px;font-size:12px}
+  .sidebar-admin{margin-top:12px;max-width:240px}
+  main{width:min(100% - 24px,720px);margin:0 auto;padding:16px 0 28px}
+}
+
+
+
+/* HainX usability fixes: dark moon halo, playlist numbering, shared reactions */
+.global-reaction-toast{position:fixed;right:16px;bottom:16px;z-index:900;display:flex;flex-direction:column;gap:6px;align-items:flex-end;pointer-events:none;max-width:min(360px,calc(100vw - 24px))}
+.global-reaction-item{padding:9px 13px;border:1px solid #35dff5;border-radius:14px;background:#031b3bee;color:#efffff;font-size:12px;font-weight:800;box-shadow:0 5px 22px #00142dcc;animation:reactionIn .25s ease-out}
+header.moonlit-header .animated-moon{background:radial-gradient(circle at 34% 30%,#fff 0,#e3faff 31%,#8edfff 62%,#4aa5e9 100%);box-shadow:0 0 25px #effcff,0 0 68px #36d8ffcc,0 0 0 14px #02081788,0 0 0 28px #02081744}
+.track-title-wrap{display:block;min-width:0}.track-title-wrap b{display:block}.track-number{display:inline-block;min-width:25px;color:#9fffff;text-shadow:0 0 10px #28e5ff;font-variant-numeric:tabular-nums}
+.track-row{border-color:#159bc8;background:linear-gradient(110deg,#04264b,#064477)}
+.track-row.active{border-color:#73ffff;background:linear-gradient(110deg,#075d9a,#087d83);box-shadow:0 0 14px #28e5ff33}
+#lobbyMusicToggle{min-width:112px}.reaction-feed{display:flex;gap:7px;flex-wrap:wrap;align-items:center;min-height:42px;margin:8px 0 12px;padding:8px 10px;border:1px solid #168cbd;border-radius:11px;background:#031b3b}
+.reaction-feed-item{padding:6px 10px;border-radius:20px;background:linear-gradient(110deg,#075b9c,#087e8d);border:1px solid #35dff5;color:#f1ffff;font-size:12px;font-weight:800;animation:reactionIn .25s ease-out}
+@keyframes reactionIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+
+</style>
+</head>
+<body>
+<header class="moonlit-header">
+<div class="animated-moon" aria-hidden="true"><span></span></div>
+<svg class="cat" viewBox="0 0 64 64" role="img" aria-label="HainX cat logo">
+<path d="M8 27 7 7l17 10Q32 13 40 17L57 7l-1 21q5 7 2 17-6 14-26 14T6 45q-4-10 2-18Z" fill="#70eaff"/>
+<path d="M14 27 12 13l11 7M50 27l2-14-11 7" fill="#9af5ff"/>
+<ellipse cx="22" cy="34" rx="3" ry="4" fill="#09213a"/><ellipse cx="42" cy="34" rx="3" ry="4" fill="#09213a"/>
+<path d="M28 43q4 4 8 0l-4-4Z" fill="#09213a"/><path d="M32 47q-4 5-8 1m8-1q4 5 8 1" fill="none" stroke="#09213a" stroke-width="2" stroke-linecap="round"/>
+<path d="M8 40 20 42M8 46l12-2m36-4-12 2m12 4-12-2" stroke="#0b3854" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
+<h1>HainX World</h1>
+<p>BADNAAM JACK 🃏 | Your World, Your Vibe</p>
+
+<nav class="sidebar-nav" aria-label="HainX main navigation">
+  <a href="#lobbyPanel">⌂　Home</a>
+  <a href="#junctionGrid">✣　Junctions</a>
+  <a href="#lobbyMusicCard">♫　Music Floor</a>
+  <a href="#junctionGrid">♡　Kriti World</a>
+  <a href="#accountPanel">♙　Profile</a>
+  <a href="#upgradeForm">⚙　Settings</a>
+</nav>
+<div class="sidebar-admin">
+  <span class="sidebar-crown">♛</span>
+  <b>Badnaam Jack</b><small>HainX Admin</small>
+  <a href="https://instagram.com/suno_mr_ethan" target="_blank" rel="noopener">@suno_mr_ethan</a>
+</div>
+</header>
+
+<main>
+<section class="banner moon-banner">
+  <div class="banner-moon" aria-hidden="true"></div>
+  <h2>HainX World</h2>
+  <p>Voice　•　Music　•　Junction　•　Friends</p>
+  <div class="heartline">Welcome to HainX World · Your World, Your Vibe</div>
+</section>
+
+<section id="entryPanel" class="panel">
+<h2>Welcome to HainX ✨</h2>
+<p class="muted">Choose your identity. Meet real people. Make new connections.</p>
+<form id="nameForm">
+<label for="displayName">Enter your name</label>
+<input id="displayName" maxlength="24" placeholder="Your name..." autocomplete="nickname" required>
+<div class="actions"><button id="enterBtn" type="submit">Enter HainX ⚡</button></div>
+</form>
+<div id="entryStatus" class="status" role="status"></div>
+<hr style="border:0;border-top:1px solid #315477;margin:22px 0">
+<h3>Already have your HainX account?</h3>
+<p class="muted">Use the same Gmail account to sign in on your phone and laptop.</p>
+<form id="loginForm">
+  <label for="loginEmail">Gmail address</label>
+  <input id="loginEmail" type="email" autocomplete="email" value="" placeholder="Enter your Gmail address" required>
+  <label for="loginPassword" style="margin-top:10px">Password</label>
+  <input id="loginPassword" type="password" autocomplete="current-password" minlength="6" placeholder="Your password" required>
+  <div class="actions"><button id="loginBtn" class="secondary" type="submit">Sign in to HainX</button></div>
+</form>
+<div id="loginStatus" class="status" role="status"></div>
+</section>
+
+<section id="lobbyPanel" class="panel hidden">
+<div class="roomtop"><div><h2>Choose Your Junction ✨</h2><p class="muted">Pick a city and meet the people inside. Maximum 4 people in each Junction.</p></div><button id="changeUser" class="secondary">Change name</button></div>
+<div class="live-overview"><div><strong id="liveTotal">0</strong><span>Members in Junctions now</span></div><div><strong id="liveWaiting">0</strong><span>Waiting in queues</span></div><div><strong id="liveRooms">5</strong><span>Junctions</span></div></div>
+<div id="lobbyStatus" class="status" role="status"></div>
+<section id="lobbyMusicCard" class="lobby-music-card" aria-label="HainX Music Floor">
+  <div class="lobby-music-info">
+    <div class="music-disc" aria-hidden="true">♫</div>
+    <div><b>HainX Music Floor</b><div class="muted">Choose and play any song. Mute is private to your device.</div></div>
+  </div>
+  <div class="lobby-music-actions">
+    <button id="lobbyMusicToggle" class="secondary" type="button">🔇 Mute music</button>
+    <label id="musicUploadWrap" class="music-upload-label hidden" for="lobbyMusicUpload">＋ Add song (Admin)</label>
+    <input id="lobbyMusicUpload" class="hidden" type="file" accept="audio/mpeg,audio/mp3,audio/wav,audio/ogg,audio/mp4">
+    <input id="musicSongTitle" class="hidden" type="text" maxlength="80" placeholder="Song title (Admin only)" aria-label="Song title">
+  </div>
+  <audio id="lobbyMusicAudio" preload="none"></audio>
+  <div class="now-playing">
+    <span class="np-label">NOW PLAYING</span>
+    <div class="music-marquee"><span id="musicMarqueeTitle">HainX Music Floor · Select a song</span></div>
+    <strong id="nowPlayingTitle">No song selected</strong>
+    <div id="nowPlayingArtist" class="muted">Artist: Badnaam Jack · Inspired by Kriti</div>
+    <p id="nowPlayingLyrics" class="muted"></p>
+    <div class="music-visualizer" aria-label="Animated music visualizer"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="actions music-player-actions">
+      <button id="musicPlayPause" type="button" class="secondary">▶ Play</button>
+      <button id="musicStop" type="button" class="secondary">■ Stop</button>
+    </div>
+  </div>
+  <div id="lobbyPlaylist" class="lobby-playlist"></div>
+  <div id="lobbyMusicStatus" class="muted" role="status">Choose a song to start listening.</div>
+  <div id="lobbyMusicUploadStatus" class="muted music-upload-status" role="status"></div>
+</section>
+<div id="accountPanel" class="notice" style="margin-top:16px">
+  <div class="roomtop">
+    <div><b>🔐 Your HainX account</b><div id="accountState" class="muted" style="margin-top:4px">Checking account…</div><a class="admin-social" href="https://instagram.com/suno_mr_ethan" target="_blank" rel="noopener">Instagram · @suno_mr_ethan</a></div>
+    <span id="accountUid" class="pill">Your ID</span>
+  <div class="profile-photo-tools">
+    <img id="myProfilePhoto" class="profile-preview" alt="Your profile photo" src="" />
+    <div><label for="profilePhotoUpload">Your profile photo</label>
+      <input id="profilePhotoUpload" type="file" accept="image/png,image/jpeg,image/webp">
+      <p class="muted" style="font-size:11px;margin:5px 0 0">JPG, PNG or WebP · Maximum 3 MB</p>
+      <div id="profilePhotoStatus" class="status" role="status"></div>
+    </div>
+  </div>
+  </div>
+  <form id="upgradeForm" style="margin-top:12px">
+    <label for="upgradeEmail">Link this ID to your personal Gmail</label>
+    <input id="upgradeEmail" type="email" autocomplete="email" value="" placeholder="Enter your Gmail address" required>
+    <label for="upgradePassword" style="margin-top:10px">Create a password (minimum 6 characters)</label>
+    <input id="upgradePassword" type="password" autocomplete="new-password" minlength="6" placeholder="Create a strong password" required>
+    <div class="actions"><button id="upgradeBtn" type="submit">Secure my HainX ID</button></div>
+  </form>
+  <div id="upgradeStatus" class="status" role="status"></div>
+  <p class="muted" style="font-size:11px;margin-bottom:0">This links your current ID; it does not create a new HainX identity. If email confirmation is enabled, confirm the email before signing in on another device.</p>
+</div>
+
+<div id="junctionGrid" class="grid" style="margin-top:14px"></div>
+<div id="lobbyAdminSlot"></div>
+</section>
+
+<section id="roomPanel" class="panel hidden">
+  <div class="voice-layout">
+    <aside class="voice-sidebar">
+      <h3>HAINX JUNCTIONS</h3>
+      <div class="voice-junction current"><span class="dot"></span><span id="sideRoomName">Live Junction</span></div>
+      <div class="voice-junction">🌙 <span>Midnight Lounge</span></div>
+      <div class="voice-junction">🌊 <span>Open Talk</span></div>
+      <div class="voice-junction">✨ <span>New Connections</span></div>
+      <p class="muted" style="font-size:11px;margin-top:18px">BADNAAM JACK 🃏<br>Real people. Real voices.</p>
+    </aside>
+    <div class="voice-main">
+      <div id="roomLoveRain" class="room-love-rain hidden" aria-hidden="true"><span>♥</span><span>♡</span><span>♥</span><span>♡</span><span>♥</span><span>♡</span><span>♥</span><span>♡</span></div>
+      <div class="voice-main-head">
+        <div><h2 id="roomTitle">Junction</h2><p class="muted" style="margin:4px 0 0">HainX live voice lounge</p><span id="roomOwnerBadge" class="owner-badge hidden">🛡 ADMIN</span></div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span id="seatPill" class="live-tag">0 / 4 seats</span>
+          <span class="live-tag">● LIVE</span>
+        </div>
+      </div>
+      <div id="roomNotice" class="notice">Connecting to Junction...</div>
+      <details id="adminPanel" class="admin-panel hidden" aria-label="Owner moderation panel"><summary>🛡️ Owner Control · Private member directory</summary><div class="admin-inner">
+        <div class="admin-head"><div><b>🛡️ BADNAAM JACK — OWNER CONTROL</b><div class="admin-tag">Owner account only · Secure moderation</div></div><button id="adminRefreshBtn" class="secondary" type="button">Refresh users</button></div>
+        <p class="muted" style="font-size:12px;margin:8px 0">Manage HainX members across all Junctions. Block prevents future entry; Remove takes a member out of their current room.</p>
+        <input id="adminSearch" type="search" placeholder="Search members by name or ID…" aria-label="Search members"><div id="adminUsers" aria-live="polite"><p class="muted">Loading member list…</p></div>
+        <div id="adminStatus" class="status" role="status"></div>
+        <section class="reports-panel">
+          <div class="admin-head"><div><b>🚩 Member Reports</b><div class="muted">Reports submitted by HainX users</div></div><button id="refreshReportsBtn" class="secondary" type="button">Refresh reports</button></div>
+          <div id="adminReports" aria-live="polite"><p class="muted">Reports will appear here.</p></div>
+          <div id="reportsStatus" class="status" role="status"></div>
+        </section>
+      </div>
+      </details>
+      <h3 style="margin:16px 0 0">🎙️ On stage</h3>
+      <div id="peopleList" class="people voice-stage"></div>
+      <div class="waiting-wrap">
+        <h3>⏳ Waiting Room</h3>
+        <div id="waitingList" class="people"></div>
+      </div>
+      <div class="panel" style="margin:14px 0 0;padding:14px;background:#101026;border-color:#343052">
+        <div class="roomtop"><h3 style="margin:0">🔊 Voice Connection</h3><span class="muted" id="voiceBadge">Preparing audio…</span></div>
+        <p id="voiceStatus" class="muted">Your microphone is being prepared.</p>
+        <div class="control-dock">
+          <button id="micBtn" class="active" type="button" title="Toggle microphone">🎙️ Mic On</button>
+          <button id="retryMicBtn" class="secondary" type="button">Enable mic</button>
+          <button id="speakerBtn" type="button" class="active">🔊 Speaker On</button>
+          <button id="leaveBtn" class="leave-control" type="button">Leave</button>
+        </div>
+        <div id="remoteAudios" class="hidden"></div>
+        <p class="muted" style="margin:5px 0 0;text-align:center;font-size:11px">Headphones recommended for clear voice and less echo.</p>
+      </div>
+      <div class="reaction-bar" aria-label="Send a reaction">
+        <button class="reaction-btn" type="button" data-reaction="❤️" aria-label="Heart">❤️</button>
+        <button class="reaction-btn" type="button" data-reaction="👏" aria-label="Clap">👏</button>
+        <button class="reaction-btn" type="button" data-reaction="😂" aria-label="Laugh">😂</button>
+        <button class="reaction-btn" type="button" data-reaction="🔥" aria-label="Fire">🔥</button>
+        <button class="reaction-btn" type="button" data-reaction="👍" aria-label="Like">👍</button>
+        <button class="reaction-btn" type="button" data-reaction="🎉" aria-label="Celebrate">🎉</button>
+      </div>
+      <div id="reactionFeed" class="reaction-feed" aria-live="polite"><span class="muted">Live reactions from everyone will appear here.</span></div>
+      <details class="room-chat">
+        <summary>💬 Junction Chat</summary>
+        <div id="chatLog" class="chatlog" aria-live="polite"><p class="muted">You are connected. Say hello!</p></div>
+        <form id="chatForm" class="chatrow">
+          <input id="chatInput" maxlength="300" placeholder="Write a message..." autocomplete="off">
+          <button type="submit">Send</button>
+        </form>
+      </details>
+      <div id="roomStatus" class="status" role="status"></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<div id="globalReactionToast" class="global-reaction-toast" aria-live="polite"></div>\n<div id="micGate" class="mic-gate">
+  <div class="mic-card">
+    <div class="mic-orb">🎙️</div>
+    <h2>Welcome to HainX Voice</h2>
+    <p>Clear voice starts here. Allow microphone access so you can speak when you join a Junction. Your microphone stays off until you switch it on inside the room.</p>
+    <div class="actions">
+      <button id="enableMicFirst" type="button">Enable microphone</button>
+      <button id="skipMicFirst" type="button" class="secondary">Continue without mic</button>
+    </div>
+    <p id="micGateStatus" class="mic-small">Your browser will ask for permission after you tap Enable microphone.</p>
+    <p class="mic-small">HainX does not record your microphone audio.</p>
+  </div>
+</div>
+
+<footer>Created with ⚡ by <b>Badnaam Jack 🃏</b><br><a class="admin-social" href="https://instagram.com/suno_mr_ethan" target="_blank" rel="noopener">@suno_mr_ethan</a><br>HainX — Real People. Real Connections.</footer>
+
+<script>
+(() => {
+  'use strict';
+  const SUPABASE_URL = 'https://jnpafzpaclaxgbrclkxy.supabase.co';
+  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_bSuEPigP_xjEvMYR6oNW5A_INy9R-o5';
+  // Owner UI follows the one linked Gmail identity across devices.
+  // Owner status is verified by Supabase on the server; no owner email is exposed in this public file.
+  const isOwnerAccount = () => !!state.user && state.isOwner === true;
+  const JUNCTIONS = [
+    {id:'guwahati', name:'Guwahati'},
+    {id:'delhi', name:'Delhi'},
+    {id:'mumbai', name:'Mumbai'},
+    {id:'haridwar', name:'Haridwar'},
+    {id:'kriti-world', name:'Kriti World ❤️', special:true}
+  ];
+  const RTC_CONFIG = {iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'}]};
+  const $ = id => document.getElementById(id);
+  const state = {
+    supabase:null, user:null, name:'', avatarUrl:'', room:null, seat:null, roomChannel:null, worldReactionChannel:null,
+    localStream:null, peers:new Map(), candidateQueues:new Map(),
+    lobbyTimer:null, roomTimer:null, queueTimer:null, micEnabled:false, speakerEnabled:true, isOwner:false, lobbyMusicMuted:false,
+    joined:false, channelReady:false, leaving:false, heartbeatTimer:null, moderationMuted:false
+  };
+  state.lobbyMusicMuted=localStorage.getItem('hainx_lobby_music_muted')==='true';
+
+  function setStatus(id, message, isError=false) {
+    const el=$(id); if(!el)return;
+    el.textContent=message; el.classList.toggle('error',!!isError);
+  }
+  function show(panel) {
+    ['entryPanel','lobbyPanel','roomPanel'].forEach(id=>$(id).classList.toggle('hidden',id!==panel));
+    if(panel==='lobbyPanel') { positionAdminPanel('lobby'); }
+    else if(panel==='roomPanel') stopLobbyMusic();
+  }
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  }
+  function friendlyError(error) {
+    const msg=error?.message||String(error||'Unknown error');
+    if(msg.toLowerCase().includes('fetch')) return 'Network connection failed. Check internet and Supabase URL/key.';
+    if(msg.toLowerCase().includes('row-level security')) return 'Database permission blocked. Please run the supplied SUPABASE_SETUP.sql.';
+    if(msg.toLowerCase().includes('function') && msg.toLowerCase().includes('not found')) return 'Setup SQL is missing. Run SUPABASE_SETUP.sql in Supabase SQL Editor.';
+    return msg;
+  }
+
+  async function boot() {
+    if(!window.supabase?.createClient) {
+      setStatus('entryStatus','Supabase library did not load. Refresh the page or check internet.',true); return;
+    }
+    state.supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{
+      auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
+    });
+    setupWorldReactionChannel();
+    try {
+      const {data:{session},error}=await state.supabase.auth.getSession();
+      if(error) throw error;
+      if(session?.user) {
+        state.user=session.user;
+        await verifyOwnerFromServer();
+        const savedName=localStorage.getItem('hainx_display_name')||'';
+        if(savedName) {
+          state.name=savedName;
+          const {data:profile}=await state.supabase.from('profiles').select('display_name,avatar_url').eq('user_id',state.user.id).maybeSingle();
+          if(profile?.display_name) state.name=profile.display_name;
+          state.avatarUrl=profile?.avatar_url||'';
+          $('displayName').value=state.name;
+          await saveProfile(state.name);
+          show('lobbyPanel'); updateAccountPanel(); await refreshLobby(); await loadLobbyPlaylist();
+        } else {
+          show('entryPanel'); $('displayName').focus();
+        }
+      } else {
+        // No automatic anonymous account: returning users can sign in with Gmail on another device.
+        show('entryPanel'); $('displayName').focus();
+      }
+    } catch(error) {
+      setStatus('entryStatus','Connection error: '+friendlyError(error),true);
+    }
+  }
+
+  async function ensureGuestSession() {
+    if(state.user) return;
+    const {data,error}=await state.supabase.auth.signInAnonymously();
+    if(error) throw error;
+    state.user=data.user||data.session?.user;
+    await verifyOwnerFromServer();
+    if(!state.user) throw new Error('Could not create a guest session.');
+  }
+
+  let lobbyTracks=[]; let activeTrackId=null; let musicRealtime=null;
+  async function loadLobbyPlaylist(){
+    if(!state.supabase)return;
+    try{
+      const {data,error}=await state.supabase.from('hainx_lobby_tracks').select('id,title,storage_path,lyrics,sort_order').order('sort_order');
+      if(error)throw error;
+      lobbyTracks=data||[]; renderLobbyPlaylist();
+      if(musicRealtime)state.supabase.removeChannel(musicRealtime);
+      musicRealtime=state.supabase.channel('hainx-lobby-playlist')
+        .on('postgres_changes',{event:'*',schema:'public',table:'hainx_lobby_tracks'},()=>loadLobbyPlaylist())
+        .subscribe();
+    }catch(e){setStatus('lobbyMusicUploadStatus','Playlist setup pending. Run the HainX playlist SQL. '+(e.message||''),true);}
+  }
+  function renderLobbyPlaylist(){
+    const box=$('lobbyPlaylist');if(!box)return;
+    box.innerHTML=lobbyTracks.map((t,index)=>`<div class="track-row ${t.id===activeTrackId?'active':''}">
+      <span class="track-title-wrap"><b><span class="track-number">${index+1}.</span> ${escapeHtml(t.title)}</b><small>Artist: Badnaam Jack · Inspired by Kriti</small></span>
+      <div class="track-actions"><button class="secondary" data-play-track="${t.id}" type="button">▶ Play</button>
+      ${isOwnerAccount()?`<button class="danger" data-delete-track="${t.id}" type="button">Delete</button>`:''}</div>
+    </div>`).join('')||'<p class="muted">No songs added yet. Admin can upload the first song.</p>';
+    box.querySelectorAll('[data-play-track]').forEach(btn=>btn.addEventListener('click',()=>setActiveLobbyTrack(btn.dataset.playTrack,false)));
+    box.querySelectorAll('[data-delete-track]').forEach(btn=>btn.addEventListener('click',()=>deleteLobbyTrack(btn.dataset.deleteTrack)));
+  }
+  async function deleteLobbyTrack(id){
+    if(!isOwnerAccount())return;
+    const t=lobbyTracks.find(x=>x.id===id);
+    if(!t||!confirm('Delete '+t.title+' from the playlist?'))return;
+    const {error}=await state.supabase.from('hainx_lobby_tracks').delete().eq('id',id);
+    if(error)throw error;
+    await state.supabase.storage.from('hainx-lobby-audio').remove([t.storage_path]);
+    if(activeTrackId===id){
+      activeTrackId=null;$('lobbyMusicAudio').pause();$('lobbyMusicAudio').removeAttribute('src');
+      $('nowPlayingTitle').textContent='No song selected';$('musicMarqueeTitle').textContent='HainX Music Floor · Select a song';
+      $('nowPlayingLyrics').textContent='';$('nowPlayingArtist').textContent='Artist: Badnaam Jack · Inspired by Kriti';
+    }
+    await loadLobbyPlaylist();
+  }
+  async function setActiveLobbyTrack(id){
+    const track=lobbyTracks.find(t=>t.id===id);if(!track)return;
+    activeTrackId=id;
+    $('nowPlayingTitle').textContent=track.title;
+    $('musicMarqueeTitle').textContent='♫  '+track.title+'  ♫';
+    $('nowPlayingArtist').textContent='Artist: Badnaam Jack · Inspired by Kriti';
+    $('nowPlayingLyrics').textContent=track.lyrics||'';
+    renderLobbyPlaylist();
+    const {data}=state.supabase.storage.from('hainx-lobby-audio').getPublicUrl(track.storage_path);
+    const audio=$('lobbyMusicAudio');
+    if(audio.src!==data.publicUrl){audio.src=data.publicUrl;audio.load();}
+    audio.loop=false;audio.volume=0.75;audio.muted=state.lobbyMusicMuted;
+    try{await audio.play();$('musicPlayPause').textContent='❚❚ Pause';}
+    catch(_){$('lobbyMusicStatus').textContent='Tap Play to start this song.';$('musicPlayPause').textContent='▶ Play';}
+  }
+  async function uploadLobbyMusic(file){
+    if(!isOwnerAccount())throw new Error('Only the Admin can upload songs.');
+    if(!file)return;
+    if(!/^audio\\//i.test(file.type))throw new Error('Choose an audio file.');
+    if(file.size>15*1024*1024)throw new Error('Maximum file size is 15 MB.');
+    const title=($('musicSongTitle').value||file.name.replace(/\\.[^.]+$/,'')).trim();
+    if(!title)throw new Error('Enter a song title first.');
+    const path='playlist/'+crypto.randomUUID()+'-'+file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+    setStatus('lobbyMusicUploadStatus','Uploading '+title+'…');
+    const {error:upErr}=await state.supabase.storage.from('hainx-lobby-audio').upload(path,file,{upsert:false,contentType:file.type});
+    if(upErr)throw upErr;
+    const {error}=await state.supabase.from('hainx_lobby_tracks').insert({title,storage_path:path,lyrics:'',sort_order:lobbyTracks.length+1});
+    if(error)throw error;
+    await loadLobbyPlaylist();$('musicSongTitle').value='';
+    setStatus('lobbyMusicUploadStatus','Added to playlist: '+title);
+  }
+
+  $('lobbyMusicAudio').addEventListener('ended',async()=>{
+    if(!lobbyTracks.length){$('musicPlayPause').textContent='▶ Play';return;}
+    const currentIndex=lobbyTracks.findIndex(t=>t.id===activeTrackId);
+    const nextTrack=lobbyTracks[(currentIndex+1+lobbyTracks.length)%lobbyTracks.length];
+    if(nextTrack)await setActiveLobbyTrack(nextTrack.id);
+  });
+  function lobbyMusicUrl() {
+    const {data}=state.supabase.storage.from('hainx-lobby-audio').getPublicUrl('lobby/lobby-music.mp3');
+    return data?.publicUrl || '';
+  }
+  async function startLobbyMusic() {
+    const audio=$('lobbyMusicAudio');
+    audio.muted=!!state.lobbyMusicMuted;
+    $('lobbyMusicToggle').textContent=state.lobbyMusicMuted?'🔊 Unmute':'🔇 Mute';
+    $('lobbyMusicToggle').setAttribute('aria-pressed',String(state.lobbyMusicMuted));
+    if(!audio.src){$('lobbyMusicStatus').textContent='Choose any song from the playlist to play.';return;}
+    try{await audio.play();$('musicPlayPause').textContent='❚❚ Pause';}
+    catch(_){$('musicPlayPause').textContent='▶ Play';$('lobbyMusicStatus').textContent='Tap Play to start music.';}
+  }
+  function stopLobbyMusic() {
+    const audio=$('lobbyMusicAudio');
+    if(!audio.paused){audio.pause();audio.currentTime=0;}
+  }
+
+  function positionAdminPanel(where) {
+    const panel=$('adminPanel');
+    if(!panel) return;
+    const target=where==='lobby' ? $('lobbyAdminSlot') : document.querySelector('.voice-main');
+    if(target && panel.parentElement!==target) {
+      if(where==='room') {
+        const stageHeading=document.querySelector('.voice-main > h3');
+        target.insertBefore(panel,stageHeading||null);
+      } else target.appendChild(panel);
+    }
+  }
+
+  async function verifyOwnerFromServer() {
+    state.isOwner=false;
+    if(!state.user || !state.supabase) return false;
+    try {
+      const {data,error}=await state.supabase.rpc('hainx_is_owner');
+      if(!error) state.isOwner=data===true;
+    } catch(_) { state.isOwner=false; }
+    return state.isOwner;
+  }
+
+  function updateAccountPanel() {
+    if(!state.user)return;
+    const isAdmin=isOwnerAccount();
+    const isAnonymous=state.user.is_anonymous===true || state.user.app_metadata?.provider==='anonymous';
+    $('accountUid').textContent=isAdmin?'OWNER ID':'HainX ID';
+    $('accountState').textContent=isAdmin
+      ? (isAnonymous?'Owner ID active · Link it to Gmail to use it on every device.':'Owner account linked · Admin identity active.')
+      : (isAnonymous?'Guest ID · Link Gmail to keep this same ID on other devices.':'Gmail account connected.');
+    $('upgradeForm').classList.toggle('hidden',!isAnonymous || !isAdmin);
+    $('adminPanel').classList.toggle('hidden',!isAdmin); $('roomOwnerBadge').classList.add('hidden');
+    $('musicUploadWrap').classList.toggle('hidden',!isAdmin); $('musicSongTitle').classList.toggle('hidden',!isAdmin);
+    const preview=$('myProfilePhoto');
+    if(preview){preview.src=state.avatarUrl||'';preview.classList.toggle('hidden',!state.avatarUrl);}
+    if(isAdmin) { refreshAdminUsers(); refreshAdminReports(); }
+  }
+
+  $('loginForm').addEventListener('submit',async event=>{
+    event.preventDefault();
+    const btn=$('loginBtn');btn.disabled=true;
+    setStatus('loginStatus','Signing in…');
+    try {
+      if(!state.supabase) await boot();
+      const email=$('loginEmail').value.trim();
+      const password=$('loginPassword').value;
+      const {data,error}=await state.supabase.auth.signInWithPassword({email,password});
+      if(error) throw error;
+      state.user=data.user;
+      await verifyOwnerFromServer();
+      const {data:profile,error:profileError}=await state.supabase.from('profiles').select('display_name,avatar_url').eq('user_id',state.user.id).maybeSingle();
+      if(profileError) throw profileError;
+      state.avatarUrl=profile?.avatar_url||'';
+      if(profile?.display_name) {
+        state.name=profile.display_name;
+        localStorage.setItem('hainx_display_name',state.name);
+        $('displayName').value=state.name;
+        show('lobbyPanel');updateAccountPanel();await refreshLobby();
+        setStatus('lobbyStatus','Welcome back, '+state.name+' ⚡');
+      } else {
+        setStatus('loginStatus','Signed in. Enter your display name above and tap Enter HainX.');
+      }
+    } catch(error) {
+      setStatus('loginStatus',friendlyError(error),true);
+    } finally {btn.disabled=false;}
+  });
+
+  $('upgradeForm').addEventListener('submit',async event=>{
+    event.preventDefault();
+    const btn=$('upgradeBtn');btn.disabled=true;
+    setStatus('upgradeStatus','Linking your current HainX ID to Gmail…');
+    try {
+      if(!state.user) throw new Error('Your HainX session is missing. Refresh and sign in again.');
+      if(!isOwnerAccount()) throw new Error('Owner Gmail account required. Sign in with your linked owner Gmail.');
+      const email=$('upgradeEmail').value.trim();
+      const password=$('upgradePassword').value;
+      if(password.length<6) throw new Error('Password must be at least 6 characters.');
+      const {data,error}=await state.supabase.auth.updateUser({email,password});
+      if(error) throw error;
+      if(data?.user) state.user=data.user;
+      await verifyOwnerFromServer();
+      updateAccountPanel();
+      setStatus('upgradeStatus','Request submitted. Check '+email+' for a confirmation email if Supabase email confirmation is enabled. Your existing UID is '+state.user.id+'.');
+    } catch(error) {
+      setStatus('upgradeStatus',friendlyError(error),true);
+    } finally {btn.disabled=false;}
+  });
+
+  async function uploadProfilePhoto(file){
+    if(!state.user||!state.supabase)throw new Error('Please sign in first.');
+    if(!file)return;
+    if(!/^image\/(png|jpeg|webp)$/i.test(file.type))throw new Error('Choose a JPG, PNG or WebP image.');
+    if(file.size>3*1024*1024)throw new Error('Photo must be 3 MB or smaller.');
+    setStatus('profilePhotoStatus','Uploading your profile photo…');
+    const ext=file.type==='image/png'?'png':file.type==='image/webp'?'webp':'jpg';
+    const path=state.user.id+'/profile-'+Date.now()+'.'+ext;
+    const {error:uploadError}=await state.supabase.storage.from('hainx-avatars').upload(path,file,{upsert:true,contentType:file.type});
+    if(uploadError)throw uploadError;
+    const {data}=state.supabase.storage.from('hainx-avatars').getPublicUrl(path);
+    const url=data.publicUrl;
+    const {error:updateError}=await state.supabase.from('profiles').update({avatar_url:url}).eq('user_id',state.user.id);
+    if(updateError)throw updateError;
+    state.avatarUrl=url;
+    $('myProfilePhoto').src=url;
+    $('myProfilePhoto').classList.remove('hidden');
+    setStatus('profilePhotoStatus','Profile photo updated successfully.');
+    if(state.room)await refreshRoomLists();
+  }
+  $('profilePhotoUpload').addEventListener('change',async event=>{
+    try{await uploadProfilePhoto(event.target.files?.[0]);}
+    catch(error){setStatus('profilePhotoStatus',friendlyError(error),true);}
+    event.target.value='';
+  });
+
+  async function saveProfile(name) {
+    const clean=name.trim().replace(/\s+/g,' ').slice(0,24);
+    if(!clean) throw new Error('Please enter your name.');
+    const {error}=await state.supabase.from('profiles').upsert({
+      user_id:state.user.id,display_name:clean
+    },{onConflict:'user_id'});
+    if(error) throw error;
+    state.name=clean; localStorage.setItem('hainx_display_name',clean);
+  }
+
+  $('nameForm').addEventListener('submit',async event=>{
+    event.preventDefault(); $('enterBtn').disabled=true;
+    setStatus('entryStatus','Connecting to HainX...');
+    try {
+      if(!state.supabase) await boot();
+      await ensureGuestSession();
+      await saveProfile($('displayName').value);
+      show('lobbyPanel'); updateAccountPanel(); await refreshLobby();
+    } catch(error) {setStatus('entryStatus',friendlyError(error),true);}
+    finally {$('enterBtn').disabled=false;}
+  });
+
+  $('changeUser').addEventListener('click',()=>{
+    if(state.room) return;
+    show('entryPanel'); $('displayName').value=state.name; $('displayName').focus();
+  });
+
+  async function refreshLobby() {
+    if(!state.supabase) return;
+    const grid=$('junctionGrid');
+    try {
+      const {data:members,error}=await state.supabase.from('room_members').select('room_id,user_id');
+      if(error) throw error;
+      const counts={}; JUNCTIONS.forEach(j=>counts[j.id]=0);
+      (members||[]).forEach(m=>{if(counts[m.room_id]!==undefined)counts[m.room_id]++;});
+      const {count:waitingCount}=await state.supabase.from('waiting_queue').select('*',{count:'exact',head:true});
+      $('liveTotal').textContent=(members||[]).length;
+      $('liveWaiting').textContent=waitingCount||0;
+      grid.innerHTML=JUNCTIONS.map(j=>`
+        <button class="junction" type="button" data-junction="${j.id}">
+          ${j.id==='kriti-world'?'<div class="kriti-rain" aria-hidden="true"><span>♡</span><span>♥</span><span>♡</span><span>♥</span><span>♡</span><span>♥</span></div>':''}
+          <strong>${j.name}</strong>
+          <small>${j.id==='kriti-world'?'A special little junction ♡':'Your HainX meeting place'}</small>
+          ${j.id==='kriti-world'?'<span class="kriti-love-line">Mohabbat Hai Tumse</span>':''}
+          <span class="pill">${counts[j.id]||0} / 4 seats occupied</span>
+        </button>`).join('');
+      grid.querySelectorAll('[data-junction]').forEach(btn=>btn.addEventListener('click',()=>joinJunction(btn.dataset.junction)));
+      setStatus('lobbyStatus','Welcome, '+state.name+' ⚡ Choose a Junction.'); startLobbyRefresh();
+    } catch(error) {setStatus('lobbyStatus',friendlyError(error),true);}
+  }
+
+  let lobbyRefreshTimer=null;
+  function startLobbyRefresh(){ if(lobbyRefreshTimer)clearInterval(lobbyRefreshTimer); lobbyRefreshTimer=setInterval(()=>{if(!$('lobbyPanel').classList.contains('hidden'))refreshLobby();},5000); }
+
+  async function joinJunction(roomId) {
+    if(state.room) await leaveJunction(false);
+    const junction=JUNCTIONS.find(j=>j.id===roomId); if(!junction)return;
+    setStatus('lobbyStatus','Joining '+junction.name+'...');
+    try {
+      const {data,error}=await state.supabase.rpc('join_junction',{p_junction_id:roomId});
+      if(error) throw error;
+      const result=Array.isArray(data)?data[0]:data;
+      state.room=junction; state.seat=result?.assigned_seat??null;
+      if(result?.result==='joined') await enterRoom();
+      else {
+        show('roomPanel'); updateAccountPanel(); $('roomTitle').textContent=junction.name;
+        $('roomNotice').textContent='⏳ This Junction is full. You are in the Waiting Room. We will move you in when a seat opens.';
+        $('seatPill').textContent='Waiting';
+        $('peopleList').innerHTML='<div class="person">Waiting for an available seat...</div>';
+        $('waitingList').innerHTML='<div class="person">You are in the queue.</div>';
+        $('voiceStatus').textContent='Voice becomes available after you enter the Junction.';
+        $('micBtn').disabled=true; $('retryMicBtn').disabled=true;
+        $('chatInput').disabled=true; $('chatForm').querySelector('button').disabled=true;
+        state.queueTimer=setInterval(()=>tryQueueJoin(),5000);
+        state.heartbeatTimer=setInterval(()=>state.supabase.rpc('heartbeat_junction',{p_junction_id:state.room.id}),25000);
+        state.roomTimer=setInterval(refreshRoomLists,4000);
+        await refreshRoomLists();
+      }
+    } catch(error) {setStatus('lobbyStatus',friendlyError(error),true);}
+  }
+
+  async function tryQueueJoin() {
+    if(!state.room||state.joined||state.leaving)return;
+    try {
+      const {data,error}=await state.supabase.rpc('join_junction',{p_junction_id:state.room.id});
+      if(error) throw error;
+      const result=Array.isArray(data)?data[0]:data;
+      if(result?.result==='joined') {
+        clearInterval(state.queueTimer); state.queueTimer=null;
+        state.seat=result.assigned_seat; await enterRoom();
+      }
+    } catch(error) {setStatus('roomStatus','Waiting-room update: '+friendlyError(error),true);}
+  }
+
+  async function enterRoom() {
+    if(!state.room)return;
+    state.joined=true; show('roomPanel'); updateAccountPanel();
+    $('roomTitle').textContent=state.room.name;
+    $('sideRoomName').textContent=state.room.name;
+    $('roomLoveRain').classList.toggle('hidden',state.room.id!=='kriti-world');
+    $('seatPill').textContent=(state.seat||'?')+' / 4 seats';
+    $('roomNotice').textContent='✅ You are inside this Junction. Your voice and chat are ready.';
+    $('micBtn').disabled=false; $('retryMicBtn').disabled=false;
+    $('chatInput').disabled=false; $('chatForm').querySelector('button').disabled=false;
+    $('chatLog').innerHTML='<p class="muted">You are connected. Say hello!</p>';
+    setStatus('roomStatus','Joining live connection...');
+    if(state.heartbeatTimer)clearInterval(state.heartbeatTimer);
+    state.heartbeatTimer=setInterval(()=>state.supabase.rpc('heartbeat_junction',{p_junction_id:state.room.id}),25000);
+    await startMicrophone();
+    await connectRoomChannel();
+    await refreshRoomLists();
+    if(state.roomTimer)clearInterval(state.roomTimer);
+    state.roomTimer=setInterval(refreshRoomLists,3500);
+  }
+
+  async function startMicrophone() {
+    if(!navigator.mediaDevices?.getUserMedia) {
+      $('voiceStatus').textContent='This browser does not support microphone access. Open the site over HTTPS in Chrome.';
+      state.localStream=null; return;
+    }
+    try {
+      const existingAudio=state.localStream?.getAudioTracks?.().some(t=>t.readyState==='live');
+      if(!existingAudio) {
+        if(state.localStream) state.localStream.getTracks().forEach(t=>t.stop());
+        state.localStream=await navigator.mediaDevices.getUserMedia({
+          audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true},video:false
+        });
+      }
+      state.micEnabled=false;
+      state.localStream.getAudioTracks().forEach(track=>track.enabled=false);
+      $('micBtn').textContent='🔇 Mic Off'; $('micBtn').classList.remove('active');
+      $('voiceStatus').textContent='🎙️ Microphone ready and muted. Tap Mic On when you want to speak.';
+    } catch(error) {
+      state.localStream=null;
+      $('voiceStatus').textContent='Microphone permission was not granted. You can still use Junction chat; tap Enable microphone to try again.';
+      setStatus('roomStatus','Microphone: '+(error.message||error),true);
+    }
+  }
+
+  async function connectRoomChannel() {
+    if(!state.room||!state.user)return;
+    if(state.roomChannel) {try{await state.supabase.removeChannel(state.roomChannel);}catch(_){}}
+    const channel=state.supabase.channel('hainx-junction-'+state.room.id,{
+      config:{presence:{key:state.user.id},broadcast:{self:false}}
+    });
+    state.roomChannel=channel;
+    channel.on('presence',{event:'sync'},()=>handlePresence());
+    channel.on('broadcast',{event:'signal'},({payload})=>handleSignal(payload));
+    channel.on('broadcast',{event:'chat'},({payload})=>renderChat(payload));
+    channel.subscribe(async status=>{
+      if(status==='SUBSCRIBED') {
+        state.channelReady=true;
+        await channel.track({user_id:state.user.id,display_name:state.name,is_owner:isOwnerAccount(),joined_at:new Date().toISOString()});
+        setStatus('roomStatus','Junction connected ⚡');
+        handlePresence();
+      } else if(status==='CHANNEL_ERROR'||status==='TIMED_OUT') {
+        setStatus('roomStatus','Realtime connection issue: '+status+'. Refresh if it does not recover.',true);
+      }
+    });
+  }
+
+  function presenceUsers() {
+    if(!state.roomChannel)return [];
+    const all=Object.values(state.roomChannel.presenceState()).flat();
+    const unique=new Map();
+    all.forEach(p=>{if(p.user_id&&p.user_id!==state.user.id)unique.set(p.user_id,p);});
+    return [...unique.values()];
+  }
+
+  async function handlePresence() {
+    if(!state.roomChannel||!state.joined)return;
+    const users=presenceUsers();
+    for(const person of users) {
+      const pc=ensurePeer(person.user_id,person.display_name||'Junction Member');
+      if(state.user.id.localeCompare(person.user_id)<0&&!pc._offerStarted) {
+        pc._offerStarted=true;
+        try {
+          const offer=await pc.createOffer();
+          await pc.setLocalDescription(offer);
+          await sendSignal(person.user_id,'offer',pc.localDescription);
+        } catch(error) {setStatus('voiceStatus','Could not start voice link: '+error.message,true);}
+      }
+    }
+    if(users.length) $('voiceStatus').textContent='🎙️ Live room active. Connecting voice to '+users.length+' other member(s)...';
+  }
+
+  function ensurePeer(remoteId,remoteName) {
+    if(state.peers.has(remoteId))return state.peers.get(remoteId);
+    const pc=new RTCPeerConnection(RTC_CONFIG);
+    pc._offerStarted=false;
+    if(state.localStream) state.localStream.getTracks().forEach(track=>pc.addTrack(track,state.localStream));
+    pc.onicecandidate=event=>{if(event.candidate)sendSignal(remoteId,'candidate',event.candidate);};
+    pc.ontrack=event=>{
+      let audio=document.getElementById('audio-'+remoteId);
+      if(!audio) {
+        audio=document.createElement('audio');audio.id='audio-'+remoteId;audio.autoplay=true;audio.playsInline=true;audio.muted=!state.speakerEnabled;
+        $('remoteAudios').appendChild(audio);
+      }
+      audio.srcObject=event.streams[0];
+      audio.play().catch(()=>setStatus('voiceStatus','Tap the page once to allow audio playback.'));
+    };
+    pc.onconnectionstatechange=()=>{
+      if(pc.connectionState==='connected') $('voiceStatus').textContent='🔊 Voice connected with '+remoteName+'.';
+      if(pc.connectionState==='failed') $('voiceStatus').textContent='Voice link failed for '+remoteName+'. A TURN server may be needed on this network.';
+    };
+    state.peers.set(remoteId,pc);state.candidateQueues.set(remoteId,[]);
+    return pc;
+  }
+
+  async function sendSignal(to,type,data) {
+    if(!state.roomChannel||!state.channelReady)return;
+    try {
+      await state.roomChannel.send({type:'broadcast',event:'signal',payload:{
+        from:state.user.id,to,type,data
+      }});
+    } catch(error) {setStatus('voiceStatus','Signaling error: '+error.message,true);}
+  }
+
+  async function handleSignal(payload) {
+    if(!payload||payload.to!==state.user.id||!payload.from)return;
+    const person=presenceUsers().find(p=>p.user_id===payload.from);
+    const pc=ensurePeer(payload.from,person?.display_name||'Junction Member');
+    try {
+      if(payload.type==='offer') {
+        await pc.setRemoteDescription(new RTCSessionDescription(payload.data));
+        const answer=await pc.createAnswer();await pc.setLocalDescription(answer);
+        await sendSignal(payload.from,'answer',pc.localDescription);
+        const queued=state.candidateQueues.get(payload.from)||[];
+        for(const c of queued) await pc.addIceCandidate(new RTCIceCandidate(c));
+        state.candidateQueues.set(payload.from,[]);
+      } else if(payload.type==='answer') {
+        if(pc.signalingState==='have-local-offer') {
+          await pc.setRemoteDescription(new RTCSessionDescription(payload.data));
+          const queued=state.candidateQueues.get(payload.from)||[];
+          for(const c of queued) await pc.addIceCandidate(new RTCIceCandidate(c));
+          state.candidateQueues.set(payload.from,[]);
+        }
+      } else if(payload.type==='candidate') {
+        if(pc.remoteDescription) await pc.addIceCandidate(new RTCIceCandidate(payload.data));
+        else state.candidateQueues.get(payload.from).push(payload.data);
+      }
+    } catch(error) {setStatus('voiceStatus','Voice negotiation issue: '+error.message,true);}
+  }
+
+  async function submitMemberReport(reportedUserId,reportedName){
+    if(!state.user||!state.room)return;
+    if(reportedUserId===state.user.id)return;
+    const reason=prompt('Why are you reporting '+reportedName+'? Please enter a short reason:');
+    if(reason===null)return;
+    const clean=reason.trim().slice(0,500);
+    if(!clean){alert('Please enter a reason for the report.');return;}
+    try{
+      const {error}=await state.supabase.from('hainx_member_reports').insert({
+        reporter_id:state.user.id,reporter_name:state.name,
+        reported_user_id:reportedUserId,reported_name:reportedName,
+        room_id:state.room.id,reason:clean
+      });
+      if(error)throw error;
+      setStatus('roomStatus','Report sent privately to the HainX Admin. Thank you.');
+    }catch(error){setStatus('roomStatus','Report could not be sent: '+friendlyError(error),true);}
+  }
+
+  async function refreshAdminReports(){
+    if(!isOwnerAccount()||!state.supabase)return;
+    const target=$('adminReports');target.innerHTML='<p class="muted">Loading reports…</p>';
+    try{
+      const {data,error}=await state.supabase.from('hainx_member_reports')
+        .select('id,reporter_name,reported_name,room_id,reason,status,created_at')
+        .order('created_at',{ascending:false}).limit(100);
+      if(error)throw error;
+      if(!data?.length){target.innerHTML='<p class="muted">No reports received yet.</p>';return;}
+      target.innerHTML=data.map(r=>`<article class="report-card">
+        <div class="roomtop"><b>🚩 ${escapeHtml(r.reported_name||'Member')}</b><small>${new Date(r.created_at).toLocaleString()}</small></div>
+        <p class="muted">Reported by: ${escapeHtml(r.reporter_name||'HainX user')} · Junction: ${escapeHtml(r.room_id||'Unknown')}</p>
+        <p>${escapeHtml(r.reason)}</p><span class="pill">${escapeHtml(r.status||'open')}</span>
+      </article>`).join('');
+      setStatus('reportsStatus',data.length+' report(s) loaded.');
+    }catch(error){
+      target.innerHTML='<p class="muted">Reports setup pending. Run HAINX_REPORTS_SETUP.sql.</p>';
+      setStatus('reportsStatus',friendlyError(error),true);
+    }
+  }
+
+  async function refreshAdminUsers() {
+    if(!isOwnerAccount() || !state.supabase) return;
+    const target=$('adminUsers');
+    target.innerHTML='<p class="muted">Loading users…</p>';
+    try {
+      const {data,error}=await state.supabase.rpc('hainx_admin_list_users');
+      if(error) throw error;
+      if(!data?.length) { target.innerHTML='<p class="muted">No registered users found yet.</p>'; return; }
+      target.innerHTML=data.map(u=>{
+        const name=escapeHtml(u.display_name||'HainX User');
+        const room=escapeHtml(u.room_name||u.room_id||'Not in a Junction');
+        const flags=[u.is_blocked?'🚫 Blocked':'',u.is_muted?'🔇 Muted':''].filter(Boolean).join(' · ')||'Normal user';
+        const self=u.user_id===state.user.id;
+        return `<div class="admin-user"><div><b>${name}${self?' · You (Owner)':''}</b><small>${room} · ${flags}</small><small>ID: ${escapeHtml(u.user_id)}</small></div>${self?'':`<div class="admin-actions"><button type="button" class="secondary" data-admin-action="${u.is_muted?'unmute':'mute'}" data-user-id="${u.user_id}">${u.is_muted?'Unmute':'Mute'}</button><button type="button" class="secondary" data-admin-action="${u.is_blocked?'unblock':'block'}" data-user-id="${u.user_id}">${u.is_blocked?'Unblock':'Block'}</button><button type="button" class="leave-control" data-admin-action="remove" data-user-id="${u.user_id}">Remove</button></div>`}</div>`;
+      }).join('');
+      target.querySelectorAll('[data-admin-action]').forEach(btn=>btn.addEventListener('click',()=>moderateUser(btn.dataset.userId,btn.dataset.adminAction))); applyAdminSearch();
+    } catch(error) {
+      target.innerHTML='<p class="muted">Admin tools need the HainX moderation SQL setup. See the companion SQL file.</p>';
+      setStatus('adminStatus',friendlyError(error),true);
+    }
+  }
+
+  function applyAdminSearch(){const q=($('adminSearch')?.value||'').trim().toLowerCase();document.querySelectorAll('#adminUsers .admin-user').forEach(row=>row.classList.toggle('hidden',!!q&&!row.textContent.toLowerCase().includes(q)));}
+  $('adminSearch')?.addEventListener('input',applyAdminSearch);
+
+  async function moderateUser(userId, action) {
+    if(!isOwnerAccount()) { setStatus('adminStatus','Owner access required.',true); return; }
+    if(userId===state.user.id) { setStatus('adminStatus','Owner account cannot be moderated.',true); return; }
+    const prompts={block:'Block this user from joining any Junction?',unblock:'Allow this user to join again?',mute:'Mute this user in HainX?',unmute:'Remove the mute from this user?',remove:'Remove this user from their current Junction / Waiting Room?'};
+    if(!confirm(prompts[action]||'Continue?')) return;
+    try {
+      setStatus('adminStatus','Applying '+action+'…');
+      const {data,error}=await state.supabase.rpc('hainx_admin_moderate_user',{p_user_id:userId,p_action:action});
+      if(error) throw error;
+      setStatus('adminStatus',data||('User action completed: '+action));
+      await refreshAdminUsers();
+      if(state.room) await refreshRoomLists();
+    } catch(error) { setStatus('adminStatus',friendlyError(error),true); }
+  }
+
+  async function enforceMyModeration() {
+    if(!state.user || !state.supabase) return;
+    try {
+      const {data,error}=await state.supabase.rpc('hainx_my_moderation_status');
+      if(error) return;
+      const status=Array.isArray(data)?data[0]:data;
+      if(status?.is_blocked) {
+        setStatus('roomStatus','Your account has been blocked by the HainX Owner.',true);
+        await leaveRoom(true);
+        return;
+      }
+      if(status?.is_muted && !state.moderationMuted) {
+        state.moderationMuted=true;
+        state.micEnabled=false;
+        state.localStream?.getAudioTracks().forEach(track=>track.enabled=false);
+        $('micBtn').textContent='🔇 Mic Off'; $('micBtn').classList.remove('active');
+        setStatus('voiceStatus','🔇 The HainX Owner has muted your microphone.');
+      } else if(!status?.is_muted && state.moderationMuted) {
+        state.moderationMuted=false;
+        setStatus('voiceStatus','Owner mute has been removed. Your microphone remains off until you turn it on.');
+      }
+    } catch(_) {}
+  }
+
+  async function refreshRoomLists() {
+    if(!state.room)return;
+    await enforceMyModeration();
+    if(!state.room)return;
+    try {
+      const roomId=state.room.id;
+      const [membersResult,queueResult]=await Promise.all([
+        state.supabase.from('room_members').select('user_id,seat').eq('room_id',roomId).order('seat'),
+        state.supabase.from('waiting_queue').select('user_id,queued_at').eq('room_id',roomId).order('queued_at')
+      ]);
+      if(membersResult.error)throw membersResult.error;
+      if(queueResult.error)throw queueResult.error;
+      const allIds=[...new Set([...(membersResult.data||[]).map(x=>x.user_id),...(queueResult.data||[]).map(x=>x.user_id)])];
+      let profileMap={};
+      if(allIds.length) {
+        const {data,error}=await state.supabase.from('profiles').select('user_id,display_name,avatar_url').in('user_id',allIds);
+        if(error)throw error;
+        (data||[]).forEach(p=>profileMap[p.user_id]={name:p.display_name,avatar:p.avatar_url||''});
+      }
+      const members=membersResult.data||[],queue=queueResult.data||[];
+      const ownerIsHere=state.roomChannel&&Object.values(state.roomChannel.presenceState()).flat().some(p=>p.is_owner);$('roomOwnerBadge').classList.toggle('hidden',!ownerIsHere);
+      if(state.joined && !members.some(m=>m.user_id===state.user.id)){ for(const pc of state.peers.values())pc.close();state.peers.clear();document.querySelectorAll('#remoteAudios audio').forEach(a=>{a.pause();a.srcObject=null;a.remove();}); await leaveJunction(true);setStatus('lobbyStatus','You were removed from the Junction by the Owner.',true);return; }
+      $('seatPill').textContent=members.length+' / 4 seats';
+      $('peopleList').innerHTML=members.length?members.map(m=>{
+        const profile=profileMap[m.user_id]||{name:(m.user_id===state.user.id?state.name:'Junction Member'),avatar:''};
+        const display=profile.name||'Junction Member';
+        const initials=escapeHtml(display.trim().split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase());
+        const avatarMarkup=profile.avatar?`<div class="avatar avatar-photo"><img src="${escapeHtml(profile.avatar)}" alt=""></div>`:`<div class="avatar">${initials||'H'}</div>`;
+        const reportAction=m.user_id===state.user.id?'':`<button class="report-btn" type="button" data-report-user="${m.user_id}" data-report-name="${escapeHtml(display)}">⚑ Report</button>`;
+        return `<div class="person ${m.user_id===state.user.id?'is-you':''}">
+          ${avatarMarkup}
+          <b>${escapeHtml(display)}${m.user_id===state.user.id?' · You':''}${(state.roomChannel&&Object.values(state.roomChannel.presenceState()).flat().some(p=>p.user_id===m.user_id&&p.is_owner))?' <span class=\"owner-badge\">🛡 ADMIN</span>':''}</b>
+          <span class="member-state">● Online · Seat ${m.seat}</span>${reportAction}
+        </div>`;
+      }).join(''):'<div class="person">No one is inside yet.</div>';
+      $('waitingList').innerHTML=queue.length?queue.map((q,i)=>{
+        const waitingName=profileMap[q.user_id]?.name||'Waiting Member';
+        const reportAction=q.user_id===state.user.id?'':`<button class="report-btn" type="button" data-report-user="${q.user_id}" data-report-name="${escapeHtml(waitingName)}">⚑ Report</button>`;
+        return `<div class="person waiting"><b>⏳ ${escapeHtml(waitingName)}</b><span class="muted">Queue position ${i+1}</span>${reportAction}</div>`;
+      }).join(''):'<div class="person muted">Waiting Room is empty.</div>';
+      document.querySelectorAll('[data-report-user]').forEach(btn=>btn.addEventListener('click',()=>submitMemberReport(btn.dataset.reportUser,btn.dataset.reportName)));
+      if(!state.joined&&queue.some(q=>q.user_id===state.user.id))setStatus('roomStatus','You are in the Waiting Room. We are checking for an open seat...');
+    } catch(error) {setStatus('roomStatus','Room update: '+friendlyError(error),true);}
+  }
+
+  function setupWorldReactionChannel(){
+    if(!state.supabase||state.worldReactionChannel)return;
+    const channel=state.supabase.channel('hainx-world-live-reactions',{config:{broadcast:{self:false}}});
+    state.worldReactionChannel=channel;
+    channel.on('broadcast',{event:'world-reaction'},({payload})=>showSharedReaction(payload));
+    channel.subscribe();
+  }
+
+  function showSharedReaction(payload){
+    if(!payload?.emoji)return;
+    const feed=$('reactionFeed');
+    if(feed){
+      const item=document.createElement('span');
+      item.className='reaction-feed-item';
+      item.textContent=(payload.name||'HainX User')+' '+payload.emoji;
+      feed.prepend(item);
+      while(feed.children.length>12)feed.lastElementChild.remove();
+    }
+    const toast=$('globalReactionToast');
+    if(toast){
+      const item=document.createElement('span');
+      item.className='global-reaction-item';
+      item.textContent=(payload.name||'HainX User')+' reacted '+payload.emoji+(payload.room_name?' · '+payload.room_name:'');
+      toast.prepend(item);
+      while(toast.children.length>4)toast.lastElementChild.remove();
+      setTimeout(()=>item.remove(),5000);
+    }
+    const pop=document.createElement('div');
+    pop.className='reaction-pop';pop.textContent=payload.emoji;
+    document.body.appendChild(pop);
+    setTimeout(()=>pop.remove(),1550);
+  }
+  async function sendSharedReaction(emoji){
+    if(!state.room||!state.user||!state.worldReactionChannel)return;
+    const payload={emoji,name:state.name,user_id:state.user.id,room_name:state.room.name,at:Date.now()};
+    showSharedReaction(payload);
+    try{await state.worldReactionChannel.send({type:'broadcast',event:'world-reaction',payload});}
+    catch(error){setStatus('roomStatus','Reaction could not be shared: '+error.message,true);}
+  }
+
+  function renderChat(payload) {
+    if(!payload?.message)return;
+    const log=$('chatLog');
+    if(log.querySelector('.muted'))log.innerHTML='';
+    const row=document.createElement('p');row.className='msg';
+    const strong=document.createElement('b');strong.textContent=(payload.name||'Member')+': ';
+    const text=document.createTextNode(payload.message);
+    row.append(strong,text);log.appendChild(row);log.scrollTop=log.scrollHeight;
+  }
+
+  $('chatForm').addEventListener('submit',async event=>{
+    event.preventDefault();const input=$('chatInput');const message=input.value.trim();
+    if(!message||!state.roomChannel||!state.channelReady)return;
+    input.value='';
+    renderChat({name:state.name,message});
+    const {error}=await state.roomChannel.send({type:'broadcast',event:'chat',payload:{name:state.name,message,from:state.user.id}});
+    if(error)setStatus('roomStatus','Chat send failed: '+error.message,true);
+  });
+
+  $('micBtn').addEventListener('click',()=>{
+    if(state.moderationMuted){setStatus('voiceStatus','The HainX Owner has muted your microphone.');return;}
+    if(!state.localStream){setStatus('voiceStatus','Microphone is not enabled yet. Tap Enable microphone.',true);return;}
+    state.micEnabled=!state.micEnabled;
+    state.localStream.getAudioTracks().forEach(track=>track.enabled=state.micEnabled);
+    $('micBtn').textContent=state.micEnabled?'🎙️ Mic On':'🔇 Mic Off';
+    $('micBtn').classList.toggle('active',state.micEnabled);
+  });
+  $('retryMicBtn').addEventListener('click',async()=>{
+    await startMicrophone();
+    // Replace sender tracks if peer connections already exist.
+    if(state.localStream) {
+      for(const pc of state.peers.values()) {
+        const sender=pc.getSenders().find(s=>s.track?.kind==='audio');
+        const track=state.localStream.getAudioTracks()[0];
+        if(sender&&track) {
+          await sender.replaceTrack(track);
+        } else if(track) {
+          pc.addTrack(track,state.localStream);
+          try {
+            const offer=await pc.createOffer();
+            await pc.setLocalDescription(offer);
+            await sendSignal([...state.peers.entries()].find(([,v])=>v===pc)?.[0],'offer',pc.localDescription);
+          } catch(_) {}
+        }
+      }
+    }
+    if(state.roomChannel)handlePresence();
+  });
+
+
+  function showReaction(emoji) {
+    if(!emoji)return;
+    const el=document.createElement('div');
+    el.className='reaction-pop';el.textContent=emoji;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),1550);
+  }
+  document.querySelectorAll('[data-reaction]').forEach(button=>{
+    button.addEventListener('click',async()=>{
+      const emoji=button.dataset.reaction;
+      showReaction(emoji);
+      if(state.roomChannel&&state.channelReady) {
+        await state.roomChannel.send({type:'broadcast',event:'reaction',payload:{emoji,from:state.user?.id}});
+      }
+    });
+  });
+  $('speakerBtn').addEventListener('click',()=>{
+    state.speakerEnabled=!state.speakerEnabled;
+    document.querySelectorAll('#remoteAudios audio').forEach(audio=>audio.muted=!state.speakerEnabled);
+    $('speakerBtn').textContent=state.speakerEnabled?'🔊 Speaker On':'🔇 Speaker Off';
+    $('speakerBtn').classList.toggle('active',state.speakerEnabled);
+  });
+
+  // Permission prompt is intentionally user-initiated; browsers block surprise mic prompts.
+  $('enableMicFirst').addEventListener('click',async()=>{
+    const status=$('micGateStatus');
+    status.textContent='Requesting microphone permission…';
+    if(!navigator.mediaDevices?.getUserMedia) {
+      status.textContent='Microphone access needs a supported browser and HTTPS. You can continue and retry later.';
+      return;
+    }
+    try {
+      state.localStream=await navigator.mediaDevices.getUserMedia({
+        audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true},video:false
+      });
+      state.micEnabled=false;
+      state.localStream.getAudioTracks().forEach(track=>track.enabled=false);
+      $('micBtn').textContent='🔇 Mic Off';
+      $('micBtn').classList.remove('active');
+      $('micGate').classList.add('hidden');
+      status.textContent='Microphone permission granted.';
+    } catch(error) {
+      status.textContent=error.name==='NotAllowedError'
+        ?'Permission was blocked. Allow the microphone from the browser site settings, then retry.'
+        :(error.message||'Could not access the microphone.');
+    }
+  });
+  $('skipMicFirst').addEventListener('click',()=>{
+    $('micGate').classList.add('hidden');
+  });
+
+  async function leaveJunction(returnToLobby=true) {
+    if(state.leaving)return;state.leaving=true;
+    clearInterval(state.roomTimer);clearInterval(state.queueTimer);clearInterval(state.heartbeatTimer);
+    state.roomTimer=null;state.queueTimer=null;state.heartbeatTimer=null;
+    if(state.roomChannel) {
+      try{await state.roomChannel.untrack();await state.supabase.removeChannel(state.roomChannel);}catch(_){}
+    }
+    state.roomChannel=null;state.channelReady=false;
+    for(const pc of state.peers.values())pc.close();
+    state.peers.clear();state.candidateQueues.clear();
+    if(state.localStream)state.localStream.getTracks().forEach(t=>t.stop());
+    state.localStream=null;state.joined=false;
+    $('chatInput').disabled=false; $('chatForm').querySelector('button').disabled=false;
+    if(state.room) {
+      try{await state.supabase.rpc('leave_junction',{p_junction_id:state.room.id});}catch(_){}
+    }
+    state.room=null;state.seat=null;state.leaving=false;
+    if(returnToLobby){show('lobbyPanel');await refreshLobby();}
+  }
+  $('leaveBtn').addEventListener('click',()=>leaveJunction(true));
+
+  window.addEventListener('beforeunload',()=>{
+    if(state.room) {
+      // Browser shutdown cleanup is best-effort; server-side stale-session cleanup can be added later.
+      state.supabase?.rpc('leave_junction',{p_junction_id:state.room.id});
+    }
+    state.localStream?.getTracks().forEach(t=>t.stop());
+  });
+
+  document.querySelectorAll('[data-reaction]').forEach(btn=>btn.addEventListener('click',()=>sendSharedReaction(btn.dataset.reaction)));
+  $('adminRefreshBtn').addEventListener('click',refreshAdminUsers);
+  $('refreshReportsBtn').addEventListener('click',refreshAdminReports);
+  $('lobbyMusicToggle').addEventListener('click',()=>{
+    state.lobbyMusicMuted=!state.lobbyMusicMuted;
+    localStorage.setItem('hainx_lobby_music_muted',String(state.lobbyMusicMuted));
+    $('lobbyMusicAudio').muted=state.lobbyMusicMuted;
+    $('lobbyMusicAudio').muted=!!state.lobbyMusicMuted;
+    $('lobbyMusicToggle').textContent=state.lobbyMusicMuted?'🔊 Unmute':'🔇 Mute';
+    $('lobbyMusicToggle').setAttribute('aria-pressed',String(state.lobbyMusicMuted));
+    $('lobbyMusicStatus').textContent=state.lobbyMusicMuted?'Music muted on this device only.':'Music unmuted on this device.';
+  });
+  $('musicPlayPause').addEventListener('click',async()=>{
+    const audio=$('lobbyMusicAudio');
+    if(!audio.src){setStatus('lobbyMusicUploadStatus','Choose a song from the playlist first.',true);return;}
+    if(audio.paused){await startLobbyMusic();}else{audio.pause();$('musicPlayPause').textContent='▶ Play';}
+  });
+  $('musicStop').addEventListener('click',()=>{stopLobbyMusic();$('musicPlayPause').textContent='▶ Play';});
+  $('lobbyMusicUpload').addEventListener('change',async event=>{
+    try { await uploadLobbyMusic(event.target.files?.[0]); }
+    catch(error) { setStatus('lobbyMusicUploadStatus',friendlyError(error),true); }
+    event.target.value='';
+  });
+
+  boot();
+})();
+</script>
+</body>
+</html>
